@@ -1,0 +1,946 @@
+{
+  "ppm": {
+    "planner": {
+      "create": [
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Build",
+          "name": "Build",
+          "label": "Build",
+          "icon": "bi bi-wrench",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Block",
+          "name": "Block",
+          "label": "Block",
+          "icon": "bi bi-lock",
+          "isDropdown": false,
+          "isDisabled": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Unblock",
+          "name": "Unblock",
+          "label": "Unblock",
+          "icon": "bi bi-unlock",
+          "isDropdown": false,
+          "dropdownList": [],
+          "isDisabled": true,
+          "fill": false
+        },
+        {
+          "id": "Omit",
+          "name": "Omit",
+          "label": "Omit",
+          "icon": "bi bi-x",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "OmitByFreq",
+          "name": "Omit By Freq",
+          "label": "Omit By Frequency",
+          "icon": "bi bi-bell-slash-fill",
+          "isDropdown": false,
+          "isDisabled": true,
+          "dropdownList": [],
+          "fill": false
+        }
+      ]
+    },
+    "scheduler": {
+      "create": [
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "bi bi-x",
+          "isDropdown": false,
+          "isDisabled": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Save",
+          "name": "Save",
+          "label": "Save",
+          "icon": "bi bi-check-circle",
+          "isDropdown": false,
+          "isDisabled": true,
+          "dropdownList": [],
+          "fill": true
+        }
+      ]
+    },
+    "hseq": {
+      "create": [
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "bi bi-x",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Save",
+          "name": "Save",
+          "label": "Save",
+          "icon": "bi bi-check-circle",
+          "isDropdown": false,
+          "dropdownList": [],
+          "isDisabled": true,
+          "fill": true
+        }
+      ]
+    },
+    "taskInstructions": {
+      "create": [
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Save",
+          "name": "Save",
+          "label": "Save",
+          "icon": "bi bi-check-circle",
+          "isDropdown": false,
+          "isDisabled": true,
+          "dropdownList": [],
+          "fill": true
+        },
+        {
+          "id": "Copy",
+          "name": "Copy",
+          "label": "Copy",
+          "icon": "bi bi-files",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Delete",
+          "name": "Delete",
+          "label": "Delete",
+          "icon": "bi bi-trash",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Audit-Log",
+          "name": "Audit-Log",
+          "label": "Audit-Log",
+          "icon": "bi bi-list-check",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        }
+      ]
+    },
+    "reports": {
+      "slaReports": [
+        {
+          "id": "Generate-SLA-Reports",
+          "name": "Generate-SLA-Reports",
+          "label": "Generate SLA Reports",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": true
+        }
+      ],
+      "eventReports": [
+        {
+          "id": "Generate-Planned-Event-Reports",
+          "name": "Generate-Planned-Event-Reports",
+          "label": "Generate Planned Event Reports",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": true
+        }
+      ]
+    },
+    "logs": [
+      {
+        "id": "Add-New",
+        "name": "Add-New",
+        "label": "Add New",
+        "icon": "",
+        "isDropdown": false,
+        "dropdownList": [],
+        "fill": true
+      }
+    ],
+    "issuer": {
+      "create": [
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "bi bi-x",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Build",
+          "name": "Build",
+          "label": "Build",
+          "icon": "bi bi-wrench",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Issue",
+          "name": "Issue",
+          "label": "Issue",
+          "icon": "bi bi-list-check",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Drop",
+          "name": "Drop",
+          "label": "Drop",
+          "icon": "bi bi-arrow-down",
+          "isDisabled": false,
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        }
+      ]
+    }
+  },
+  "assetRegister": {
+    "activity": {
+      "assetNew": {
+        "header": [
+          {
+            "id": "Cancel",
+            "name": "Cancel",
+            "label": "Cancel",
+            "icon": "bi bi-x",
+            "isDropdown": false,
+            "dropdownList": [],
+            "fill": false
+          },
+          {
+            "id": "Save",
+            "name": "Save",
+            "label": "save",
+            "icon": "bi bi-pencil-square",
+            "isDropdown": false,
+            "isDisabled": false,
+            "dropdownList": [],
+            "fill": true
+          },
+          {
+            "id": "Add-New",
+            "name": "Add-New",
+            "label": "Add New",
+            "icon": "",
+            "isDropdown": false,
+            "isDisabled": true,
+            "dropdownList": [],
+            "fill": false
+          },
+          {
+            "id": "Actions",
+            "name": "Actions",
+            "label": "Actions",
+            "icon": "bi bi-activity",
+            "isDropdown": true,
+            "dropdownList": [
+              "Audit log",
+              "Upload",
+              "Conditional Audit",
+              "PPM Settings",
+              "Asset Movement",
+              "Assign User",
+              "Inactive"
+            ],
+            "fill": false
+          }
+        ]
+      }
+    },
+    "assetMaster": {
+      "assetlist": [
+        {
+          "id": "Add-New",
+          "name": "Add-New",
+          "label": "Add New",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": true
+        }
+      ]
+    },
+    "conditionalAudit": {
+      "create": [
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "bi bi-x",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Save",
+          "name": "Save",
+          "label": "Save",
+          "icon": "bi bi-check-circle",
+          "isDropdown": false,
+          "isDisabled": true,
+          "dropdownList": [],
+          "fill": true
+        }
+      ]
+    }
+  },
+  "correctiveCalls": {
+    "create": [
+      {
+        "id": "Export",
+        "name": "Export",
+        "label": "Export",
+        "icon": "",
+        "isDropdown": false,
+        "dropdownList": [],
+        "fill": false
+      },
+      {
+        "id": "Cancel",
+        "name": "Cancel",
+        "label": "Cancel",
+        "icon": "",
+        "isDropdown": false,
+        "dropdownList": [],
+        "fill": false
+      },
+      {
+        "id": "Save",
+        "name": "Save",
+        "label": "Save",
+        "icon": "",
+        "isDropdown": false,
+        "isDisabled": true,
+        "dropdownList": [],
+        "fill": true
+      },
+      {
+        "id": "New w/o",
+        "name": "New w/o",
+        "label": "New w/o",
+        "icon": "",
+        "isDropdown": false,
+        "isDisabled": true,
+        "dropdownList": [],
+        "fill": true
+      },
+      {
+        "id": "Actions",
+        "name": "Actions",
+        "label": "Actions",
+        "icon": "",
+        "isDropdown": true,
+        "dropdownList": [
+          "Close",
+          "Card",
+          "Audit"
+        ],
+        "fill": false
+      }
+    ],
+    "open": [
+      {
+        "id": "Add-New",
+        "name": "Add-New",
+        "label": "Add New",
+        "icon": "",
+        "isDropdown": false,
+        "dropdownList": [],
+        "fill": true
+      }
+    ],
+    "transfer": [
+      {
+        "id": "Transfer",
+        "name": "Transfer",
+        "label": "Transfer",
+        "icon": "bi bi-sign-turn-right",
+        "isDropdown": false,
+        "dropdownList": [],
+        "isDisabled": true,
+        "fill": true
+      }
+    ],
+    "close": [
+      {
+        "id": "Close",
+        "name": "Close",
+        "label": "Close",
+        "icon": "bi bi-x-octagon",
+        "isDropdown": false,
+        "dropdownList": [],
+        "isDisabled": true,
+        "fill": true
+      }
+    ]
+  },
+  "core": {
+    "masterList": {
+      "header": [
+        {
+          "id": "Add-New",
+          "name": "Add-New",
+          "label": "Add New",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": true
+        },
+        {
+          "id": "masterTypes",
+          "name": "Locations",
+          "label": "Locations",
+          "icon": "bi bi-geo-alt-fill",
+          "isDropdown": true,
+          "dropdownList": [
+            "Countries",
+            "States / Emirates",
+            "Cities",
+            "Master Developments",
+            "Zones",
+            "Floors",
+            "Buildings",
+            "Units",
+            "Rooms"
+          ],
+          "fill": false
+        }
+      ]
+    },
+    "tabMaster": {
+      "create": [
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Save",
+          "name": "Save",
+          "label": "Save",
+          "icon": "",
+          "isDropdown": false,
+          "isDisabled": true,
+          "dropdownList": [],
+          "fill": true
+        }
+      ]
+    },
+    "customers": {
+      "create": [
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Save",
+          "name": "Save",
+          "label": "Save",
+          "icon": "",
+          "isDropdown": false,
+          "isDisabled": false,
+          "dropdownList": [],
+          "fill": true
+        }
+      ]
+    },
+    "accessroles": {
+      "create": [
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Save",
+          "name": "Save",
+          "label": "Save",
+          "icon": "",
+          "isDropdown": false,
+          "isDisabled": false,
+          "dropdownList": [],
+          "fill": true
+        }
+      ]
+    }
+  },
+  "stock": {
+    "stocks": {
+      "create": [
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Save",
+          "name": "Save",
+          "label": "Save",
+          "icon": "",
+          "isDropdown": false,
+          "isDisabled": false,
+          "dropdownList": [],
+          "fill": true
+        }
+      ],
+      "issue": [
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Save",
+          "name": "Save",
+          "label": "Save",
+          "icon": "",
+          "isDropdown": false,
+          "isDisabled": true,
+          "dropdownList": [],
+          "fill": true
+        }
+      ]
+    }
+  },
+  "procurement": {
+    "grn": {
+      "createGrn": [
+        {
+          "id": "Approve",
+          "name": "Approve",
+          "label": "Approve",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Save",
+          "name": "Save",
+          "label": "Save",
+          "icon": "",
+          "isDropdown": false,
+          "isDisabled": false,
+          "dropdownList": [],
+          "fill": true
+        }
+      ],
+      "grnReturn": [
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Save",
+          "name": "Save",
+          "label": "Save",
+          "icon": "",
+          "isDropdown": false,
+          "isDisabled": false,
+          "dropdownList": [],
+          "fill": true
+        }
+      ]
+    },
+    "createMr": [
+      {
+        "id": "Cancel",
+        "name": "Cancel",
+        "label": "Cancel",
+        "icon": "",
+        "isDropdown": false,
+        "dropdownList": [],
+        "fill": false
+      },
+      {
+        "id": "Save",
+        "name": "Save",
+        "label": "Save",
+        "icon": "",
+        "isDropdown": false,
+        "isDisabled": false,
+        "dropdownList": [],
+        "fill": true
+      }
+    ]
+  },
+  "scheduledTask": {
+    "scheduler": {
+      "create": [
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "bi bi-x",
+          "isDropdown": false,
+          "isDisabled": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Save",
+          "name": "Save",
+          "label": "Save",
+          "icon": "bi bi-check-circle",
+          "isDropdown": false,
+          "isDisabled": true,
+          "dropdownList": [],
+          "fill": true
+        }
+      ]
+    },
+    "planner": {
+      "create": [
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Build",
+          "name": "Build",
+          "label": "Build",
+          "icon": "bi bi-wrench",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Block",
+          "name": "Block",
+          "label": "Block",
+          "icon": "bi bi-lock",
+          "isDropdown": false,
+          "isDisabled": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Unblock",
+          "name": "Unblock",
+          "label": "Unblock",
+          "icon": "bi bi-unlock",
+          "isDropdown": false,
+          "dropdownList": [],
+          "isDisabled": true,
+          "fill": false
+        },
+        {
+          "id": "Omit",
+          "name": "Omit",
+          "label": "Omit",
+          "icon": "bi bi-x",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "OmitByFreq",
+          "name": "Omit By Freq",
+          "label": "Omit By Frequency",
+          "icon": "bi bi-bell-slash-fill",
+          "isDropdown": false,
+          "isDisabled": true,
+          "dropdownList": [],
+          "fill": false
+        }
+      ]
+    },
+    "issuer": {
+      "create": [
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "bi bi-x",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Build",
+          "name": "Build",
+          "label": "Build",
+          "icon": "bi bi-wrench",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Issue",
+          "name": "Issue",
+          "label": "Issue",
+          "icon": "bi bi-list-check",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Drop",
+          "name": "Drop",
+          "label": "Drop",
+          "icon": "bi bi-arrow-down",
+          "isDisabled": false,
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        }
+      ]
+    },
+    "log": {
+      "create": [
+        {
+          "id": "Export",
+          "name": "Export",
+          "label": "Export",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Save",
+          "name": "Save",
+          "label": "Save",
+          "icon": "",
+          "isDropdown": false,
+          "isDisabled": true,
+          "dropdownList": [],
+          "fill": true
+        },
+        {
+          "id": "Actions",
+          "name": "Actions",
+          "label": "Actions",
+          "icon": "",
+          "isDropdown": true,
+          "dropdownList": [
+            "Complete",
+            "On-Hold"
+          ],
+          "fill": false
+        }
+      ]
+    }
+  },
+  "hrms": {
+    "Announcement": {
+      "create": [
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "Save",
+          "name": "Save",
+          "label": "Save",
+          "icon": "",
+          "isDropdown": false,
+          "isDisabled": false,
+          "dropdownList": [],
+          "fill": true
+        }
+      ]
+    }
+  },
+  "quote": {
+    "setting": [
+      {
+        "id": "Save",
+        "name": "Save",
+        "label": "Save",
+        "icon": "bi bi-check-circle",
+        "isDropdown": false,
+        "dropdownList": [],
+        "isDisabled": true,
+        "fill": true
+      },
+      {
+        "id": "Cancel",
+        "name": "Cancel",
+        "label": "Cancel",
+        "icon": "",
+        "isDropdown": false,
+        "dropdownList": [],
+        "fill": false
+      }
+    ],
+    "create": [
+      {
+        "id": "Save",
+        "name": "Save",
+        "label": "Save",
+        "icon": "bi bi-check-circle",
+        "isDropdown": false,
+        "dropdownList": [],
+        "isDisabled": true,
+        "fill": true
+      },
+      {
+        "id": "Cancel",
+        "name": "Cancel",
+        "label": "Cancel",
+        "icon": "",
+        "isDropdown": false,
+        "dropdownList": [],
+        "fill": false
+      },
+      {
+        "id": "Actions",
+        "name": "Actions",
+        "label": "Actions",
+        "icon": "bi bi-activity",
+        "isDropdown": true,
+        "dropdownList": [
+          "Dashboard",
+          "Listing"
+        ],
+        "fill": false
+      }
+    ],
+    "listing": [
+      {
+        "id": "Actions",
+        "name": "Actions",
+        "label": "Actions",
+        "icon": "bi bi-activity",
+        "isDropdown": true,
+        "dropdownList": [
+          "Dashboard",
+          "New Quotation"
+        ],
+        "fill": false
+      }
+    ],
+    "dashboard": [
+      {
+        "id": "Actions",
+        "name": "Actions",
+        "label": "Actions",
+        "icon": "bi bi-activity",
+        "isDropdown": true,
+        "dropdownList": [
+          "Listing",
+          "New Quotation"
+        ],
+        "fill": false
+      }
+    ],
+    "common": {
+      "create": [
+        {
+          "id": "Cancel",
+          "name": "Cancel",
+          "label": "Cancel",
+          "icon": "bi bi-x",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": false
+        },
+        {
+          "id": "New",
+          "name": "New",
+          "label": "New",
+          "icon": "bi bi-plus",
+          "isDropdown": false,
+          "dropdownList": [],
+          "fill": true
+        }
+      ]
+    }
+  }
+}

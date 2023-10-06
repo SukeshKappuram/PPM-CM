@@ -1,0 +1,15 @@
+<div>
+  <app-header [quickActions]="quickActions" (switchAccount)="accountsLoaded($event)"></app-header>
+  <div class="page-content">
+    <app-sidebar #sidebar (minimised)="updateWidth($event)" (menuLoaded)="updateHeaderActions($event)"
+      (multipleAccountsLoaded)="accountsLoaded($event)" (accountChanged)="updateAccount($event)"></app-sidebar>
+    <div class="content-wrapper" [ngClass]="{'sidebar-padding':!isResized}">
+      <router-outlet></router-outlet>
+      <div class="btn-to-top" [ngStyle]="{'display': displayType}">
+        <button type="button" class="btn btn-dark btn-icon rounded-pill" (click)="scrollTop()">
+          <i class="bi bi-arrow-up-circle-fill"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

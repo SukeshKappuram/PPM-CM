@@ -1,0 +1,214 @@
+<div class="card">
+  <div class="card-header bg-transparent header-elements-inline">
+    <h6 class="card-title font-weight-semibold text-secondary">Tags and Images
+    </h6>
+    <button class="btn btn-sm btn-secondary" *ngIf="userAccess?.canUpdate" type="submit" (click)="save()">
+      Save
+    </button>
+  </div>
+  <div class="card-body">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12 mb-2">
+              <div class="form-group">
+                <div class=" ">
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="barcode" [checked]="isBarUploaded"
+                      (change)="changeStatus(0,$event)" [disabled]="!isEditable">
+                    <label class="custom-control-label" for="barcode">Barcode</label>
+                  </div>
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="qr" [checked]="isQrUploaded"
+                      (change)="changeStatus(1,$event)" [disabled]="!isEditable">
+                    <label class="custom-control-label" for="qr">QR Code</label>
+                  </div>
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="rf" [checked]="isRfUploaded"
+                      (change)="changeStatus(2,$event)" [disabled]="!isEditable">
+                    <label class="custom-control-label" for="rf">RF Code</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="identifications">
+        <form [formGroup]="identityForm">
+          <div class="row" id="barcodeDiv" [ngStyle]="{'display': isBarUploaded ? '': 'none'}" *ngIf="isBarUploaded">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">Barcode</label>
+                <input class="form-control" type="text" formControlName="brCode" placeholder="Enter Your Code"
+                  [value]="getIdentification(0)?.code" [(ngModel)]="assetCode" readonly>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">Syscode / Client Code</label>
+                <input class="form-control" formControlName="brClientCode" type="text" placeholder="Enter Your Code"
+                  [value]="getIdentification(0)?.clientCode" [(ngModel)]="getIdentification(0).clientCode"
+                  [readOnly]="!isEditable">
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="row" *ngIf="getIdentification(0)?.imageUrl; else uploadBar">
+                <div class="col-md-12">
+                  <div class="box position-relative p-2 pb-0">
+                    <i class="bi bi-x-circle position-absolute right-0 top-0 text-danger cursor-pointer"
+                      (click)="deleteImg(getIdentification(0))"></i>
+                    <img [src]="getIdentification(0)?.imageUrl" width="100%" height="140px" loading="lazy">
+                  </div>
+                </div>
+              </div>
+              <ng-template #uploadBar>
+                <ngx-dropzone (change)="onSelect($event,0)" class="dropzone upload-doc" [multiple]="false"
+                  [disabled]="!isEditable">
+                  <ngx-dropzone-label class="font-12">Drop files to upload or CLICK</ngx-dropzone-label>
+                  <ngx-dropzone-preview *ngFor="let f of barcodes" [removable]="true" (removed)="onRemove(f,0)">
+                    <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                  </ngx-dropzone-preview>
+                </ngx-dropzone>
+              </ng-template>
+            </div>
+          </div>
+
+          <div class="row mt-2" id="RFcodeDiv" [ngStyle]="{'display': isRfUploaded ? '': 'none'}" *ngIf="isRfUploaded">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">RF Code </label>
+                <input class="form-control " type="text" formControlName="rfCode" placeholder="Enter Your Code"
+                  [value]="getIdentification(2)?.code" [(ngModel)]="assetCode" readonly>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">Syscode / Client Code</label>
+                <input class="form-control " type="text" formControlName="rfClientCode" placeholder="Enter Your Code"
+                  [value]="getIdentification(2)?.clientCode" [(ngModel)]="getIdentification(2).clientCode"
+                  [readOnly]="!isEditable">
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="row" *ngIf="getIdentification(2)?.imageUrl; else uploadRF">
+                <div class="col-md-12">
+                  <div class="box position-relative p-2">
+                    <i class="bi bi-x-circle position-absolute right-0 top-0 text-danger cursor-pointer"
+                      (click)="deleteImg(getIdentification(2))"></i>
+                    <img [src]="getIdentification(2)?.imageUrl" width="100%" height="140px" loading="lazy">
+                  </div>
+                </div>
+              </div>
+              <ng-template #uploadRF>
+                <ngx-dropzone (change)="onSelect($event,2)" class="dropzone upload-doc" [multiple]="false"
+                  [disabled]="!isEditable">
+                  <ngx-dropzone-label class="font-12">Drop files to upload or CLICK</ngx-dropzone-label>
+                  <ngx-dropzone-preview *ngFor="let f of rfcodes" [removable]="true" (removed)="onRemove(f, 2)">
+                    <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                  </ngx-dropzone-preview>
+                </ngx-dropzone>
+              </ng-template>
+            </div>
+          </div>
+
+          <div class="row mt-2" id="QRcodeDiv" [ngStyle]="{'display': isQrUploaded ? '': 'none'}" *ngIf="isQrUploaded">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">QR Code</label>
+                <input class="form-control " type="text" formControlName="qrCode" placeholder="Enter Your Code"
+                  [value]="getIdentification(1)?.code" [(ngModel)]="assetCode" readonly>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="">Syscode / Client Code</label>
+                <input class="form-control " type="text" formControlName="qrClientCode" placeholder="Enter Your Code"
+                  [value]="getIdentification(1)?.clientCode" [(ngModel)]="getIdentification(1).clientCode"
+                  [readOnly]="!isEditable">
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="row" *ngIf="getIdentification(1)?.imageUrl; else uploadRF">
+                <div class="col-md-12">
+                  <div class="box position-relative p-2">
+                    <i class="bi bi-x-circle position-absolute right-0 top-0 text-danger cursor-pointer"
+                      (click)="deleteImg(getIdentification(1))"></i>
+                    <img [src]="getIdentification(1)?.imageUrl" width="50%" height="140px" loading="lazy">
+                  </div>
+                </div>
+              </div>
+              <ng-template #uploadRF>
+                <button type="button" class="btn btn-light btn-block btn-float m-0 upload-doc-btn" (click)="generate()"
+                  [disabled]="!isEditable">
+                  <i class="bi bi-qr-code text-muted fa-2x"></i>
+                  <span>Generate</span>
+                </button>
+              </ng-template>
+            </div>
+          </div>
+        </form>
+      </ng-container>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header bg-transparent header-elements-inline">
+    <h6 class="card-title font-weight-semibold text-secondary">Asset Image
+    </h6>
+    <button class="btn btn-sm btn-secondary" type="submit" (click)="uploadAssets()" [disabled]="!isEditable">
+      Save
+    </button>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-xl-3 col-sm-6" *ngFor="let asset of assetImages; let i = index">
+        <div class="card">
+          <div class="card-img-actions text-center mx-1 mt-1">
+            <img class="card-img img-fluid" [src]="asset.imageUrl | sanitizeUrl" alt=""
+              style="width: 150px!important; height: 100px !important;" loading="lazy">
+            <div class="card-img-actions-overlay card-img">
+              <a class="btn btn-outline-white border-2 btn-icon rounded-pill ml-2">
+                <i class="bi bi-x-circle" (click)="deleteImg(asset)"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="d-flex align-items-start flex-wrap" (click)="isActive(asset.id)">
+              <div class="font-weight-semibold">Image _ {{asset.id}}</div>
+              <span class="font-size-sm text-muted ml-auto">
+                <div class="custom-control custom-checkbox custom-control-inline">
+                  <input type="radio" class="custom-control-input" name="dr_li" [id]="'dr_li_f'+i"
+                    [checked]="asset.isDefault" name="assetImg">
+                  <label class="custom-control-label" [for]="'dr_li_f'+i"></label>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <form action="" method="post" class="dropzone dz-clickable" id="dropzone_single" enctype="multipart/form-data">
+          <div class="dz-default dz-message">
+            <button class="dz-button" type="button" (click)="file.click()" [disabled]="!isEditable">
+              Drop file to upload
+              <span>or CLICK</span>
+            </button>
+            <input type="file" #file data-multiple-caption="{count} files selected" multiple style="display:none"
+              (change)="onChange($event)" [disabled]="!isEditable" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

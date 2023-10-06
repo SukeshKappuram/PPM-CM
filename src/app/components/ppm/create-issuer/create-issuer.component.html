@@ -1,0 +1,19 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [items]="config?.items" [activeItem]="config?.title" [pageTitle]="config?.title" [buttons]="buttons"
+    (modified)="buttonClicked($event)" [isFilterable]="true" (toggleFilter)="gridFilter.toggleShow()">
+  </app-page-header>
+  <app-grid-filter #filter (filterChanged)="build($event)" [filterType]="FilterType.Issuer" [api]="config?.apiEndpoint"
+    [useSearchButton]="false" [showStartEndDates]="false" [isFrequencyCalculated]="true"
+    [isFrequencyProjected]="config?.isFrequencyProjected" [isFrequencySelected]="config?.isFrequencySelected">
+  </app-grid-filter>
+  <!-- Content area -->
+  <div class="content py-0 px-2">
+    <app-alert id="alert-issuer"></app-alert>
+    <div class="card-group-control card-group-control-left">
+      <ng-container *ngIf="gridData?.configuration?.columns?.length">
+        <app-kendo-grid #kgrid [gridDetails]="gridData"  [selectable]="{ checkboxOnly: true, mode: 'multiple' }" [selectionKey]="'id'"
+        (rowSelected)= "selectionChange($event)"   [fileName]="'Create_Issuer'" (view)="openLocation($event)"></app-kendo-grid>
+      </ng-container>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,162 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <!-- Page header -->
+  <div class="page-header page-header-light">
+    <div class="page-header-content header-elements-lg-inline">
+      <div class="page-title d-flex">
+        <h4><i class="bi bi-arrow-left-circle mr-2"></i> <span class="font-weight-semibold">Home</span> -
+          Dashboard</h4>
+      </div>
+    </div>
+  </div>
+  <!-- /page header -->
+
+  <!-- Content area -->
+  <div class="content">
+    <!-- Main charts -->
+    <div class="card-group-control card-group-control-right">
+      <div class="card mb-3">
+        <div class="card-header">
+          <h6 class="card-title">
+            <a class="text-body cursor-pointer" [ngClass]="isCollapsed?'collapsed':''" data-toggle="collapse" (click)="isCollapsed = !isCollapsed">
+              Select Date Range
+            </a>
+          </h6>
+        </div>
+
+        <div id="question1" [ngClass]="isCollapsed?'collapse':'show'">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-9"></div>
+              <div class="col-lg-3 pb-1 mb-1">
+                <div class="row">
+                  <div class="col-lg-8 pr-0">
+                    <kendo-daterange #daterange class="float-end">
+                      <kendo-floatinglabel text="Start">
+                        <kendo-dateinput kendoDateRangeStartInput [(value)]="range.start"></kendo-dateinput>
+                      </kendo-floatinglabel>
+                      <kendo-floatinglabel text="End">
+                        <kendo-dateinput kendoDateRangeEndInput [(value)]="range.end"></kendo-dateinput>
+                      </kendo-floatinglabel>
+                    </kendo-daterange>
+                  </div>
+                  <div class="col-md-4 pl-0 pr-3 mt-3">
+                    <button type="submit" class="btn btn-secondary ml-3" (click)="dateRangeChanged()">Refresh</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div *ngFor="let graph of graphs" [ngClass]="graph.isFullView? 'col-md-12':'col-md-6'">
+        <div class="card">
+          <div class="card-body" [ngClass]="graph.displayType === ReportType.Card?'text-center p-5':''">
+            <container_element [ngSwitch]="graph.displayType">
+              <app-line-graph [data]="graph" *ngSwitchCase="ReportType.LineChart"></app-line-graph>
+              <app-stacked-graph [data]="graph" *ngSwitchCase="ReportType.StackedBarChart"></app-stacked-graph>
+              <app-column-graph [data]="graph" *ngSwitchCase="ReportType.ColumnChart"></app-column-graph>
+              <app-stacked-graph [data]="graph" [type]="'column'" *ngSwitchCase="ReportType.StackedColumnChart">
+              </app-stacked-graph>
+              <app-stacked-graph [data]="graph" [type]="'column'" [isStack]="false"
+                *ngSwitchCase="ReportType.UnStackedColumnChart"></app-stacked-graph>
+              <app-stacked-graph [data]="graph" [isStack]="false" *ngSwitchCase="ReportType.BarChart">
+              </app-stacked-graph>
+              <app-area-graph [data]="graph" *ngSwitchCase="ReportType.AreaChart"></app-area-graph>
+              <ng-container *ngSwitchCase="ReportType.Card">
+                <div class="row" *ngIf="graph.series">
+                  <div class="my-5 py-5" *ngIf="graph.series[0]">
+                    <i class="bi bi-file-arrow-up fa-2x text-success border-success border-3 rounded-pill p-4 my-4"></i>
+                    <h3 class="font-weight-semibold  my-4 mt-5">{{graph.series[0].data[0].value}}</h3>
+                    <h6 class="card-title mt-3">{{graph.series[0].name}}</h6>
+                  </div>
+
+                  <div class="col-md-9" *ngIf="graph.series[1]">
+                    <div class="row">
+                      <div class="col-sm-6 col-xl-4">
+                        <div class="card card-body  ">
+                          <div class="media">
+                            <div class="mr-3 align-self-center">
+                              <i class="bi bi-radioactive fa-3x text-purple"></i>
+                            </div>
+
+                            <div class="media-body text-right">
+                              <h3 class="font-weight-semibold mb-0 text-purple" *ngIf="isDemoVersion">12</h3>
+                              <span class="text-uppercase font-size-sm text-purple">Active PPM's</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6 col-xl-4">
+                        <div class="card card-body  ">
+                          <div class="media">
+                            <div class="mr-3 align-self-center">
+                              <i class="bi bi-file-earmark-check fa-3x text-indigo"></i>
+                            </div>
+
+                            <div class="media-body text-right">
+                              <h3 class="font-weight-semibold mb-0 text-indigo" *ngIf="isDemoVersion">09</h3>
+                              <span class="text-uppercase font-size-sm text-indigo">Assigned PPM's</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6 col-xl-4">
+                        <div class="card card-body  ">
+                          <div class="media">
+                            <div class="mr-3 align-self-center">
+                              <i class="bi bi-x-circle-fill fa-3x text-danger"></i>
+                            </div>
+                            <div class="media-body text-right">
+                              <h3 class="font-weight-semibold mb-0 text-danger" *ngIf="isDemoVersion">05</h3>
+                              <span class="text-uppercase font-size-sm text-danger">Cancelled PPM's</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6 col-xl-6">
+                        <div class="card card-body ">
+                          <div class="media">
+                            <div class="mr-3 align-self-center">
+                              <i class="bi bi-arrow-down-circle fa-3x text-warning"></i>
+                            </div>
+
+                            <div class="media-body text-right">
+                              <h3 class="font-weight-semibold mb-0 text-warning" *ngIf="isDemoVersion">18</h3>
+                              <span class="text-uppercase font-size-sm text-warning">Dropped PPM's</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6 col-xl-6">
+                        <div class="card card-body ">
+                          <div class="media">
+                            <div class="mr-3 align-self-center">
+                              <i class="bi bi-check-circle-fill fa-3x text-success"></i>
+                            </div>
+                            <div class="media-body text-right">
+                              <h3 class="font-weight-semibold mb-0 text-success" *ngIf="isDemoVersion">10</h3>
+                              <span class="text-uppercase font-size-sm text-success">Completed PPM's</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+              <div *ngSwitchDefault> Graph type doed not exists</div>
+            </container_element>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Content area -->
+</div>

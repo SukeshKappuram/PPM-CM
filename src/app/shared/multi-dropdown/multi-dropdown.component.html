@@ -1,0 +1,16 @@
+<mat-form-field [style.width.%]="100">
+  <mat-label [title]="tooltip">{{placeholder === ''?label:placeholder}}
+    <sup class="text-danger" *ngIf="isRequired">*</sup>
+  </mat-label>
+  <mat-select multiple panelClass="multiDropdown" [(ngModel)]="value" [ngClass]="customClass" (blur)="validateField();"
+    [disabled]="isReadonly">
+    <input [(ngModel)]="searchText" matInput (input)="onInputChange($event)" placeholder="Search here"
+      class="customInputField" autocomplete="off" />
+    <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
+    <mat-option *ngFor="let type of data" (click)="togglePerOne(allSelected.viewValue)" [value]="type?.id">
+      {{type?.name}}</mat-option>
+  </mat-select>
+  <mat-error class="text-danger" *ngIf="!isValid">
+    {{ getErrorMessage(formGroup, getLabels().includes(label)? getLabel(label) :label.charAt(0).toLowerCase() + label.slice(1))}}
+  </mat-error>
+</mat-form-field>

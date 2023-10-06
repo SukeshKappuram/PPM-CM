@@ -1,0 +1,39 @@
+<div class="modal-content">
+  <div class="modal-header bg-secondary text-white">
+    <h6 class="modal-title">{{masterData?.title}}</h6>
+    <button type="button" class="btn-close btn-close-white" mat-button mat-dialog-close aria-label="Close"></button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="reasonForm">
+      <div class="row">
+        <div class="col-lg-9" *ngIf="masterData.contentId === 1">
+          <app-label [label]="'Reason'" [isRequired]="true"></app-label>
+          <kendo-dropdownlist class="form-group" [formControlName]="'reason'" [data]="filteredData?.data" textField="name"
+            valueField="id" [filterable]="true" [defaultItem]="defaultItem('reason')" (filterChange)="handleFilter($event, 'data')">
+            <ng-template kendoDropDownListItemTemplate let-dataItem>
+              <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}
+              </span>
+            </ng-template>
+          </kendo-dropdownlist>
+        </div>
+        <div class="col-md-12">
+          <app-textarea-field [formControlName]="'comments'" [formGroup]="reasonForm" [rows]="3"
+            [fieldName]="'comments'" [label]="'comments'" ngDefaultControl [value]="''" [isReadonly]="false">
+          </app-textarea-field>
+        </div>
+        <div class="col-md-6" *ngIf="masterData.contentId === 1">
+          <div class="form-group">
+            <app-label [label]="'Reason Date'" [isRequired]="true" [show]="true"></app-label>
+            <input type="text" class="form-control" formControlName="reasonDate" [value]="reasonDate" readonly />
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer border-0 mt-3">
+    <button type="button" class="btn btn-link" mat-button mat-dialog-close aria-label="Close">Close</button>
+    <button type="submit" id="btnSave" class="btn btn-secondary" (click)="submitReason()">Save</button>
+  </div>
+</div>

@@ -1,0 +1,163 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [items]="['Reports']" [ignoreCase]="true" [activeItem]="'Monthly Report'"
+    [pageTitle]="'Monthly Report'" [buttons]="buttons" (modified)="buttonClicked($event)">
+  </app-page-header>
+  <div class="content">
+    <app-grid-filter #filter (filterChanged)="getReports($event)" [filterType]="FilterType.Reports"
+      [api]="config?.apiEndpoint" [useSearchButton]="true" [showStartEndDates]="false" [isProjectMandatory]="true"
+      [isMonthlyReport]="true">
+    </app-grid-filter>
+    <button type="button" class="btn btn-secondary float-right save export" [disabled]="!isDataLoaded"
+      (click)="pdf.saveAs('monthly-reports.pdf')">Export</button>
+    <div class="row">
+      <div *ngFor="let report of allReports" [ngClass]="report.isFullView? 'col-md-12':'col-md-6'">
+        <div class="card">
+          <div class="card-body">
+            <app-pie-graph [isEnlarged]="true" [data]="report.data" [title]="report.title" [labelKey]="'name'"
+              *ngIf="report.displayType === ReportType.PieChart" [isTabularRequired]="report.isTabularRequired">
+            </app-pie-graph>
+            <div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
+              <table class="table table-striped table-bordered text-nowrap table-fixed page-break"
+                *ngIf="report.displayType === ReportType.Table">
+                <thead>
+                  <tr>
+                    <th *ngFor="let col of report.tableColumns">{{col.title}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let d of report.tableRows">
+                    <ng-container *ngFor="let col of d.values; let i= index">
+                      <td>{{col.value}}</td>
+                    </ng-container>
+                  </tr>
+                </tbody>
+                <tfoot *ngIf="report.isAutoCalculated">
+                  <tr>
+                    <ng-container *ngFor="let col of report.tableColumns; let i = index">
+                      <th *ngIf="i === 0; else calculated">Total</th>
+                      <ng-template #calculated>
+                        <th>{{calc(report?.tableRows, i+1)}}</th>
+                      </ng-template>
+                    </ng-container>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+        <hr>
+      </div>
+    </div>
+    <!-- <div [hidden]="hidePdfReportData">
+        <kendo-grid [kendoGridBinding]="reports">
+          <kendo-grid-column title="" [autoSize]="true" [style]="{ 'text-align': 'center' }">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <div *ngIf="dataItem.displayType === ReportType.PieChart">
+                <app-pie-graph [data]="dataItem.data" [title]="dataItem.title" [labelKey]="'name'"
+                  *ngIf="dataItem.displayType === ReportType.PieChart" [isTabularRequired]="dataItem.isTabularRequired">
+                </app-pie-graph>
+              </div>
+            </ng-template>
+            <kendo-grid-pdf fileName="Monthly Report.pdf" [allPages]="true" paperSize="A1" [repeatHeaders]="true">
+              <kendo-grid-pdf-margin top="2cm" left="1cm" right="1cm" bottom="2cm"></kendo-grid-pdf-margin>
+              <ng-template kendoGridPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+                <div class="page-template">
+                  <div class="header">
+                    <div style="text-align: center !important;"><b>Monthly Report</b></div>
+                    <div style="text-align: right !important;font-style:italic;margin:0px;">Powered By:<img
+                        src="assets/images/PropEzy.png" style="margin:4px;width:4%;">
+                    </div>
+                  </div>
+                  <div class="footer">
+                    <div style="text-align: center">24 / 7 Contact Centre: [Contact Centre Number]<span
+                        style="float: right">Page {{ pageNum }} of {{ totalPages }}</span></div>
+                  </div>
+                </div>
+              </ng-template>
+            </kendo-grid-pdf>
+          </kendo-grid-column>
+        </kendo-grid>
+        <div *ngFor="let tableReport of tableReports">
+          <kendo-grid [kendoGridBinding]="tableReport.tableData">
+            <kendo-grid-column *ngFor="let column of tableReport.tableColumns" [field]="column.id"
+              [title]="column.title"></kendo-grid-column>
+            <kendo-grid-pdf fileName="Monthly Report.pdf" [allPages]="true" paperSize="A1" [repeatHeaders]="true">
+              <kendo-grid-pdf-margin top="2cm" left="1cm" right="1cm" bottom="2cm"></kendo-grid-pdf-margin>
+              <ng-template kendoGridPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+                <div class="page-template">
+                  <div class="header">
+                    <div style="text-align: center !important;"><b>Monthly Report</b></div>
+                    <div style="text-align: right !important;font-style:italic;margin:0px;">Powered By:<img
+                        src="assets/images/PropEzy.png" style="margin:4px;width:4%;">
+                    </div>
+                  </div>
+                  <div class="footer">
+                    <div style="text-align: center">24 / 7 Contact Centre: [Contact Centre Number]<span
+                        style="float: right">Page {{ pageNum }} of {{ totalPages }}</span></div>
+                  </div>
+                </div>
+              </ng-template>
+            </kendo-grid-pdf>
+          </kendo-grid>
+        </div>
+      </div> -->
+  </div>
+</div>
+<div [hidden]="hidePdfReportData">
+  <kendo-pdf-export #pdf paperSize="A4" [repeatHeaders]="true" margin="2cm" [landscape]="true"
+    [forcePageBreak]="'.page-break'" [scale]="0.8">
+    <ng-template kendoPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+      <div class="page-template">
+        <div class="header">
+          <div style="text-align: center !important;"><b>{{filterData?.projectName}} Monthly Report</b></div>
+          <div style="text-align: center !important;"><b>{{filterData?.monthName}} {{filterData?.year}}</b></div>
+        </div>
+        <div class="footer">
+          <div style="text-align: center">
+            <span style="float: left">Printed Date: {{reportDate | date:'dd/MM/yyyy, HH:mm'}}</span>
+            <div style="font-style:italic;margin:0px;">Powered By:<img src="assets/images/PropEzy.png"
+                style="margin:4px;width:4%;">
+            </div>
+            <span style="float: right">Page {{ pageNum }} of {{ totalPages }}</span>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <div class="row">
+      <div *ngFor="let report of allReports" class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <app-pie-graph [isEnlarged]="true" [data]="report.data" [title]="report.title" [labelKey]="'name'"
+              *ngIf="report.displayType === ReportType.PieChart" [isTabularRequired]="report.isTabularRequired">
+            </app-pie-graph>
+            <table class="table page-break" *ngIf="report.displayType === ReportType.Table">
+              <thead>
+                <tr>
+                  <th *ngFor="let col of report.tableColumns">{{col.title}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let d of report.tableRows; let r = index" [ngClass]="r%18 === 0 ? 'page-break' :''">
+                  <ng-container *ngFor="let col of d.values; let i= index">
+                    <td>{{col.value}}</td>
+                  </ng-container>
+                </tr>
+              </tbody>
+              <tfoot *ngIf="report.isAutoCalculated">
+                <tr>
+                  <ng-container *ngFor="let col of report.tableColumns; let i = index">
+                    <th *ngIf="i === 0; else calculated">Total</th>
+                    <ng-template #calculated>
+                      <th>{{calc(report?.tableRows, i+1)}}</th>
+                    </ng-template>
+                  </ng-container>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <hr>
+      </div>
+    </div>
+  </kendo-pdf-export>
+</div>

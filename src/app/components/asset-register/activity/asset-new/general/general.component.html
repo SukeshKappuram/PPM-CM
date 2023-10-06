@@ -1,0 +1,356 @@
+<div class="card">
+  <div class="card-header bg-transparent header-elements-inline">
+    <h6 class="card-title font-weight-semibold text-secondary">General</h6>
+  </div>
+
+  <div class="card-body">
+    <form [formGroup]="generalForm">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-4">
+            <app-text-field [formControlName]="'assetName'" [formGroup]="generalForm" [fieldName]="'assetName'"
+              [label]="'Asset Name'" ngDefaultControl [value]="generals?.assetName" [isReadonly]="!isEditable">
+            </app-text-field>
+          </div>
+          <div class="col-md-4">
+            <app-text-field [formControlName]="'assetCode'" [formGroup]="generalForm" [fieldName]="'assetCode'"
+              [label]="'Asset Code'" ngDefaultControl [value]="generals?.assetCode"
+              [isReadonly]="generals?.assetCode?true:false">
+            </app-text-field>
+          </div>
+          <div class="col-md-4">
+            <app-label [label]="'Type'" [isRequired]="true"></app-label>
+            <kendo-dropdownlist class="form-group" [data]="filteredData?.typeCodes" [filterable]="true" [textField]="'name'"
+              [valueField]="'id'" [formControlName]="'type'" [defaultItem]="'Select Type'"
+              (filterChange)="handleFilter($event,'typeCodes')" [readonly]="!isEditable">
+            </kendo-dropdownlist>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-4">
+            <app-label [label]="'System'" [isRequired]="true"></app-label>
+            <kendo-dropdownlist class="form-group" [data]="filteredData?.systemCodes" [filterable]="true" [textField]="'name'"
+              [valueField]="'id'" [formControlName]="'system'" (filterChange)="handleFilter($event,'systemCodes')"
+              [defaultItem]="'Select System'" (selectionChange)="systemSelected($event)" [readonly]="!isEditable">
+            </kendo-dropdownlist>
+          </div>
+          <div class="col-md-4">
+            <app-label [label]="'Sub System'" [isRequired]="true"></app-label>
+            <kendo-dropdownlist class="form-group" [data]="filteredData?.subSystems" [filterable]="true" [textField]="'name'"
+              [valueField]="'id'" [formControlName]="'subSystem'" [defaultItem]="'Select Sub System'"
+              (filterChange)="handleFilterByDataSet(subSystems,$event,'subSystems')"
+              (selectionChange)="this.subSystemChanged.emit($event);" [readonly]="!isEditable"></kendo-dropdownlist>
+          </div>
+          <div class="col-md-4">
+            <app-label [label]="'Tag'" [isRequired]="true"></app-label>
+            <kendo-dropdownlist class="form-group" [data]="filteredData?.tagCodes" [filterable]="true" [textField]="'name'"
+              [valueField]="'id'" [formControlName]="'tag'" [defaultItem]="'Select Tag'"
+              (filterChange)="handleFilter($event,'tagCodes')" [readonly]="!isEditable"></kendo-dropdownlist>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-12">
+            <app-textarea-field [formControlName]="'description'" [formGroup]="generalForm" [fieldName]="'description'"
+              [label]="'Description'" ngDefaultControl [value]="generals?.description" [isReadonly]="!isEditable">
+            </app-textarea-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-4">
+            <app-text-field [formControlName]="'manufacturer'" [formGroup]="generalForm" [fieldName]="'manufacturer'"
+              [label]="'Manufacturer'" ngDefaultControl [value]="generals?.manufacturer" [isRequired]="false"
+              [isReadonly]="!isEditable">
+            </app-text-field>
+          </div>
+          <div class="col-md-4">
+            <app-text-field [formControlName]="'productCode'" [formGroup]="generalForm" [fieldName]="'productCode'"
+              [label]="'Product Code'" ngDefaultControl [value]="generals?.productCode" [isRequired]="false"
+              [isReadonly]="!isEditable">
+            </app-text-field>
+          </div>
+          <div class="col-md-4">
+            <app-text-field [formControlName]="'model'" [formGroup]="generalForm" [fieldName]="'model'"
+              [label]="'Model'" ngDefaultControl [value]="generals?.model" [isRequired]="false"
+              [isReadonly]="!isEditable">
+            </app-text-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-4">
+            <app-text-field [formControlName]="'serialNo'" [formGroup]="generalForm" [fieldName]="'serialNo'"
+              [label]="'Serial No.'" ngDefaultControl [value]="generals?.serialNo" [isRequired]="false"
+              [isReadonly]="!isEditable">
+            </app-text-field>
+          </div>
+          <div class="col-md-4">
+            <app-text-field [formControlName]="'group'" [formGroup]="generalForm" [fieldName]="'group'"
+              [label]="'Group'" ngDefaultControl [value]="generals?.group" [isRequired]="false"
+              [isReadonly]="!isEditable">
+            </app-text-field>
+          </div>
+          <div class="col-md-4">
+            <app-text-field [formControlName]="'drawing'" [formGroup]="generalForm" [fieldName]="'drawing'"
+              [label]="'Drawing'" ngDefaultControl [value]="generals?.drawing" [isRequired]="false"
+              [isReadonly]="!isEditable">
+            </app-text-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-4">
+            <app-label [label]="'Maintainability Type'" [isRequired]="true"></app-label>
+            <kendo-dropdownlist class="form-group" [data]="filteredData?.maintainabilityTypes" [filterable]="true" [textField]="'name'"
+              [valueField]="'id'" [defaultItem]="'Select Maintainability Type'"
+              [formControlName]="'maintainabilityType'" (filterChange)="handleFilter($event,'maintainabilityTypes')"
+              [readonly]="!isEditable"></kendo-dropdownlist>
+          </div>
+          <div class="col-md-4">
+            <app-label [label]="'Maintainance Carried Out By'" [isRequired]="true"></app-label>
+            <kendo-dropdownlist class="form-group" [data]="filteredData?.maintainanceCarriers" [filterable]="false" [textField]="'name'"
+              [valueField]="'id'" [defaultItem]="'Select Maintainance Carried Out By'"
+              [formControlName]="'maintainanceCarriedOutBy'" (selectionChange)="maintainanceChanged($event)"
+              [readonly]="!isEditable"></kendo-dropdownlist>
+          </div>
+          <div class="col-md-4" *ngIf="isOutSourced">
+            <app-label [label]="'sub Contractor'" [isRequired]="true"></app-label>
+            <kendo-dropdownlist class="form-group" [data]="filteredData?.subContractors" [filterable]="true" [textField]="'name'"
+              [valueField]="'id'" [defaultItem]="'Select Sub Contractor'"
+              (filterChange)="handleFilter($event,'subContractors')" [formControlName]="'subContractor'"
+              [readonly]="!isEditable"></kendo-dropdownlist>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="d-block p-1">
+              <p class="form-check-label pr-1" for="flexSwitchCheckReverse">Is Asset Critical ?</p>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="flexSwitchCheckReverse" #assetCritcal
+                  [checked]="isCritical" (change)="isCritical = !isCritical" [disabled]="!isEditable">
+                <label for="flexSwitchCheckReverse">{{isCritical?'Yes':'No'}}</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4" *ngIf="isCritical">
+            <p>Asset Criticality </p>
+            <ng-container *ngIf="isEditable; else nonEditable">
+              <div class="form-check form-check-inline"
+                *ngFor="let criticality of masterData?.criticalities;let i=index">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" [id]="'flexRadioDefault'+i"
+                  formControlName="assetCriticalityType" [value]="criticality.id">
+                <label class="form-check-label" [for]="'flexRadioDefault'+i">
+                  {{criticality.name}}
+                </label>
+              </div>
+            </ng-container>
+            <ng-template #nonEditable>
+              <div class="form-check form-check-inline"
+                *ngFor="let criticality of masterData?.criticalities;let i=index">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" [id]="'flexRadioDefault'+i"
+                  formControlName="assetCriticalityType" [value]="criticality.id" [attr.disabled]="true">
+                <label class="form-check-label" [for]="'flexRadioDefault'+i">
+                  {{criticality.name}}
+                </label>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8" *ngIf="isCritical">
+            <app-textarea-field [formControlName]="'locationOrAssetDescription'" [formGroup]="generalForm"
+              [fieldName]="'locationOrAssetDescription'" [label]="'locationOrAssetDescription'" ngDefaultControl
+              [value]="generals?.criticalityDescription" [placeholder]="'Criticality Description'"
+              [isReadonly]="!isEditable">
+            </app-textarea-field>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-md-4">
+            <app-text-field [formControlName]="'capacity'" [formGroup]="generalForm" [fieldName]="'capacity'"
+              [label]="'Capacity'" ngDefaultControl [value]="generals?.capacity" [isReadonly]="!isEditable"
+              ngDefaultControl [isRequired]="false">
+            </app-text-field>
+          </div>
+          <div class="col-md-4">
+            <app-label [label]="'#UOM'" [isRequired]="false"></app-label>
+            <kendo-dropdownlist class="form-group" [data]="filteredData?.uomCodes" [filterable]="true" [textField]="'name'"
+              [valueField]="'id'" (filterChange)="handleFilter($event,'uomCodes')" [defaultItem]="'Measurement Units'"
+              [formControlName]="'uOM'" [readonly]="!isEditable"></kendo-dropdownlist>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header bg-transparent header-elements-inline">
+    <h6 class="card-title font-weight-semibold text-secondary">Location</h6>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="locationForm">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <app-label [label]="'Country'" [isRequired]="true"></app-label>
+            <kendo-dropdownlist class="form-group" [data]="filteredData?.countries" [filterable]="true" [textField]="'name'"
+              [valueField]="'id'" (filterChange)="handleFilter($event,'countries')" [defaultItem]="'Select Country'"
+              [formControlName]="'country'" (selectionChange)="countrySelected($event)" [readonly]="!isEditable">
+            </kendo-dropdownlist>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <app-label [label]="'State'" [isRequired]="true"></app-label>
+            <kendo-dropdownlist class="form-group" [data]="states" [textField]="'name'" [valueField]="'id'" [defaultItem]="'Select State'"
+              [formControlName]="'state'" (selectionChange)="stateSelected($event)" [readonly]="!isEditable">
+            </kendo-dropdownlist>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <app-label [label]="'City'" [isRequired]="true"></app-label>
+            <kendo-dropdownlist class="form-group" [data]="cities" [textField]="'name'" [valueField]="'id'" [defaultItem]="'Select City'"
+              [formControlName]="'city'" (selectionChange)="citySelected($event)" [readonly]="!isEditable">
+            </kendo-dropdownlist>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <app-label [label]="'Master Development'" [isRequired]="true"></app-label>
+            <kendo-dropdownlist class="form-group" [data]="sites" [textField]="'name'" [valueField]="'id'"
+              [defaultItem]="'Select Master Development'" [formControlName]="'masterDevelopment'"
+              (selectionChange)="siteSelected($event)" [readonly]="!isEditable"></kendo-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <app-label [label]="'Sector / Zone'" [isRequired]="false"></app-label>
+            <kendo-dropdownlist class="form-group" [data]="zones" [textField]="'name'" [valueField]="'id'"
+              [defaultItem]="'Select Sector / Zone'" [formControlName]="'sectorOrZone'"
+              (selectionChange)="zoneSelected($event, locationForm.controls['masterDevelopment'].value)"
+              [readonly]="!isEditable"></kendo-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <app-label [label]="'Building'" [isRequired]="true"></app-label>
+            <kendo-dropdownlist class="form-group" #building [data]="buildings" [textField]="'name'" [valueField]="'id'"
+              [defaultItem]="'Select Building'" [formControlName]="'building'"
+              (selectionChange)="buildingSelected($event)" [readonly]="!isEditable"></kendo-dropdownlist>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <app-label [label]="'Floor'" [isRequired]="true"></app-label>
+          <kendo-dropdownlist class="form-group" [data]="filteredData?.floors" [textField]="'name'" [valueField]="'id'"
+            [defaultItem]="'Select Floor'" (filterChange)="handleFilter($event,'floors')" [formControlName]="'floor'"
+            [readonly]="!isEditable"></kendo-dropdownlist>
+        </div>
+
+        <div class="col-md-4">
+          <app-label [label]="'Unit / Space'" [isRequired]="true"></app-label>
+          <kendo-dropdownlist class="form-group" #unitOrSpace [data]="unitOrSpaces" [textField]="'name'" [valueField]="'id'"
+            [defaultItem]="'Select Unit/Space'" [formControlName]="'unitOrSpace'"
+            (selectionChange)="floorSelected($event)" [readonly]="!isEditable"></kendo-dropdownlist>
+        </div>
+
+        <div class="col-md-4">
+          <app-label [label]="'Room Name'" [isRequired]="true"></app-label>
+          <kendo-dropdownlist class="form-group" [data]="rooms" [textField]="'name'" [valueField]="'id'" [defaultItem]="'Select Room Name'"
+            [formControlName]="'roomName'" [readonly]="!isEditable"></kendo-dropdownlist>
+        </div>
+
+        <div class="col-md-12">
+          <div class="form-group mb-2">
+            <app-textarea-field [formControlName]="'comments'" [formGroup]="locationForm" [isRequired]="false"
+              [fieldName]="'comments'" [label]="'Comments'" ngDefaultControl [value]="generals?.locationComments"
+              [isReadonly]="!isEditable">
+            </app-textarea-field>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<div class="card">
+  <div class="card-header bg-transparent header-elements-inline">
+    <h6 class="card-title font-weight-semibold text-secondary">Others</h6>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="othersForm">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <app-text-field [formControlName]="'quantity'" [formGroup]="othersForm" [fieldName]="'quantity'"
+              [inputType]="'number'" [isRequired]="false" [label]="'Quantity'" ngDefaultControl [max]="100"
+              [value]="generals?.quantity??1" [isReadonly]="!isEditable">
+            </app-text-field>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <app-text-field [formControlName]="'pack'" [formGroup]="othersForm" [fieldName]="'pack'" [label]="'Pack'"
+              ngDefaultControl [value]="generals?.pack??1" [isRequired]="false" [isReadonly]="!isEditable">
+            </app-text-field>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <app-label [label]="'Is Child Asset'" [isRequired]="false"></app-label>
+            <kendo-dropdownlist class="form-group" [data]="chooseables" [textField]="'name'" [valueField]="'id'"
+              [defaultItem]="'Select Is Child Assets'" [formControlName]="'isChildAsset'"
+              (selectionChange)="childAssetSelected($event)" [readonly]="!isEditable"></kendo-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-4" *ngIf="isChildAsset">
+          <div class="form-group">
+            <app-label [label]="'Parent Asset Code'" [isRequired]="false"></app-label>
+            <kendo-dropdownlist class="form-group" [data]="existingAssets" [textField]="'name'" [valueField]="'id'"
+              [defaultItem]="'Select Parent Asset Code'" [formControlName]="'parentAssetCode'" [readonly]="!isEditable">
+            </kendo-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="form-group mb-2">
+            <app-textarea-field [formControlName]="'comments'" [formGroup]="othersForm" [isRequired]="false"
+              [fieldName]="'comments'" [label]="'Comments'" ngDefaultControl [value]="generals?.comments"
+              [isReadonly]="!isEditable">
+            </app-textarea-field>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<button class="btn btn-sm btn-secondary float-right" *ngIf="userAccess?.canAdd" (click)="save()"
+  [disabled]="!generalForm.valid || !othersForm.valid || !locationForm.valid">save</button>

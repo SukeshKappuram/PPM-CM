@@ -1,0 +1,150 @@
+<!-- Basic modal -->
+<div class="card p-0 m-0">
+  <div class="modal-header bg-secondary text-white">
+    <h6 class="modal-title">{{formData.assetTitle}}</h6>
+    <button type="button" class="btn-close btn-close-white" mat-button mat-dialog-close aria-label="Close"></button>
+  </div>
+
+  <form class="modal-body" [formGroup]="assetForm" *ngIf="formData?.isDynamicForm; else customTemplate">
+    <div class="row">
+      <div [ngClass]="f.fieldType === InputType.MultiLine ? 'col-md-12' : 'col-md-6'" [hidden]="f.isHidden"
+        *ngFor="let f of formFieldBuilder">
+        <app-text-field [formControl]="f.formControl" *ngIf="f.fieldType === InputType.Text"
+          [placeholder]="f.displayText" [formGroup]="assetForm" [fieldName]="f.fieldName" [label]="f.displayText"
+          ngDefaultControl [isHidden]="f.isHidden" [value]="f.value" [isReadonly]="!f.isEditable"
+          [isRequired]="f.isRequired"></app-text-field>
+        <app-textarea-field [formControl]="f.formControl" *ngIf="f.fieldType === InputType.MultiLine" [value]="f.value"
+          [placeholder]="f.displayText" [formGroup]="assetForm" [fieldName]="f.fieldName" [label]="f.displayText"
+          ngDefaultControl></app-textarea-field>
+        <app-dropdown [formControlName]="f.fieldName" *ngIf="f.fieldType === InputType.DropDown" [labelKey]="'name'"
+          [valueKey]="'id'" [placeholder]="f.displayText" [formGroup]="assetForm" [fieldName]="f.fieldName"
+          [label]="f.displayText" [value]="f.value" [dataList]="f.fieldData" ngDefaultControl
+          (selectionChange)="onSeletionChange($event, f.propertyName)"></app-dropdown>
+        <div class="d-block p-1" *ngIf="f.fieldType === InputType.Toggle">
+          <p class="form-check-label pr-1" for="flexSwitchCheckReverse">{{f.displayText}}</p>
+          <div class="form-check form-switch">
+            <input class="form-check-input" [formControlName]="f.fieldName" type="checkbox" id="flexSwitchCheckReverse"
+              #assetCritcal [checked]="f.value" [disabled]="!f.isEditable" (change)="f.value = !f.value">
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <ng-template #customTemplate>
+    <form class="modal-body" [formGroup]="assetForm" *ngIf="formData?.masterType === 'Cities'">
+      <div class="row">
+        <div class="col-sm-6 mb-2">
+          <app-text-field [formControlName]="'refNo'" [formGroup]="assetForm" [fieldName]="'refNo'" [label]="'Ref No'"
+            ngDefaultControl [value]="curentMaster?.id??0" [isRequired]="false" [isReadonly]="true">
+          </app-text-field>
+        </div>
+
+        <div class="col-sm-6 mb-2">
+          <app-text-field [formControlName]="'code'" [formGroup]="assetForm" [fieldName]="'code'" [label]="'Code'"
+            ngDefaultControl [value]="curentMaster?.code??''" [isRequired]="true" [isReadonly]="curentMaster?.code">
+          </app-text-field>
+        </div>
+
+        <div class="col-sm-6 mb-2">
+          <app-dropdown [formControlName]="'country'" [label]="'Country'" [formGroup]="assetForm"
+            [fieldName]="'country'" [dataList]="countries" ngDefaultControl [value]="curentMaster?.countryId??''"
+            [isRequired]="true" (selectionChange)="onCountryChange($event)">
+          </app-dropdown>
+        </div>
+
+        <div class="col-sm-6 mb-2">
+          <app-dropdown [formControlName]="'state'" [label]="'State'" [formGroup]="assetForm" [fieldName]="'state'"
+            [dataList]="currentStates" ngDefaultControl [value]="curentMaster?.stateId??''" [isRequired]="true">
+          </app-dropdown>
+        </div>
+
+        <div class="col-sm-6 mb-2">
+          <app-text-field [formControlName]="'city'" [formGroup]="assetForm" [fieldName]="'city'" [label]="'City'"
+            ngDefaultControl [value]="curentMaster?.name??''" [isRequired]="true">
+          </app-text-field>
+        </div>
+
+        <div class="col-sm-6 mb-2">
+          <app-text-field [formControlName]="'pinCode'" [formGroup]="assetForm" [fieldName]="'pinCode'"
+            [label]="'Pin Code'" ngDefaultControl [value]="curentMaster?.pinCode??''" [isRequired]="true">
+          </app-text-field>
+        </div>
+
+        <div class="col-sm-6 mb-2">
+          <app-text-field [formControlName]="'latitude'" [formGroup]="assetForm" [fieldName]="'latitude'"
+            [label]="'Latitude'" ngDefaultControl [value]="curentMaster?.latitude??''" [isRequired]="false">
+          </app-text-field>
+        </div>
+
+        <div class="col-md-6 mb-2">
+          <app-text-field [formControlName]="'longitude'" [formGroup]="assetForm" [fieldName]="'longitude'"
+            [label]="'Longitude'" ngDefaultControl [value]="curentMaster?.longitude??''" [isRequired]="false">
+          </app-text-field>
+        </div>
+      </div>
+    </form>
+    <form class="modal-body" [formGroup]="assetForm" *ngIf="formData?.masterType === 'Rooms'">
+      <div class="row">
+        <div class="col-sm-6 mb-2">
+          <app-text-field [formControlName]="'refNo'" [formGroup]="assetForm" [fieldName]="'refNo'" [label]="'Ref No'"
+            ngDefaultControl [value]="curentMaster?.id??0" [isRequired]="false" [isReadonly]="true">
+          </app-text-field>
+        </div>
+
+        <div class="col-sm-6 mb-2">
+          <app-text-field [formControlName]="'code'" [formGroup]="assetForm" [fieldName]="'code'" [label]="'Code'"
+            ngDefaultControl [value]="curentMaster?.code??''" [isRequired]="true" [isReadonly]="curentMaster?.code">
+          </app-text-field>
+        </div>
+
+        <div class="col-sm-6 mb-2">
+          <app-text-field [formControlName]="'name'" [formGroup]="assetForm" [fieldName]="'name'" [label]="'Name'"
+            ngDefaultControl [value]="curentMaster?.name??''" [isRequired]="true">
+          </app-text-field>
+        </div>
+
+        <div class="col-sm-6 mb-2">
+          <app-dropdown [formControlName]="'building'" [label]="'Building'" [formGroup]="assetForm"
+            [fieldName]="'building'" [dataList]="buildings" ngDefaultControl [value]="curentMaster?.buildingId??''"
+            [isRequired]="true" (selectionChange)="onBuildingChange($event)">
+          </app-dropdown>
+        </div>
+
+        <div class="col-sm-6 mb-2">
+          <app-dropdown [formControlName]="'floor'" [formGroup]="assetForm" [fieldName]="'floor'" [label]="'Floor'"
+          [dataList]="floors" ngDefaultControl [value]="curentMaster?.floorId??''" [isRequired]="true">
+          </app-dropdown>
+        </div>
+
+        <div class="col-sm-6 mb-2">
+          <app-dropdown [formControlName]="'unit'" [label]="'Unit'" [formGroup]="assetForm" [fieldName]="'unit'"
+            [dataList]="currentUnits" ngDefaultControl [value]="curentMaster?.unitId??''" [isRequired]="true">
+          </app-dropdown>
+        </div>
+
+        <div class="col-sm-4 mb-2">
+          <div class="d-block p-1">
+            <p class="form-check-label pr-1" for="flexSwitchCheckReverse">Is Stock Location</p>
+            <div class="form-check form-switch">
+              <input class="form-check-input" [formControlName]="'isStockLocation'" type="checkbox"
+                id="flexSwitchCheckReverse" #assetCritcal [checked]="curentMaster?.isStockLocation">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-8 mb-2">
+          <app-textarea-field [formControlName]="'description'" [formGroup]="assetForm" [fieldName]="'description'"
+            [label]="'Description'" ngDefaultControl [value]="curentMaster?.description??''" [isRequired]="true">
+          </app-textarea-field>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" mat-button mat-dialog-close>Close</button>
+    <button type="button" class="btn btn-secondary" (click)="save()" [disabled]="!assetForm?.valid">Save changes</button>
+  </div>
+</div>
+<!-- /basic modal -->

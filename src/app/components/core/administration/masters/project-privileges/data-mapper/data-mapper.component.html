@@ -1,0 +1,26 @@
+<div class="modal-content">
+  <div class="modal-header bg-secondary text-white">
+    <h6 class="modal-title">
+      Add {{mapperTitle}}
+    </h6>
+    <button type="button" class="btn-close btn-close-white" mat-button mat-dialog-close aria-label="Close"></button>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="mapperForm" *ngIf="!isCustomContext">
+      <div class="row">
+        <div class="col-md-12">
+          <app-multi-dropdown [formControlName]="'privilage'" [dataList]="mappingData" [formGroup]="mapperForm"
+            [fieldName]="'privilage'" [label]="'privilage'" [placeholder]="mapperTitle" ngDefaultControl (selectionChange)="buildingSelected($event)">
+          </app-multi-dropdown>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer border-0 mt-3">
+    <button type="button" class="btn btn-link" mat-button mat-dialog-close aria-label="Close">Close</button>
+    <button type="submit" id="btnSave" class="btn btn-secondary" (click)="save()"
+      [disabled]="!mapperForm.valid">Save</button>
+  </div>
+</div>

@@ -1,0 +1,170 @@
+<div class="card p-0 mb-0">
+  <div class="card-header bg-transparent header-elements-inline" *ngIf="headerTitle">
+    <h6 class="card-title font-weight-semibold text-secondary">
+      {{headerTitle}}
+    </h6>
+  </div>
+  <div class="card-body table-responsive-md p-2">
+    <kendo-grid [id]="'custom-kgrid'" [kendoGridBinding]="gridView" [scrollable]="'scrollable'"
+      [ngClass]="hasCustomClass?customClass:'full-width-grid'" [sortable]="{allowUnsort: true}"
+      [selectable]="selectable" [kendoGridSelectBy]="selectionKey" [(selectedKeys)]="selectedRows" [pageSize]="pageSize"
+      [pageable]="pageable" [groupable]="groupable" [reorderable]="reorderable" [resizable]="resizable"
+      [columnMenu]="{ filter: true, lock: true, stick: true, columnChooser: false }"
+      (dataStateChange)="onDataStateChange()" (filterChange)="filterChange($event)"
+      (selectedKeysChange)="actions?.canSelect ? onRowSelectionChange($event) : 'null'">
+      <ng-template kendoGridToolbarTemplate>
+        <button type="button" kendoGridExcelCommand icon="file-excel" (click)="save(excelexport)"
+          *ngIf="actions?.canAccessExcel">Export to Excel</button>
+        <button kendoGridPDFCommand icon="file-pdf" *ngIf="actions?.canAccessPDF">Export to PDF</button>
+        <kendo-grid-spacer></kendo-grid-spacer>
+        <input class="search" [(ngModel)]="searchText" placeholder="Search data in all columns..." kendoTextBox
+          (input)="onFilter($event)" *ngIf="actions?.canSearch" />
+        <kendo-grid-column-chooser *ngIf="actions?.modifyColumnView"></kendo-grid-column-chooser>
+      </ng-template>
+      <kendo-grid-checkbox-column [width]="45" [resizable]="false" [columnMenu]="false" [showSelectAll]="true"
+        *ngIf="actions?.canSelect">
+        <!-- <ng-template kendoGridHeaderTemplate let-dataItem>
+          <input type="checkbox" name="selectAllrow" (change)="selectAll($event)" [checked]="allRowsSelected" />
+        </ng-template> -->
+      </kendo-grid-checkbox-column>
+      <kendo-grid-column *ngIf="actions?.canEdit || actions?.canDelete" field="actions" title="Actions"
+        [filterable]="false" [headerStyle]="{ 'background-color': 'var(--themecolor)', 'color': 'white' }"
+        [sortable]="false" [class]="'k-text-center'" [style]="{'text-align': 'center'}" [width]="120" [locked]="true">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div class="list-icons">
+            <div class="dropdown position-static">
+              <a class="btn btn-sm btn-outline-secondary border-2 btn-icon btn-icon-action rounded-pill dropdown-toggle"
+                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-three-dots font-size-sm" style="transform: rotate(90deg);" title="Actions"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-left">
+                <a (click)="edit(dataItem)" class="dropdown-item" *ngIf="actions?.canEdit && isViewable"><i
+                    class="bi bi-card-list font-size-xs"></i> View</a>
+                <a (click)="edit(dataItem)" class="dropdown-item" *ngIf="actions?.canEdit && !isViewable"><i
+                    class="bi bi-pencil-square font-size-xs"></i> Edit</a>
+                <a (click)="export(dataItem)" class="dropdown-item" *ngIf="actions?.canExport"><i
+                    class="bi bi-file-earmark-pdf font-size-xs"></i> Export</a>
+                <a (click)="transfer(dataItem)" class="dropdown-item" *ngIf="actions?.canTransfer"><i
+                    class="bi bi-sign-turn-right font-size-xs"></i> Transfer</a>
+                <a (click)="delete(dataItem)" class="dropdown-item" *ngIf="actions?.canDelete"><i
+                    class="bi bi-trash font-size-xs"></i> Delete</a>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </kendo-grid-column>
+      <ng-container *ngFor="let column of columns;">
+        <kendo-grid-column [field]="column.field" [title]="column.title" [format]="column.format"
+          [headerStyle]="{ 'background-color': '#049aad', 'color': 'white' }" [filter]="column.type"
+          [sortable]="column.sortable" *ngIf="column.columnFormat === ColumnFormat.HTML" [lockable]="true"
+          [groupable]="false">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <div class="d-flex align-items-center" [innerHTML]="dataItem[column.field]"
+              (click)="view.emit({name: column.field, value:dataItem})"></div>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column [field]="column.field" [title]="column.title" [format]="column.format"
+          [headerStyle]="{ 'background-color': '#049aad', 'color': 'white' }" [filter]="column.type"
+          [sortable]="column.sortable" *ngIf="column.columnFormat === ColumnFormat.IMAGE" [lockable]="true"
+          [groupable]="false">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <img class="card-img img-fluid" [src]="dataItem[column.field]" width="50px" loading="lazy" />
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column [field]="column.field" [title]="column.title" format="{0:dd-MMM-yyyy}"
+          [headerStyle]="{ 'background-color': '#049aad', 'color': 'white' }" [filter]="column.type"
+          [sortable]="column.sortable" *ngIf="column.columnFormat === ColumnFormat.DATE" [lockable]="true">
+          <ng-template kendoGridFilterMenuTemplate let-filter let-column="column" let-filterService="filterService">
+            <kendo-grid-date-filter-menu [column]="column" [filter]="filter" [filterService]="filterService">
+            </kendo-grid-date-filter-menu>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column [field]="column.field" [title]="column.title" format="{0:dd-MMM-yyyy HH:mm}"
+          [headerStyle]="{ 'background-color': '#049aad', 'color': 'white' }" [filter]="column.type"
+          [sortable]="column.sortable" *ngIf="column.columnFormat === ColumnFormat.DATETIME" [lockable]="true">
+          <ng-template kendoGridFilterMenuTemplate let-filter let-column="column" let-filterService="filterService">
+            <kendo-grid-date-filter-menu [column]="column" [filter]="filter" [filterService]="filterService">
+            </kendo-grid-date-filter-menu>
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column [field]="column.field" [title]="column.title" [format]="column.format"
+          [headerStyle]="{ 'background-color': '#049aad', 'color': 'white' }" [filter]="column.type"
+          [sortable]="column.sortable" *ngIf="column.columnFormat === ColumnFormat.CONCATINATED_TEXT" [lockable]="true">
+          <ng-template kendoGridCellTemplate let-dataItem>
+            {{ prefix + FormatHelper.pad(dataItem[column.field], 3)}}
+          </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column [field]="column.field" [title]="column.title" [format]="column.format"
+          [headerStyle]="{ 'background-color': '#049aad', 'color': 'white' }" [filter]="column.type"
+          [sortable]="column.sortable" *ngIf="column.columnFormat === ColumnFormat.PLAIN_TEXT" [lockable]="true">
+        </kendo-grid-column>
+      </ng-container>
+      <ng-template kendoPagerTemplate let-totalPages="totalPages" let-currentPage="currentPage">
+        <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
+        <kendo-pager-numeric-buttons [buttonCount]="buttonCount"></kendo-pager-numeric-buttons>
+        <kendo-pager-next-buttons></kendo-pager-next-buttons>
+        <kendo-pager-input></kendo-pager-input>
+        <kendo-pager-info></kendo-pager-info>
+        <kendo-pager-page-sizes [pageSizes]="sizes"></kendo-pager-page-sizes>
+      </ng-template>
+      <kendo-excelexport [data]="gridData" [fileName]="fileName+'.xlsx'" #excelexport>
+        <ng-container *ngFor="let column of columns;">
+          <kendo-excelexport-column [field]="column.field.replace(re,'-')" [title]="column.title">
+          </kendo-excelexport-column>
+        </ng-container>
+      </kendo-excelexport>
+      <kendo-grid-pdf [fileName]="fileName+'.pdf'" [allPages]="true" paperSize="A4" [repeatHeaders]="true"
+        [landscape]="true" [margin]="{ top: '1cm', left: '1cm', right: '1cm', bottom: '1cm' }" [scale]="pdfScale">
+        <ng-container *ngFor="let column of columns;">
+          <kendo-grid-column [field]="column.field" [title]="column.title" [format]="column.format"
+            [headerStyle]="{ 'background-color': '#049aad', 'color': 'white' }" [filter]="column.type"
+            [sortable]="column.sortable" *ngIf="column.columnFormat === ColumnFormat.HTML" [lockable]="true">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <div class="d-flex align-items-center" [innerHTML]="dataItem[column.field]"></div>
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column [field]="column.field" [title]="column.title" [format]="column.format"
+            [headerStyle]="{ 'background-color': '#049aad', 'color': 'white' }" [filter]="column.type"
+            [sortable]="column.sortable" *ngIf="column.columnFormat === ColumnFormat.IMAGE" [lockable]="true">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              <img class="card-img img-fluid" [src]="dataItem[column.field]" width="50px" loading="lazy" />
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column [field]="column.field" [title]="column.title" [format]="column.format"
+            [headerStyle]="{ 'background-color': '#049aad', 'color': 'white' }" [filter]="column.type"
+            [sortable]="column.sortable" *ngIf="column.columnFormat === ColumnFormat.DATE" [lockable]="true">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem[column.field] | localizedDate}}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column [field]="column.field" [title]="column.title" [format]="column.format"
+            [headerStyle]="{ 'background-color': '#049aad', 'color': 'white' }" [filter]="column.type"
+            [sortable]="column.sortable" *ngIf="column.columnFormat === ColumnFormat.DATETIME" [lockable]="true">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ dataItem[column.field] | localizedDate: 'dd-MMM-yyyy HH:mm'}}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column [field]="column.field" [title]="column.title" [format]="column.format"
+            [headerStyle]="{ 'background-color': '#049aad', 'color': 'white' }" [filter]="column.type"
+            [sortable]="column.sortable" *ngIf="column.columnFormat === ColumnFormat.CONCATINATED_TEXT"
+            [lockable]="true">
+            <ng-template kendoGridCellTemplate let-dataItem>
+              {{ prefix + FormatHelper.pad(dataItem[column.field], 3)}}
+            </ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column [field]="column.field" [title]="column.title" [format]="column.format"
+            [headerStyle]="{ 'background-color': '#049aad', 'color': 'white' }" [filter]="column.type"
+            [sortable]="column.sortable" *ngIf="column.columnFormat === ColumnFormat.PLAIN_TEXT" [lockable]="true">
+          </kendo-grid-column>
+        </ng-container>
+        <ng-template kendoGridPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+          <div class="page-template">
+            <div class="header">
+            </div>
+            <div class="footer">Page {{ pageNum }} of {{ totalPages }}</div>
+          </div>
+        </ng-template>
+      </kendo-grid-pdf>
+    </kendo-grid>
+  </div>
+</div>

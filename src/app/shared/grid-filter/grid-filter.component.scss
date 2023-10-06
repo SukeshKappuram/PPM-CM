@@ -1,0 +1,56 @@
+ul.list-container {
+  padding: 0px;
+  margin: 0px;
+}
+
+.list-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.list-container li {
+  list-style-type: none;
+}
+
+:host ::ng-deep {
+  .border-less {
+
+    .form-control,
+    .k-multiselect {
+      font-size: 14px;
+      box-sizing: border-box;
+      border: none;
+      box-shadow: none;
+      outline: none;
+      background-color: #e4e7eb;
+      color: #000000de;
+      width: 100%;
+      padding: 0 15px;
+      line-height: 40px;
+      height: 40px;
+      border-radius: 7px;
+    }
+  }
+
+  .k-input-md,
+  .k-picker-md {
+    font-size: 12px !important;
+    line-height: 2;
+  }
+
+  .k-picker {
+    height: 40px;
+  }
+}
+
+.navbar-nav-link {
+  padding: 0px !important;
+}
+
+.card {
+  margin-top: 10px !important;
+}
+
+.py-1 {
+  padding-bottom: 0.2125rem !important;
+}

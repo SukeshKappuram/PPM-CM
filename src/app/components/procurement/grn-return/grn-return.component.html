@@ -1,0 +1,175 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+    <app-page-header [items]="['Procurement','GRN']" [activeItem]="'GRN Return'" [pageTitle]="'GRN Return New'"
+        [buttons]="buttons" (modified)="buttonClicked($event)">
+    </app-page-header>
+    <div class="content">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-transparent header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-secondary">General Information</h6>
+                        <div class="header-elements">
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <form [formGroup]="generalInformation">
+                            <div class="row">
+                                <div class="col-md-3 offset-ml-8 mb-4">
+                                    <div class="row">
+                                        <div class="col-lg-4 mt-1">
+                                            <label class="font-weight-semibold">
+                                                GRN Code
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-1 mt-1"> : </div>
+                                        <div class="col-lg-7 px-0">
+                                            <kendo-dropdownlist class="form-group" [data]="" [filterable]="true" textField="name"
+                                                valueField="id" [formControlName]="'grnCode'"  [defaultItem]="defaultItem('GRN Code')" >
+                                                <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                                    <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name
+                                                        }}</span>
+                                                </ng-template>
+                                            </kendo-dropdownlist>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-2 mb-2">
+                                    <app-text-field [formControlName]="'dcNo'" [formGroup]="generalInformation"
+                                        [fieldName]="'dcNo'" [label]="'DC No'" ngDefaultControl [value]="''"
+                                        [isRequired]="false">
+                                    </app-text-field>
+                                </div>
+
+                                <div class="col-sm-2 mb-2">
+                                    <app-text-field [formControlName]="'receivedInvoiceNo'"
+                                        [formGroup]="generalInformation" [fieldName]="'receivedInvoiceNo'"
+                                        [label]="'Received Invoice No'" ngDefaultControl [value]="''"
+                                        [isRequired]="false">
+                                    </app-text-field>
+                                </div>
+
+                                <div class="col-sm-2 mb-2">
+                                    <app-text-field [formControlName]="'grnReceivedDate'"
+                                        [formGroup]="generalInformation" [fieldName]="'grnReceivedDate'"
+                                        [label]="'GRN Received Date'" ngDefaultControl [value]="''"
+                                        [isRequired]="false">
+                                    </app-text-field>
+                                </div>
+
+                                <div class="col-sm-2 mb-2">
+                                    <app-text-field [formControlName]="'purchaseorder'" [formGroup]="generalInformation"
+                                        [fieldName]="'purchaseorder'" [label]="'Purchase order'" ngDefaultControl
+                                        [value]="''" [isRequired]="false">
+                                    </app-text-field>
+                                </div>
+
+                                <div class="col-sm-2 mb-2">
+                                    <app-text-field [formControlName]="'invoiceCost'" [formGroup]="generalInformation"
+                                        [fieldName]="'invoiceCost'" [label]="'Invoice Cost'" ngDefaultControl
+                                        [value]="''" [isRequired]="false">
+                                    </app-text-field>
+                                </div>
+
+                                <div class="col-sm-2 mb-2">
+                                    <app-text-field [formControlName]="'grnDescription'"
+                                        [formGroup]="generalInformation" [fieldName]="'grnDescription'"
+                                        [label]="'GRN Description'" ngDefaultControl [value]="''" [isRequired]="false">
+                                    </app-text-field>
+                                </div>
+
+                                <div class="col-sm-2 mb-2">
+                                    <app-text-field [formControlName]="'grnReceived'" [formGroup]="generalInformation"
+                                        [fieldName]="'grnReceived'" [label]="'GRN Received'" ngDefaultControl
+                                        [value]="''" [isRequired]="false">
+                                    </app-text-field>
+                                </div>
+
+                                <div class="col-sm-2 mb-2">
+                                    <app-text-field [formControlName]="'grnReceivedByMobile'"
+                                        [formGroup]="generalInformation" [fieldName]="'grnReceivedByMobile'"
+                                        [label]="'GRN Received by Mobile'" ngDefaultControl [value]="''"
+                                        [isRequired]="false">
+                                    </app-text-field>
+                                </div>
+
+                                <div class="col-sm-2 mb-2">
+                                    <app-text-field [formControlName]="'grnRemarks'" [formGroup]="generalInformation"
+                                        [fieldName]="'grnRemarks'" [label]="'GRN Remarks'" ngDefaultControl [value]="''"
+                                        [isRequired]="false">
+                                    </app-text-field>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-transparent header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-secondary">GRN Item Details</h6>
+                        <div class="header-elements">
+
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table  text-nowrap  ">
+                                <thead class="bg-secondary text-white">
+                                    <tr>
+                                        <th>S.no</th>
+                                        <th> GRN Items</th>
+                                        <th> Received Qty </th>
+                                        <th> Unit Price </th>
+                                        <th> Total </th>
+                                        <th> Return Qty </th>
+                                        <th> Return Qty Cost </th>
+                                        <th>Reasons </th>
+                                        <th>GRN Return Stage </th>
+                                        <th>GRN Return Date </th>
+                                        <th>Remarks </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                            <b>Grand Total</b>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control  form-control-sm text-right "
+                                                placeholder="NaN" style="width: 120px;">
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

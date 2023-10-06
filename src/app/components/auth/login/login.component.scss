@@ -1,0 +1,139 @@
+.content-inner {
+  height: 100vh;
+}
+
+/* BASIC */
+a {
+  color: #92badd;
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+/* STRUCTURE */
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  min-height: 100%;
+  padding: 20px;
+}
+
+#formContent {
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
+  background: #fff;
+  padding: 30px;
+  width: 90%;
+  max-width: 450px;
+  position: relative;
+  padding: 0px;
+  -webkit-box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+#formFooter {
+  background-color: #f6f6f6;
+  border-top: 1px solid #dce8f1;
+  padding: 25px;
+  text-align: center;
+  -webkit-border-radius: 0 0 10px 10px;
+  border-radius: 0 0 10px 10px;
+}
+
+.form-signin input[type="text"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-floating>.form-control,
+.form-floating>.form-control-plaintext {
+  padding: 1rem 0.75rem;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.form-floating>.form-control,
+.form-floating>.form-control-plaintext,
+.form-floating>.form-select {
+  height: calc(3.5rem + 2px);
+  line-height: 1.25;
+}
+
+// .bg-body {
+//   background: url('../../../../assets/images/PropEzy.jpg') no-repeat center center;
+//   background-size: cover !important;
+//   object-fit: cover !important;
+//   font-family: "Poppins", sans-serif !important;
+// }
+
+.centered {
+  background: url('../../../../assets/images/PropEzy.jpg') no-repeat;
+  background-size: cover !important;
+  object-fit: cover !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+.centeredV2 {
+  background: url('../../../../assets/images/SaudiArabia.jpeg') no-repeat;
+  background-size: cover !important;
+  object-fit: cover !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+.logo-text {
+  color: #fff;
+  font-size: 45.5px;
+  font-weight: 500;
+}
+
+.tag-line {
+  bottom: 100px !important;
+  align-items: center;
+  position: absolute !important;
+}
+
+.login-logo {
+  padding: 30px 0px 40px 0px;
+}
+
+.form-group-feedback-left .form-control {
+  padding-left: 3rem;
+}
+
+input[type=checkbox] {
+  accent-color: #00bcd4;
+  color:black
+}
+
+.img-fluid50{
+  max-width: 100% !important;
+  height: auto;
+}
+
+.form-control-feedback.form-control-feedback-toggle{
+  left: auto;
+  right: 0 !important;
+  cursor: pointer;
+}
+
+.demo-mar{
+  margin-left: 8.75rem!important
+}

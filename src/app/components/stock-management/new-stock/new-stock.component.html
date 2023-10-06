@@ -1,0 +1,875 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [items]="['Core','Administration']" [activeItem]="currentView" [pageTitle]="pageTitle"
+    [buttons]="buttons" (modified)="buttonClicked($event)">
+  </app-page-header>
+
+  <div class="content" *ngIf="isDataLoaded">
+    <div class="d-flex align-items-start flex-column flex-md-row">
+      <!-- Left content -->
+      <div class="w-100 order-2 order-md-1">
+        <div class="row">
+          <div class="col-xl-12 col-md-12">
+            <div class="navbar navbar-expand-lg navbar-light border-top">
+              <div class="text-center d-lg-none w-100">
+                <button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse"
+                  data-target="#navbar-second">
+                  <i class="bi bi-list mr-2"></i>
+                  Profile navigation
+                </button>
+              </div>
+              <div class="navbar-collapse collapse" id="navbar-second">
+                <ul class="nav navbar-nav nav-highlight">
+                  <li class="nav-item"><a class="navbar-nav-link" [ngClass]="activeTabId === 1?'active':''"
+                      (click)="activeTabId=1" data-toggle="tab">
+                      <i class="bi bi-list mr-2"></i>
+                      General</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="navbar-nav-link" [ngClass]="activeTabId === 2?'active':''"
+                      (click)="activeTabId=2;getBatchData(stockData?.id??0)" data-toggle="tab">
+                      <i class="bi bi-ui-checks-grid mr-2"></i>
+                      Batch Details</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="navbar-nav-link" [ngClass]="activeTabId === 5?'active':''"
+                      (click)="activeTabId=5;getStockDetails(stockData?.id??0)" data-toggle="tab">
+                      <i class="bi bi-ui-checks-grid mr-2"></i>
+                      Stock Issued Details</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="navbar-nav-link" [ngClass]="activeTabId === 3?'active':''" (click)="activeTabId=3"
+                      data-toggle="tab">
+                      <i class="bi bi-ui-checks-grid mr-2"></i>
+                      Parameters</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="navbar-nav-link" [ngClass]="activeTabId === 4?'active':''" (click)="activeTabId=4"
+                      data-toggle="tab">
+                      <i class="bi bi-ui-checks-grid mr-2"></i>
+                      Identification</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="navbar-nav-link" [ngClass]="activeTabId === 6?'active':''"
+                      (click)="activeTabId=6;getDocuments(1)" data-toggle="tab">
+                      <i class="bi bi-file-image mr-2"></i>
+                      Images</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="navbar-nav-link" [ngClass]="activeTabId === 7?'active':''"
+                      (click)="activeTabId=7;getDocuments(2)" data-toggle="tab">
+                      <i class="bi bi-file-earmark-text mr-2"></i>
+                      Documents</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="tab-pane fade" class="tab-content flex-1 mt-3">
+              <div class="tab-pane fade" [ngClass]="activeTabId === 1?'show active':''" id="general-info">
+                <div class="row">
+                  <div class="col-xl-6">
+                    <!-- left box -->
+                    <div class="card mt-2">
+                      <form [formGroup]="generalInfo">
+                        <div class="card-header bg-transparent header-elements-inline">
+                          <h6 class="card-title text-cfm-color font-weight-bold">General
+                          </h6>
+                          <div class="header-elements">
+                            <span class="font-weight-bold mr-2"> Stock ID -</span>
+                            <span class="badge badge-secondary">
+                              {{stockData?.id > 0 ? 'STK'+pad(stockData?.id,4): 'N/A'}}</span>
+                          </div>
+                        </div>
+
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="row">
+                                <div class="col-2">
+                                  <div class="card-img-actions d-inline-block mb-3">
+                                    <img class="img-fluid rounded-circle" id="6095603e-782d-4d5d-a215-b231bc7395d7"
+                                      src="{{imageUrl}}">
+                                    <div class="card-img-actions-overlay rounded-circle">
+                                      <a href="javascript:;" onclick="$('#fileAttachProfilePic').click();"
+                                        class="btn btn-outline bg-white text-white border-white border-2 btn-icon rounded-round">
+                                        <i class="bi bi-plus"></i>
+                                      </a>
+                                    </div>
+                                    <input id="fileAttachProfilePic" data-iscircle="false"
+                                      (change)="onStockImgChange($event)" style="display:none"
+                                      name="fileAttachProfilePic" type="file" multiple="" value="">
+                                    <input type="hidden" name="ProfilePicDocNos" id="ProfilePicDocNos" accept="image/*"
+                                      value="">
+                                  </div>
+                                </div>
+
+                                <div class="col-8">
+                                  <div class="media-body">
+                                    <app-text-field [formControlName]="'stockName'" [formGroup]="generalInfo"
+                                      [fieldName]="'stockName'" [label]="'Stock Name'" ngDefaultControl
+                                      [value]="stockData?.name" [isReadonly]="!isEditable">
+                                    </app-text-field>
+                                  </div>
+                                </div>
+
+                                <div class="col-2">
+                                  <img [src]="stockData?.qrCode??'assets/images/noqrimage-SM.png'" class="img-fluid"
+                                    style="height: 70px;">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <app-text-field [formControlName]="'sparePartCode'" [formGroup]="generalInfo"
+                                [fieldName]="'sparePartCode'" [label]="'Spare Part Code'" ngDefaultControl
+                                [value]="stockData?.sparePartCode" [isReadonly]="stockData?.sparePartCode">
+                              </app-text-field>
+                            </div>
+                            <div class="col-md-6">
+                              <app-text-field [formControlName]="'clientCode'" [formGroup]="generalInfo"
+                                [fieldName]="'clientCode'" [label]="'Client Code'" ngDefaultControl
+                                [value]="stockData?.clientCode" [isReadonly]="stockData?.clientCode"
+                                [isRequired]="false">
+                              </app-text-field>
+                            </div>
+                          </div>
+                          <h6 class="font-weight-bold font-size-sm text-secondary">Group Type
+                          </h6>
+                          <div class="row">
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <app-label [label]="'Group'" [isRequired]="true"></app-label>
+                                <kendo-dropdownlist class="form-group" [data]="filteredData?.groups" [filterable]="true" textField="name"
+                                  valueField="id" [formControlName]="'group'" [defaultItem]="defaultItem('Group')"
+                                  (selectionChange)="groupSelected($event)" [readonly]="!isEditable"
+                                  (filterChange)="handleFilter($event,'groups')">
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <app-label [label]="'Sub Group'" [isRequired]="true"></app-label>
+                                <kendo-dropdownlist class="form-group" [data]="filteredData?.subGroups" [filterable]="true"
+                                  textField="name" valueField="id" [formControlName]="'subGroup'"
+                                  [defaultItem]="defaultItem('Sub Group')" [readonly]="!isEditable"
+                                  (filterChange)="handleFilter($event,'subGroups')">
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <app-label [label]="'Stock Class'" [isRequired]="false"></app-label>
+                                <kendo-dropdownlist class="form-group" [data]="filteredData?.stockClasses" textField="name" valueField="id"
+                                  [filterable]="true" [formControlName]="'stockClass'"
+                                  [defaultItem]="defaultItem('Stock Class')" [readonly]="!isEditable"
+                                  (filterChange)="handleFilter($event,'stockClasses')">
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                              </div>
+                            </div>
+                          </div>
+
+                          <h6 class="font-weight-bold font-size-sm mt-2 mb-2 text-secondary">
+                            Product Details</h6>
+                          <div class="row">
+                          </div>
+
+                          <div class="row">
+                            <div class="col-md-6">
+                              <app-text-field [formControlName]="'manufacturer'" [formGroup]="generalInfo"
+                                [fieldName]="'manufacturer'" [label]="'Manufacturer'" ngDefaultControl
+                                [value]="stockData?.manufacturer??''" [isRequired]="false" [isReadonly]="!isEditable">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-md-6">
+                              <app-text-field [formControlName]="'productCode'" [formGroup]="generalInfo"
+                                [fieldName]="'productCode'" [label]="'Product Code'" ngDefaultControl
+                                [value]="stockData?.productCode??''" [isRequired]="false" [isReadonly]="!isEditable">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-md-6">
+                              <app-text-field [formControlName]="'model'" [formGroup]="generalInfo"
+                                [fieldName]="'model'" [label]="'Model'" ngDefaultControl [value]="stockData?.model??''"
+                                [isRequired]="false" [isReadonly]="!isEditable">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-md-6">
+                              <app-text-field [formControlName]="'serialNumber'" [formGroup]="generalInfo"
+                                [fieldName]="'serialNumber'" [label]="'Serial Number'" ngDefaultControl
+                                [value]="stockData?.serialNo" [isRequired]="false" [isReadonly]="!isEditable">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-md-6">
+                              <app-label [label]="'Vendor'" [isRequired]="false"></app-label>
+                              <kendo-dropdownlist class="form-group" [data]="filteredData?.vendors" textField="name" valueField="id"
+                                [filterable]="true" [formControlName]="'vendor'" [defaultItem]="defaultItem('Vendor')"
+                                [readonly]="!isEditable" (filterChange)="handleFilter($event,'vendors')">
+                                <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                  <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}
+                                  </span>
+                                </ng-template>
+                              </kendo-dropdownlist>
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-md-12">
+                              <app-textarea-field [formControlName]="'remarks'" [formGroup]="generalInfo"
+                                [fieldName]="'remarks'" [label]="'Remarks'" ngDefaultControl
+                                [value]="stockData?.remarks??''" [isRequired]="false" [isReadonly]="!isEditable">
+                              </app-textarea-field>
+                            </div>
+                          </div>
+
+                        </div>
+                      </form>
+                    </div>
+                    <!-- /left box -->
+                    <div class="card mt-2">
+                      <form [formGroup]="locationInfo">
+                        <div class="card-header bg-transparent header-elements-inline">
+                          <h6 class="card-title text-cfm-color font-weight-bold"> Locations
+                          </h6>
+                          <div class="header-elements">
+
+                          </div>
+                        </div>
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <app-label [label]="'Buildings'" [isRequired]="true"></app-label>
+                                <kendo-dropdownlist class="form-group" [data]="filteredData?.buildings" [filterable]="true"
+                                  textField="name" valueField="id" [formControlName]="'buildings'"
+                                  [readonly]="!isEditable" (filterChange)="handleFilter($event,'buildings')"
+                                  [defaultItem]="defaultItem('Buildings')" (selectionChange)="buildingSelected($event)">
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                              </div>
+                            </div>
+
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <app-label [label]="'Floor'" [isRequired]="true"></app-label>
+                                <kendo-dropdownlist class="form-group" #floorList [data]="filteredData?.floors" [filterable]="true"
+                                  textField="name" valueField="id" [formControlName]="'floor'" [readonly]="!isEditable"
+                                  [defaultItem]="defaultItem('Floor')" (filterChange)="handleFilter($event,'floors')"
+                                  (selectionChange)="floorChanged($event)">
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                              </div>
+                            </div>
+
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <app-label [label]="'Unit'" [isRequired]="true"></app-label>
+                                <kendo-dropdownlist class="form-group" #unitList [data]="filteredData?.units" textField="name"
+                                  valueField="id" [formControlName]="'unit'" [readonly]="!isEditable"
+                                  [defaultItem]="defaultItem('Unit')" (selectionChange)="unitChanged($event)">
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                              </div>
+                            </div>
+
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <app-label [label]="'Rooms'" [isRequired]="true"></app-label>
+                                <kendo-dropdownlist class="form-group" #roomsList [data]="filteredData?.rooms" textField="name"
+                                  valueField="id" [formControlName]="'rooms'" [readonly]="!isEditable"
+                                  [defaultItem]="defaultItem('Room')">
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                              </div>
+                            </div>
+
+                            <div class="col-md-6">
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+
+                  <div class="col-xl-6">
+                    <div class="card mt-2">
+                      <form [formGroup]="quantityInfo">
+                        <div class="card-header bg-transparent header-elements-inline">
+                          <h6 class="card-title text-cfm-color font-weight-bold"> Quantity Pricing</h6>
+                          <div class="header-elements">
+                          </div>
+                        </div>
+                        <div class="card-body">
+
+                          <div class="row">
+
+                            <div class="col-md-4">
+                              <app-text-field [formControlName]="'availableStock'" [formGroup]="quantityInfo"
+                                [fieldName]="'availableStock'" [label]="'Available Stock'" ngDefaultControl
+                                [value]="stockData?.availableStock" [isReadonly]="stockData?.unitPrice">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-md-4">
+                              <app-label [label]="'#UOM'" [isRequired]="false"></app-label>
+                              <kendo-dropdownlist class="form-group" [data]="filteredData?.uoMs" textField="code" valueField="id"
+                                [filterable]="true" [formControlName]="'uom'" [readonly]="!isEditable"
+                                [defaultItem]="defaultItem('UOM')" (filterChange)="handleFilter($event,'uoMs')">
+                              </kendo-dropdownlist>
+                            </div>
+
+                            <div class="col-md-4">
+                              <app-text-field [formControlName]="'packSize'" [formGroup]="quantityInfo"
+                                [fieldName]="'packSize'" [label]="'Pack Size'" ngDefaultControl
+                                [value]="stockData?.packSize??''" [isReadonly]="!isEditable">
+                              </app-text-field>
+                            </div>
+                            <div class="col-md-4" *ngIf="isUnitPrice">
+                              <app-text-field [inputType]="'number'" [formControlName]="'unitPrice'"
+                                [formGroup]="quantityInfo" [fieldName]="'unitPrice'" [label]="'Unit Price'"
+                                ngDefaultControl [isRequired]="true" [badgeLabel]="currencyCode"
+                                [isReadonly]="stockData?.unitPrice" [value]="stockData?.unitPrice" [max]="100">
+                              </app-text-field>
+                            </div>
+                            <div class="col-md-4">
+                              <app-text-field [inputType]="'number'" [formControlName]="'totalPrice'"
+                                [formGroup]="quantityInfo" [fieldName]="'totalPrice'" [label]="'Total Price'"
+                                ngDefaultControl [isRequired]="true" [badgeLabel]="currencyCode" [isRequired]="false"
+                                [isReadonly]="true"
+                                [value]="stockData?.totalPrice ?? ((stockData?.availableStock * stockData?.unitPrice).toFixed(2))" [max]="100">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-md-4">
+                              <label for="">Tax Applicable</label>
+                              <div class="custom-control custom-checkbox custom-control-secondary">
+                                <input type="checkbox" class="custom-control-input" id="chkIsTaxApplicable"
+                                  checked="checked" data-val="true" [formControlName]="'isTaxApplicable'"
+                                  data-val-required="is TaxApplicable field is required." name="IsTaxApplicable"
+                                  [attr.disabled]="stockData?.id">
+                                <label class="custom-control-label pt-1 font-size-12" for="chkIsTaxApplicable">
+                                  VAT
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-4">
+                              <app-text-field [formControlName]="'reorderQuantity'" [formGroup]="quantityInfo"
+                                [fieldName]="'reorderQuantity'" [label]="'Reorder Quantity'" ngDefaultControl
+                                [isRequired]="false" [value]="stockData?.reOrderQuantity??''"
+                                [isReadonly]="!isEditable">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-md-4">
+                              <app-text-field [formControlName]="'reorderLevel'" [formGroup]="quantityInfo"
+                                [fieldName]="'reorderLevel'" [label]="'Reorder Level'" ngDefaultControl
+                                [isRequired]="false" [value]="stockData?.reOrderLevel??''" [isReadonly]="!isEditable">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="card mt-2">
+                      <form [formGroup]="financialsInfo">
+                        <div class="card-header bg-transparent header-elements-inline">
+                          <h6 class="card-title text-cfm-color font-weight-bold"> Financials
+                          </h6>
+                          <div class="header-elements">
+                          </div>
+                        </div>
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <app-label [label]="'Finance Code'" [isRequired]="true"></app-label>
+                                <kendo-dropdownlist class="form-group" [data]="filteredData?.financeCodes" textField="name" valueField="id"
+                                  [filterable]="true" [formControlName]="'financeCode'" [readonly]="!isEditable"
+                                  [defaultItem]="defaultItem('FinanceCodes')"
+                                  (filterChange)="handleFilter($event,'financeCodes')">
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <app-label [label]="'Cost Center'" [isRequired]="true"></app-label>
+                                <kendo-dropdownlist class="form-group" #costCenterList [data]="filteredData?.costCenters"
+                                  [filterable]="true" textField="name" valueField="id" [formControlName]="'costCenter'"
+                                  [readonly]="!isEditable" [defaultItem]="defaultItem('Cost Center')"
+                                  (filterChange)="handleFilter($event,'costCenters')">
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <app-label [label]="'Cost Code'" [isRequired]="true"></app-label>
+                                <kendo-dropdownlist class="form-group" #costCodeList [data]="filteredData?.costCodes" [filterable]="true"
+                                  textField="name" valueField="id" [formControlName]="'costCode'"
+                                  [readonly]="!isEditable" [defaultItem]="defaultItem('Cost Code')"
+                                  (filterChange)="handleFilter($event,'costCodes')">
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                              </div>
+                            </div>
+
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <app-label [label]="'Calculation Method'" [isRequired]="true"></app-label>
+                                <kendo-dropdownlist class="form-group" #calculationMethodList [data]="filteredData?.calculationMethods"
+                                  textField="name" valueField="id" [formControlName]="'calculationMethod'"
+                                  [readonly]="!isEditable" [defaultItem]="defaultItem('Calculation Method')">
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" [ngClass]="activeTabId === 2?'show active':''" id="batch">
+                <div class="card">
+                  <div class="card-body">
+                    <ng-container *ngIf="gridData?.configuration?.columns?.length">
+                      <app-kendo-grid [gridDetails]="gridData" [fileName]="pageTitle">
+                      </app-kendo-grid>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" [ngClass]="activeTabId === 5?'show active':''" id="stockIssued">
+                <div class="card">
+                  <div class="card-body">
+                    <ng-container *ngIf="gridData?.configuration?.columns?.length">
+                      <app-kendo-grid [gridDetails]="gridData" [fileName]="pageTitle">
+                      </app-kendo-grid>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" [ngClass]="activeTabId === 3?'show active':''" id="parameters">
+                <div class="card">
+                  <div class="card-header bg-transparent header-elements-inline">
+                    <h6 class="card-title font-weight-semibold text-secondary">Additional Fields </h6>
+                    <button class="btn btn-sm btn-secondary" type="submit" (click)="saveParameters()"
+                      [disabled]="!isEditable || !(paraForm.valid)">
+                      Save
+                    </button>
+                  </div>
+
+                  <div class="card-body">
+                    <form [formGroup]="paraForm">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <app-label [label]="'Additional Field'" [isRequired]="true"></app-label>
+                            <kendo-dropdownlist class="form-group" #parameters [data]="availableParameters" textField="name"
+                              valueField="id" [formControlName]="'additionalField'" [readonly]="!isEditable"
+                              [defaultItem]="defaultItem('Additional Field')" (selectionChange)="onChangeParameter($event)">
+                              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}
+                                </span>
+                              </ng-template>
+                            </kendo-dropdownlist>
+                          </div>
+                        </div>
+
+                        <div class="col-md-3 mt-2">
+                          <button
+                            class="btn bg-transparent border-teal text-teal rounded-pill border-2 btn-icon mr-3 legitRipple"
+                            (click)="addParameter(selectedParameter)" [disabled]="!isEditable">
+                            <i class="bi bi-plus fa-2x"></i>
+                          </button>
+                        </div>
+                      </div>
+
+                      <ng-container *ngFor="let control of parameterValuesFieldAsFormArray?.controls ;let i = index;"
+                        formArrayName='parameterValues'>
+                        <div class="row" [formGroupName]="i">
+                          <div class="col-md-4 col-md-offset-2">
+                            <div class="form-group">
+                              <app-text-field [formControlName]="'name'" [isReadonly]="true"
+                                [formGroup]="getParaForm(control)" [fieldName]="'name'" [label]="'name'"
+                                ngDefaultControl [value]="this.selectedParameters[i].name">
+                              </app-text-field>
+                            </div>
+                          </div>
+                          <div class="col-md-4 col-md-offset-2">
+                            <div class="form-group">
+                              <app-text-field [inputType]="selectedParameters[i].type ? 'text' : 'number'"
+                                [formControlName]="'value'" [formGroup]="getParaForm(control)" [fieldName]="'value'"
+                                [label]="'value'" [isRequired]="true" ngDefaultControl
+                                [value]="this.selectedParameters[i].value" [isReadonly]="!isEditable"></app-text-field>
+                            </div>
+                          </div>
+                          <div class="col-md-4 col-md-offset-2 mt-3">
+                            <button class="btn btn-sm btn-danger" type="button" (click)="remove(i)"
+                              [disabled]="!isEditable">Remove</button>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </form>
+                  </div>
+                </div>
+
+              </div>
+              <div class="tab-pane fade" [ngClass]="activeTabId === 4?'show active':''" id="identification">
+                <div class="card-header bg-transparent header-elements-inline">
+                  <h6 class="card-title font-weight-semibold text-secondary">Tags and Images
+                  </h6>
+                  <button class="btn btn-sm btn-secondary" type="submit" (click)="saveIdentitification()">
+                    Save
+                  </button>
+                </div>
+                <div class="card-body">
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="row">
+                          <div class="col-lg-12 mb-2">
+                            <div class="form-group">
+                              <div class=" ">
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                  <input type="checkbox" class="custom-control-input" id="barcode"
+                                    [checked]="isBarUploaded" (change)="changeStatus(0,$event)"
+                                    [readonly]="!isEditable">
+                                  <label class="custom-control-label" for="barcode">Barcode</label>
+                                </div>
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                  <input type="checkbox" class="custom-control-input" id="qr" [checked]="isQrUploaded"
+                                    (change)="changeStatus(1,$event)" [readonly]="!isEditable">
+                                  <label class="custom-control-label" for="qr">QR Code</label>
+                                </div>
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                  <input type="checkbox" class="custom-control-input" id="rf" [checked]="isRfUploaded"
+                                    (change)="changeStatus(2,$event)" [readonly]="!isEditable">
+                                  <label class="custom-control-label" for="rf">RF Code</label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <ng-container *ngIf="identifications">
+                      <form [formGroup]="identityForm">
+                        <div class="row" id="barcodeDiv" [ngStyle]="{'display': isBarUploaded ? '': 'none'}"
+                          *ngIf="isBarUploaded">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="">Barcode</label>
+                              <input class="form-control" type="text" formControlName="brCode"
+                                placeholder="Enter Your Code" [value]="getIdentification(0)?.code"
+                                [(ngModel)]="assetCode" readonly>
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="">Syscode / Client Code</label>
+                              <input class="form-control" formControlName="brClientCode" type="text"
+                                placeholder="Enter Your Code" [value]="getIdentification(0)?.clientCode"
+                                [(ngModel)]="getIdentification(0).clientCode" [readOnly]="!isEditable">
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="row" *ngIf="getIdentification(0)?.imageUrl; else uploadBar">
+                              <div class="col-md-12">
+                                <div class="box position-relative p-2 pb-0">
+                                  <i class="bi bi-x-circle position-absolute right-0 top-0 text-danger cursor-pointer"
+                                    (click)="deleteIdentificationImg(getIdentification(0))"></i>
+                                  <img [src]="getIdentification(0)?.imageUrl" width="100%" height="140px"
+                                    loading="lazy">
+                                </div>
+                              </div>
+                            </div>
+                            <ng-template #uploadBar>
+                              <ngx-dropzone (change)="onSelect($event,0)" class="dropzone upload-doc" [multiple]="false"
+                                [disabled]="!isEditable">
+                                <ngx-dropzone-label class="font-12">Drop files to upload or CLICK</ngx-dropzone-label>
+                                <ngx-dropzone-preview *ngFor="let f of barcodes" [removable]="true"
+                                  (removed)="onRemove(f,0)">
+                                  <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                                </ngx-dropzone-preview>
+                              </ngx-dropzone>
+                            </ng-template>
+                          </div>
+                        </div>
+
+                        <div class="row mt-2" id="RFcodeDiv" [ngStyle]="{'display': isRfUploaded ? '': 'none'}"
+                          *ngIf="isRfUploaded">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="">RF Code </label>
+                              <input class="form-control " type="text" formControlName="rfCode"
+                                placeholder="Enter Your Code" [value]="getIdentification(2)?.code"
+                                [(ngModel)]="assetCode" readonly>
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="">Syscode / Client Code</label>
+                              <input class="form-control " type="text" formControlName="rfClientCode"
+                                placeholder="Enter Your Code" [value]="getIdentification(2)?.clientCode"
+                                [(ngModel)]="getIdentification(2).clientCode" [readOnly]="!isEditable">
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="row" *ngIf="getIdentification(2)?.imageUrl; else uploadRF">
+                              <div class="col-md-12">
+                                <div class="box position-relative p-2">
+                                  <i class="bi bi-x-circle position-absolute right-0 top-0 text-danger cursor-pointer"
+                                    (click)="deleteIdentificationImg(getIdentification(2))"></i>
+                                  <img [src]="getIdentification(2)?.imageUrl" width="100%" height="140px"
+                                    loading="lazy">
+                                </div>
+                              </div>
+                            </div>
+                            <ng-template #uploadRF>
+                              <ngx-dropzone (change)="onSelect($event,2)" class="dropzone upload-doc" [multiple]="false"
+                                [disabled]="!isEditable">
+                                <ngx-dropzone-label class="font-12">Drop files to upload or CLICK</ngx-dropzone-label>
+                                <ngx-dropzone-preview *ngFor="let f of rfcodes" [removable]="true"
+                                  (removed)="onRemove(f, 2)">
+                                  <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                                </ngx-dropzone-preview>
+                              </ngx-dropzone>
+                            </ng-template>
+                          </div>
+                        </div>
+
+                        <div class="row mt-2" id="QRcodeDiv" [ngStyle]="{'display': isQrUploaded ? '': 'none'}"
+                          *ngIf="isQrUploaded">
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="">QR Code</label>
+                              <input class="form-control " type="text" formControlName="qrCode"
+                                placeholder="Enter Your Code" [value]="getIdentification(1)?.code"
+                                [(ngModel)]="assetCode" readonly>
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="">Syscode / Client Code</label>
+                              <input class="form-control " type="text" formControlName="qrClientCode"
+                                placeholder="Enter Your Code" [value]="getIdentification(1)?.clientCode"
+                                [(ngModel)]="getIdentification(1).clientCode" [readOnly]="!isEditable">
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="row" *ngIf="getIdentification(1)?.imageUrl; else uploadRF">
+                              <div class="col-md-12">
+                                <div class="box position-relative p-2">
+                                  <i class="bi bi-x-circle position-absolute right-0 top-0 text-danger cursor-pointer"
+                                    (click)="deleteIdentificationImg(getIdentification(1))"></i>
+                                  <img [src]="getIdentification(1)?.imageUrl" width="50%" height="140px" loading="lazy">
+                                </div>
+                              </div>
+                            </div>
+                            <ng-template #uploadRF>
+                              <button type="button" class="btn btn-light btn-block btn-float m-0 upload-doc-btn"
+                                (click)="generate()" [disabled]="!isEditable">
+                                <i class="bi bi-qr-code text-muted fa-2x"></i>
+                                <span>Generate</span>
+                              </button>
+                            </ng-template>
+                          </div>
+                        </div>
+                      </form>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" [ngClass]="activeTabId === 6?'show active':''" id="images">
+                <div class="row">
+                  <div class="col-xl-8">
+                    <div class="card">
+                      <div class="card-header bg-transparent header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-secondary">Images
+                        </h6>
+                        <button class="btn btn-sm btn-secondary" type="submit" (click)="uploadAttachments()"
+                          [disabled]="!isEditable">
+                          Save
+                        </button>
+                      </div>
+                      <div class="card-body">
+
+                        <form [formGroup]="ImagesInfo">
+
+                          <div class="row">
+                            <div class="col-xl-3 col-sm-6" *ngFor="let asset of documents; let i = index">
+                              <div class="card">
+                                <div class="card-img-actions text-center mx-1 mt-1">
+                                  <img class="card-img img-fluid" [src]="asset.resourceUrl | sanitizeUrl" alt=""
+                                    style="width: 150px!important; height: 100px !important;" loading="lazy">
+                                  <div class="card-img-actions-overlay card-img">
+                                    <a class="btn btn-outline-white border-2 btn-icon rounded-pill ml-2">
+                                      <i class="bi bi-x-circle" (click)="delete(asset,1)"></i>
+                                    </a>
+                                  </div>
+                                </div>
+                                <div class="card-body">
+                                  <div class="d-flex align-items-start flex-wrap">
+                                    <div class="font-weight-semibold">Image _ {{asset.id}}</div>
+                                    <span class="font-size-sm text-muted ml-auto">
+
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <form action="" method="post" class="dropzone dz-clickable" id="dropzone_single"
+                                enctype="multipart/form-data">
+                                <div class="dz-default dz-message">
+                                  <button class="dz-button" type="button" (click)="file.click()"
+                                    [disabled]="!isEditable">
+                                    Drop file to upload
+                                    <span>or CLICK</span>
+                                  </button>
+                                  <input type="file" #file data-multiple-caption="{count} files selected" multiple
+                                    style="display:none" (change)="onChange($event)" [readonly]="!isEditable" />
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" [ngClass]="activeTabId === 7?'show active':''" id="documents">
+                <div class="row">
+                  <div class="col-xl-12">
+                    <div class="card">
+
+                      <div class="card-header bg-white header-elements-inline">
+                        <h6 class="card-title">Upload Documents</h6>
+                        <div class="header-elements">
+                          <div class="list-icons">
+                            <button class="btn btn-sm btn-secondary float-right" (click)="uploadFiles()">save</button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-body">
+                        <form [formGroup]="docImagesInfo">
+
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="table-responsive">
+                                <table class="table table-bordered text-nowrap">
+                                  <thead>
+                                    <tr class="bg-purple-100  font-weight-semibold">
+                                      <td>File Name</td>
+                                      <td>Type</td>
+                                      <td>Actions</td>
+                                    </tr>
+                                  </thead>
+                                  <tbody *ngIf="documents.length > 0; else NoDocs">
+                                    <tr *ngFor="let doc of documents">
+                                      <td>{{doc.fileName}}</td>
+                                      <td>{{doc.attachmentType}}</td>
+                                      <td>
+                                        <i class="bi bi-trash px-3" (click)="delete(doc,2)"></i>
+                                        <a href="{{doc.resourceUrl}}" target="_blank">
+                                          <i class="bi bi-download px-3"></i>
+                                        </a>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                  <ng-template #NoDocs>
+                                    <tbody>
+                                      <td colspan="3" class="text-center">No Documents Uploaded</td>
+                                    </tbody>
+                                  </ng-template>
+                                </table>
+                              </div>
+                            </div>
+                            <div class="col-md-12 mt-2">
+                              <form action="" method="post" class="dropzone dz-clickable" id="dropzone_single"
+                                enctype="multipart/form-data">
+                                <div class="dz-default dz-message">
+                                  <button class="dz-button" type="button" (click)="file1.click()"
+                                    [disabled]="!isEditable">
+                                    Drop file to upload
+                                    <span>or CLICK</span>
+                                  </button>
+                                  <input type="file" #file1 data-multiple-caption="{count} files selected" multiple
+                                    style="display:none" (change)="selectFiles($event)" [readonly]="!isEditable" />
+                                </div>
+                              </form>
+                              <ul class="list-group pt-2" *ngIf="selectedFiles.length > 0">
+                                <li class="list-group-item" *ngFor="let file of selectedFiles; let f= index">
+                                  <i class="bi bi-file mr-2"></i>
+                                  {{getFileName(file)}}
+                                  <i class="bi bi-x-circle text-danger ml-2"></i>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

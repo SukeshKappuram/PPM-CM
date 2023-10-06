@@ -1,0 +1,16 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header #header [items]="config?.pageType" [activeItem]="config?.pageTitle" [buttons]="buttons" [pageTitle]="config?.pageTitle"
+    [isFilterable]="true" (toggleFilter)="gridFilter.toggleShow()" (modified)="buttonClicked($event)">
+  </app-page-header>
+  <app-grid-filter #gridFilter (filterChanged)="getLog($event);" [filterType]="config?.filterType??FilterType.WorkOrder"
+    [api]="config?.apiEndpoint" [isProjectMandatory]="config?.isProjectMandatory" [status]="statusId" [serviceTypeId]="serviceTypeId"
+    [isMultiSelect]="config?.isFrequencyMultiSelect" [isFrequencyMandatory]="config?.isFrequencyMandatory">
+  </app-grid-filter>
+  <ng-container *ngIf="gridData?.configuration?.columns?.length">
+    <app-kendo-grid #kgrid [gridDetails]="gridData" [isViewable]="true" (edited)="edit($event)" [fileName]="pageTitle"
+      (view)="openLocation($event)" (exported)="export($event)" (transfered)="transfer($event)"
+      [selectable]="{ checkboxOnly: true, mode: 'multiple' }" [selectionKey]="'id'"
+      [sizes]="config?.filterType === FilterType.Transfer?[10, 20, 30, 50, 100] : [10, 20, 30, 50]"
+      (rowSelected)="selectionChange($event)"></app-kendo-grid>
+  </ng-container>
+</div>

@@ -1,0 +1,67 @@
+<app-page-header [pageTitle]="pageTitle" [items]="['Asset Register','Activity']" [activeItem]="pageTitle"
+  [ignoreCase]="true" [buttons]="buttons" [isEditable]="isEditable" (modified)="buttonClicked($event)">
+</app-page-header>
+
+<!-- Profile navigation -->
+<div class="navbar navbar-expand-lg navbar-light border-top">
+  <div class="text-center d-lg-none w-100">
+    <button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-second">
+      <i class="bi bi-list mr-2"></i>
+      Profile navigation
+    </button>
+  </div>
+
+  <div class="navbar-collapse collapse" id="navbar-second">
+    <ul class="nav navbar-nav nav-highlight">
+      <li class="nav-item active">
+        <a (click)="openTab(1)" class="navbar-nav-link" [ngClass]="currentTab === 1 ? 'active': ''">
+          <i class="bi bi-list mr-2"></i>
+          General
+        </a>
+      </li>
+      <li class="nav-item">
+        <a (click)="openTab(2)" class="navbar-nav-link" [ngClass]="currentTab === 2 ? 'active': ''">
+          <i class="bi bi-currency-dollar mr-2"></i>
+          Financials
+        </a>
+      </li>
+      <li class="nav-item">
+        <a (click)="openTab(3)" class="navbar-nav-link" [ngClass]="currentTab === 3 ? 'active': ''">
+          <i class="bi bi-gear mr-2"></i>
+          Additional Fields
+        </a>
+      </li>
+      <li class="nav-item">
+        <a (click)="openTab(4)" class="navbar-nav-link" [ngClass]="currentTab === 4 ? 'active': ''">
+          <i class="bi bi-qr-code mr-2"></i>
+          Tags and Images
+        </a>
+      </li>
+      <li class="nav-item">
+        <a (click)="openTab(7)" class="navbar-nav-link" [ngClass]="currentTab === 7 ? 'active': ''">
+          <i class="bi bi-printer mr-2"></i>
+          PM View
+        </a>
+      </li>
+      <li class="nav-item">
+        <a (click)="openTab(5)" class="navbar-nav-link" [ngClass]="currentTab === 5 ? 'active': ''">
+          <i class="bi bi-clipboard2-check mr-2"></i>
+          Condition Records
+        </a>
+      </li>
+      <li class="nav-item">
+        <a (click)="openTab(8)" class="navbar-nav-link" [ngClass]="currentTab === 8 ? 'active': ''">
+          <i class="bi bi-clipboard2-check mr-2"></i>
+          Service History
+        </a>
+      </li>
+      <li class="nav-item">
+        <a (click)="openTab(6)" class="navbar-nav-link" [ngClass]="currentTab === 6 ? 'active': ''">
+          <i class="bi bi-upload mr-2"></i>
+          Documents
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- /profile navigation -->

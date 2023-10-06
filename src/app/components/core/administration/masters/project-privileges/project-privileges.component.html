@@ -1,0 +1,50 @@
+<div class="tab-pane fade active show" id="others" role="tabpanel" *ngIf="!showDataGrid; else grid">
+  <div class="row mt-2">
+    <div class="col-lg-3 col-xl-2 mt-2 mb-2 col-sm-6 pr-0 animate__animated   animate__flipInX"
+      *ngFor="let item of masterData">
+      <div class="">
+        <div class="card m-0">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 font-weight-semibold font-size-xs">
+                {{item.typeName}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8">
+                <h3>{{item.count}}&nbsp; </h3>
+              </div>
+              <div class="col-4 p-0">
+                <div class="icons-xl" [ngStyle]="{'color': item.color}">
+                  <i class="{{item.imageName}} border-2 rounded-pill p-2"></i>
+                </div>
+              </div>
+              <div class="col-12 align-middle">
+                <a class="menu-link fetchGrid" data-toggle="tab" role="tab" (click)="viewData(item)">View More </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #grid>
+  <div class="card" id="divBuildingInfo">
+    <div class="card-header header-elements-inline">
+      <h6 class="card-title">{{currentItem?.typeName}}</h6>
+      <div class="header-elements">
+        <a data-toggle="tab" class="menu-link btn btn-light btn-icon rounded-pill mr-1" (click)="loadData()">
+          <i class="bi bi-arrow-left-short fa-2x font-weight-bold"></i>
+        </a>
+        <a class="btn btn-secondary btn-icon rounded-pill mr-3" (click)="openPopup()" [hidden]="!currentItem?.saveUrl">
+          <i class="bi bi-plus fa-2x"></i>
+        </a>
+      </div>
+    </div>
+    <ng-container *ngIf="gridData?.configuration?.columns?.length">
+      <app-kendo-grid [gridDetails]="gridData" [isViewable]="true" [fileName]="'Project-Privileges'" [fileName]="'Project_Privileges'"></app-kendo-grid>
+    </ng-container>
+  </div>
+</ng-template>

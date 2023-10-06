@@ -1,0 +1,257 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [items]="['Activity', 'Condition Records']" [activeItem]="activePage"
+    [pageTitle]="'Conditional Audit'" [buttons]="buttons" [badgeTitle]="cAudit?.auditStatus?'Active': 'Inactive'"
+    [badge]="cAudit?.auditStatus?'': 'badge-secondary badge-pill'" [pageTag]="'CA:'+pad(caId,3)"
+    [isEditable]="isEditable" (modified)="buttonClicked($event)">
+  </app-page-header>
+
+  <!-- Content area -->
+  <div class="content" *ngIf="isDataLoaded">
+    <app-alert id="alert-taskInstructions"></app-alert>
+    <div class="row">
+      <div class=" col-xl-4 col-md-12">
+        <div class="card">
+          <div class="card-header bg-transparent header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-secondary">Audit Details</h6>
+          </div>
+
+          <div class="card-body">
+            <form [formGroup]="caForm">
+              <div class="row">
+                <div class="col-6">
+                  <app-text-field [formControlName]="'cAId'" [formGroup]="caForm" [fieldName]="'cAId'"
+                    [label]="'#CA ID'" ngDefaultControl [value]="'CA:'+pad(caId,3)" [isReadonly]="true">
+                  </app-text-field>
+                </div>
+
+                <div class="col-6">
+                  <app-text-field [formControlName]="'auditDate'" [formGroup]="caForm" [fieldName]="'auditDate'"
+                    [label]="'audit Date'" ngDefaultControl [isRequired]="false"
+                    [value]="cAudit?.auditDate | localizedDate" [pipe]="'date'" [isReadonly]="!isEditable">
+                  </app-text-field>
+                </div>
+
+                <div class="col-6">
+                  <app-label [label]="'audit Status'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [formControlName]="'auditStatus'" [data]="masterData?.status" ngDefaultControl
+                    textField="name" valueField="id" [filterable]="true" [defaultItem]="'Select auditStatus'">
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-6">
+                  <app-text-field class="form-group" [formControlName]="'createdBy'" [formGroup]="caForm" [fieldName]="'createdBy'"
+                    [isReadonly]="true" [label]="'created By'" ngDefaultControl [value]="cAudit?.createdBy?? createdBy">
+                  </app-text-field>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-8">
+        <div class="card pb-1">
+          <div class="card-header  bg-transparent   header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-secondary">Location and Asset Details</h6>
+          </div>
+
+          <div class=" card-body">
+            <form [formGroup]="cAuditForm">
+              <div class="row">
+
+                <div class="col-md-4">
+                  <app-label [label]="'Project'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [formControlName]="'project'" [data]="masterData?.projects" ngDefaultControl
+                    textField="name" valueField="id" [filterable]="true" [defaultItem]="'Select Project'"
+                    (selectionChange)="siteSelected($event)">
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-md-4">
+                  <app-label [label]="'Building'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [formControlName]="'building'" [data]="buildings" ngDefaultControl
+                    textField="name" valueField="id" [filterable]="true" [defaultItem]="'Select Building'"
+                    (selectionChange)="buildingSelected($event)">
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-md-4">
+                  <app-label [label]="'Unit / Space'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [formControlName]="'unitOrSpace'" [data]="unitOrSpaces" ngDefaultControl
+                    textField="name" valueField="id" [filterable]="true" [defaultItem]="'Select unitOrSpace'"
+                    (selectionChange)="unitOrSpaceSelected($event)">
+                  </kendo-dropdownlist>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4">
+                  <app-label [label]="'Asset Id'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [formControlName]="'assetId'" [data]="assets" ngDefaultControl
+                    textField="assetCode" valueField="assetId" [filterable]="true" [defaultItem]="'Select assetId'"
+                    (selectionChange)="assetSelected($event)">
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-md-4">
+                  <app-label [label]="'Asset Name'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [formControlName]="'assetName'" [data]="assets" ngDefaultControl
+                    textField="assetName" valueField="assetId" [filterable]="true" [defaultItem]="'Select assetId'"
+                    (selectionChange)="assetSelected($event)" #assetId>
+                  </kendo-dropdownlist>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-header text-right">
+            <button type="button" class="btn btn-secondary btn-sm" (click)="addCaDetails()" *ngIf="userAccess?.canAdd"
+              [disabled]="!caDetailsForm?.valid || caId === 0 || !isEditable"> Add</button>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <form [formGroup]="caDetailsForm">
+                <table class="table text-nowrap auditDetails">
+                  <thead class="bg-secondary text-white">
+                    <tr>
+                      <th width="80"><img src="assets/images/logo-sm-light.png" width="20px" loading="lazy"></th>
+                      <th width="80">Status</th>
+                      <th width="150">Audit Date</th>
+                      <th width="200">Category Type</th>
+                      <th width="200">Remarks</th>
+                      <th width="150">Exact Locations</th>
+                      <th width="100">Image Before</th>
+                      <th width="100">Image After</th>
+                      <th width="150">Action by (Resource)</th>
+                      <th width="200">Action Taken</th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="caDetails">
+                    <ng-container *ngFor="let details of caDetails?.controls; let i = index">
+                      <tr [formGroupName]="i">
+                        <td>
+                          <div class="list-icons">
+                            <div class="dropdown position-static">
+                              <a class="btn btn-sm btn-outline-secondary border-2 btn-icon btn-icon-action rounded-pill dropdown-toggle"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots font-size-sm" style="transform: rotate(90deg);"
+                                  title="Actions"></i>
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-left" *ngIf="isEditable">
+                                <a class="dropdown-item" (click)="saveDetails(i, details)">
+                                  <i class="bi bi-check-circle p-2" title="save"
+                                    [ngClass]="cAuditDetails(details).valid?'text-info':'text-muted'"
+                                    aria-hidden="true"></i>
+                                  Save</a>
+                                <a class="dropdown-item" (click)="deleteCaDetails(i, details)">
+                                  <i class="bi bi-trash text-danger p-2" aria-hidden="true" title="delete"></i>
+                                  Delete</a>
+                                <a class="dropdown-item" (click)="updateAsCompleted(i,details)">
+                                  <i class="bi bi-check text-success p-2" aria-hidden="true"
+                                    *ngIf="cAuditDetails(details).valid" title="update"></i>
+                                  Update</a>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <span class="text-success">
+                            <span class="badge badge-pill badge-success"
+                              *ngIf="cAuditDetailsList[i]?.status === 1">Active</span>
+                            <span class="badge badge-pill badge-info"
+                              *ngIf="cAuditDetailsList[i]?.status === 2">Completed</span>
+                          </span>
+                        </td>
+                        <td class="p-2">
+                          <app-text-field [formControlName]="'auditDate'" [formGroup]="cAuditDetails(details)"
+                            [showLabel]="false" [fieldName]="'auditDate'" [label]="'Audit Date'" ngDefaultControl
+                            [isRequired]="false" [value]="cAuditDetailsList[i]?.auditDate | localizedDate"
+                            [pipe]="'date'" [isReadonly]="!isEditable">
+                          </app-text-field>
+                        </td>
+                        <td class="p-2">
+                          <kendo-dropdownlist class="form-group" [formControlName]="'categoryId'" [data]="masterData?.categories" ngDefaultControl
+                          [filterable]="true" textField="name" valueField="id"  [defaultItem]="'Select Category Id'"
+                          [readonly]="!isEditable" >
+                        </kendo-dropdownlist>
+
+                        </td>
+                        <td class="p-2">
+                          <app-textarea-field [formControlName]="'remarks'" [formGroup]="cAuditDetails(details)"
+                            [showLabel]="false" [fieldName]="'remarks'" [label]="'Remarks'" ngDefaultControl
+                            [value]="cAuditDetailsList[i]?.remarks??''" [isReadonly]="!isEditable">
+                          </app-textarea-field>
+                        </td>
+                        <td class="p-2">
+                          <app-text-field [formControlName]="'exactLocations'" [formGroup]="cAuditDetails(details)"
+                            [showLabel]="false" [fieldName]="'exactLocations'" [label]="'Exact Locations'"
+                            ngDefaultControl [value]="cAuditDetailsList[i]?.exactLocations??''"
+                            [isReadonly]="!isEditable">
+                          </app-text-field>
+                        </td>
+                        <td class="text-center">
+                          <div class="card-img-actions d-inline-block mb-3">
+                            <img class="img-fluid rounded-circle" id="615fdaa3-58a7-45cc-81f6-d9f4a82e73e4"
+                              [src]="cAuditDetailsList[i]?.beforeImageUrl">
+                            <div class="card-img-actions-overlay rounded-circle">
+                              <a
+                                class="btn btn-outline bg-white text-white border-white border-2 btn-icon rounded-round">
+                                <ngx-dropzone (change)="onChange($event,'beforeFile', details, i)"
+                                  class="dropzone upload-doc" [multiple]="false" [disabled]="!isEditable">
+                                  <ngx-dropzone-label class="font-12">
+                                    <i class="bi bi-upload"></i>
+                                  </ngx-dropzone-label>
+                                </ngx-dropzone>
+                              </a>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="text-center">
+                          <div class="card-img-actions d-inline-block mb-3">
+                            <img class="img-fluid rounded-circle" id="615fdaa3-58a7-45cc-81f6-d9f4a82e73e4"
+                              [src]="cAuditDetailsList[i]?.afterImageUrl">
+                            <div class="card-img-actions-overlay rounded-circle">
+                              <a
+                                class="btn btn-outline bg-white text-white border-white border-2 btn-icon rounded-round">
+                                <ngx-dropzone (change)="onChange($event,'afterFile', details, i)"
+                                  class="dropzone upload-doc" [multiple]="false" [disabled]="!isEditable">
+                                  <ngx-dropzone-label class="font-12">
+                                    <i class="bi bi-upload"></i>
+                                  </ngx-dropzone-label>
+                                </ngx-dropzone>
+                              </a>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="p-2">
+                          <kendo-dropdownlist class="form-group" [formControlName]="'actionBy'" [data]="resources" ngDefaultControl
+                          [filterable]="true" textField="name" valueField="id"  [defaultItem]="'Select actionBy'"
+                          [readonly]="!isEditable" >
+                        </kendo-dropdownlist>
+                        </td>
+                        <td class="p-2">
+                          <app-textarea-field [formControlName]="'actionTaken'" [formGroup]="cAuditDetails(details)"
+                            [showLabel]="false" [fieldName]="'actionTaken'" [label]="'Action Taken'" ngDefaultControl
+                            [value]="cAuditDetailsList[i]?.actionTaken??''" [isReadonly]="!isEditable">
+                          </app-textarea-field>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /content area -->

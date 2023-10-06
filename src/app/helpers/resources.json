@@ -1,0 +1,33 @@
+[
+  {
+    "name": "Divisions",
+    "type": "data",
+    "referenceId": "DIV",
+    "listUrl": "GetDivisions",
+    "addUpdateUrl": "AddOrUpdateDivision",
+    "icon": "bi bi-people-fill"
+  },
+  {
+    "name": "Departments",
+    "type": "data",
+    "referenceId": "DEPT",
+    "listUrl": "GetDepartments",
+    "addUpdateUrl": "AddOrUpdateDepartment"
+  },
+  {
+    "name": "Designations",
+    "type": "data",
+    "referenceId": "DSGN",
+    "listUrl": "GetDesignations",
+    "addUpdateUrl": "AddOrUpdateDesignation"
+  },
+  {
+    "name": "Manpower",
+    "type": "data",
+    "referenceId": "RES",
+    "listUrl": "GetResources",
+    "addUpdateUrl": "AddOrUpdateResource",
+    "routeEnabled": true,
+    "masterType": "Manpower"
+  }
+]

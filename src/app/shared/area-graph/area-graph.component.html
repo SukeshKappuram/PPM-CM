@@ -1,0 +1,14 @@
+<kendo-chart [title]="data.title">
+  <kendo-chart-category-axis>
+    <kendo-chart-category-axis-item [categories]="data.categories" [title]="data.categoriesTitle">
+    </kendo-chart-category-axis-item>
+  </kendo-chart-category-axis>
+
+  <kendo-chart-series-defaults [highlight]="{ inactiveOpacity: 0.3 }">
+  </kendo-chart-series-defaults>
+
+  <kendo-chart-series>
+    <kendo-chart-series-item type="area" *ngFor="let item of data.series" [data]="item.data">
+    </kendo-chart-series-item>
+  </kendo-chart-series>
+</kendo-chart>

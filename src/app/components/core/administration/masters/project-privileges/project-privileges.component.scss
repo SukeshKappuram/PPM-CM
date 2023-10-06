@@ -1,0 +1,16 @@
+.card1 {
+  box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%) !important;
+  border-width: 0 !important;
+}
+.row {
+  display: flex  !important;
+  flex-wrap: wrap  !important;
+  margin-right: -0.625rem  !important;
+  margin-left: -0.625rem  !important;
+}
+.card-body1 {
+  -ms-flex: 1 1 auto !important;
+  flex: 1 1 auto !important;
+  min-height: 1px !important;
+  padding: 1.25rem !important;
+}

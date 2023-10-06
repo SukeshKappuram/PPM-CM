@@ -1,0 +1,15 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [items]="['Activity']" [activeItem]="'Conditional Audit'" [pageTitle]="'Conditional Audit'"
+    [buttons]="buttons" [isEditable]="isEditable">
+  </app-page-header>
+
+  <div class="notification-area">
+    <app-alert id="alert-conditionalAudit"></app-alert>
+  </div>
+
+  <div class="content" *ngIf="gridData?.configuration?.columns?.length">
+    <app-kendo-grid [gridDetails]="gridData" (edited)="modifyAudit($event)" (deleted)="deleteAudit($event)"
+      [isViewable]="true" [fileName]="'Conditional_Audit'">
+    </app-kendo-grid>
+  </div>
+</div>

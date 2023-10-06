@@ -1,0 +1,16 @@
+<div class="form-group">
+  <app-label [label]="placeholder === ''?label:placeholder" [isRequired]="isRequired" [show]="showLabel"
+    [tooltip]="tooltip"></app-label>
+  <select class="form-control form-control-sm form-select" [value]="value" [(ngModel)]="value" [ngClass]="customClass"
+    (change)="selectionChange.emit($event.target);validateField();" (blur)="validateField();" (focus)="isFocused=isRequired"
+    [disabled]="isReadonly">
+    <option value="" class="custom-option" [disabled]="isFocused">Select
+      <app-label [label]="placeholder === ''?label:placeholder"></app-label>
+    </option>
+    <option [value]="option[valueKey]" *ngFor="let option of dataList">
+      {{option[secondaryLabelKey] ? option[secondaryLabelKey]+' - '+option[labelKey]: option[labelKey]}}</option>
+  </select>
+  <span class="text-danger" *ngIf="!isValid">
+    {{ getErrorMessage(formGroup, getLabels().includes(label)? getLabel(label) :label.charAt(0).toLowerCase() + label.slice(1))}}
+  </span>
+</div>

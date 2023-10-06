@@ -1,0 +1,232 @@
+ <!-- Inner content -->
+ <div class="content-inner">
+   <app-page-header [items]="['HR']" [activeItem]="'Dashboard'" [pageTitle]="'HR Dashboard'" [ignoreCase]="true">
+   </app-page-header>
+   <!-- Content area -->
+   <div class="content">
+     <div class="row">
+       <div class="col-xl-4">
+         <div class="form-group row">
+           <label class="col-form-label col-lg-4 font-size-lg">Select Date</label>
+           <div class="col-lg-8">
+             <input class="form-control" type="date" name="date" [value]="currrentDate | date:'dd-MM-yyyy'">
+           </div>
+         </div>
+       </div>
+
+       <div class="col-xl-12">
+         <div class="d-flex flex-column h-100">
+           <div class="row">
+             <div class="col-md-3">
+               <div class="card card-animate">
+                 <div class="card-body">
+                   <div class="d-flex justify-content-between">
+                     <div>
+                       <p class="font-weight-semibold text-dark mb-0">Total Checked-In</p>
+                       <h2 class=" font-weight-bold">420</h2>
+                       <p class="mb-0 text-muted"><span class="badge bg-light text-success mb-0  ">
+                           100 %
+                         </span> </p>
+                     </div>
+                     <div>
+                       <div class="avatar-sm flex-shrink-0">
+                         <span class="avatar-title bg-success rounded-circle ">
+                           <i class="icon-user-plus "></i>
+                         </span>
+                       </div>
+                     </div>
+                   </div>
+                 </div><!-- end card body -->
+               </div> <!-- end card-->
+             </div> <!-- end col-->
+
+             <div class="col-md-3">
+               <div class="card card-animate">
+                 <div class="card-body">
+                   <div class="d-flex justify-content-between">
+                     <div>
+                       <p class="font-weight-semibold text-dark mb-0">No Show</p>
+                       <h2 class=" ff-secondary font-weight-bold"> 0</h2>
+                       <p class="mb-0 text-muted"><span class="badge bg-light text-danger mb-0">
+                           0 %
+                         </span> </p>
+                     </div>
+                     <div>
+                       <div class="avatar-sm flex-shrink-0">
+                         <span class="avatar-title bg-danger rounded-circle ">
+                           <i class="icon-user-minus"></i>
+                         </span>
+                       </div>
+                     </div>
+                   </div>
+                 </div><!-- end card body -->
+               </div> <!-- end card-->
+             </div> <!-- end col-->
+
+             <div class="col-md-3">
+               <div class="card card-animate">
+                 <div class="card-body">
+                   <div class="d-flex justify-content-between">
+                     <div>
+                       <p class="text-dark font-weight-semibold mb-0">Total Check Out</p>
+                       <h2 class="font-weight-bold"> 280
+
+                       </h2>
+                       <p class="mb-0 text-muted"><span class="badge bg-light text-warning mb-0">
+                           60 %
+                         </span> View all</p>
+                     </div>
+                     <div>
+                       <div class="avatar-sm flex-shrink-0">
+                         <span class="avatar-title bg-warning rounded-circle ">
+                           <i class="icon-move-right"></i>
+                         </span>
+                       </div>
+                     </div>
+                   </div>
+                 </div><!-- end card body -->
+               </div> <!-- end card-->
+             </div> <!-- end col-->
+
+             <div class="col-md-3">
+               <div class="card card-animate">
+                 <div class="card-body">
+                   <div class="d-flex justify-content-between">
+                     <div>
+                       <p class="font-weight-semibold text-dark mb-0">On Break</p>
+                       <h2 class="font-weight-bold">0</h2>
+                       <p class="mb-0 text-muted"><span class="badge bg-light text-purple mb-0">
+                           0%
+                         </span> </p>
+                     </div>
+                     <div>
+                       <div class="avatar-sm flex-shrink-0">
+                         <span class="avatar-title bg-purple rounded-circle ">
+                           <i class="icon-cup2"></i>
+                         </span>
+                       </div>
+                     </div>
+                   </div>
+                 </div><!-- end card body -->
+               </div> <!-- end card-->
+             </div> <!-- end col-->
+           </div> <!-- end row-->
+         </div>
+       </div> <!-- end col-->
+       <!-- end col -->
+     </div>
+
+     <div class="row">
+       <div class="col-xl-4">
+         <div class="form-group row">
+           <label class="col-form-label col-lg-4 font-size-lg">Analytics</label>
+           <div class="col-lg-8">
+             <select class="form-control">
+               <option value="opt2">Weekly</option>
+               <option value="opt3">Monthly</option>
+             </select>
+           </div>
+         </div>
+       </div>
+
+       <div class="col-xl-12">
+         <div class="d-flex flex-column h-100">
+           <div class="row">
+             <div class="col-md-8 col-xl-8 ">
+               <div class="card w-100">
+                 <div class="card-header d-flex py-0">
+                   <h6 class="card-title font-weight-semibold py-3">TREND ANALYSIS (PRESENT/ABSENT)</h6>
+
+                   <div class="dropdown align-self-center ml-auto">
+                     <a href="#" data-toggle="dropdown"
+                       class="btn btn-outline-light btn-icon btn-sm text-body border-transparent rounded-pill">
+                       <i class="icon-more2"></i>
+                     </a>
+
+                     <div class="dropdown-menu dropdown-menu-right">
+                       <a href="#" class="dropdown-item"><i class="icon-file-eye"></i> View report</a>
+                       <a href="#" class="dropdown-item"><i class="icon-printer"></i> Print report</a>
+                       <a href="#" class="dropdown-item"><i class="icon-file-pdf"></i> Export report</a>
+                       <div class="dropdown-divider"></div>
+                       <a href="#" class="dropdown-item"><i class="icon-cog3"></i> Configure</a>
+                     </div>
+                   </div>
+                 </div>
+
+                 <div class="card-body">
+                   <img src="assets/images/chart-4.png" alt="Chart-Placeholder" class="chart-image pt-3 pb-5"
+                     loading="lazy" style="
+            max-width: 100%;">
+                 </div>
+               </div>
+             </div>
+
+             <div class="col-xl-4">
+               <!-- Basic donut -->
+               <div class="card">
+                 <div class="card-header">
+                   <h5 class="card-title font-weight-semibold">TREND ANALYSIS (PRESENT/ABSENT)</h5>
+                 </div>
+
+                 <div class="card-body">
+                   <img src="assets/images/chart-5.png" alt="Chart-Placeholder" class="chart-image pt-3 pb-5"
+                     loading="lazy" style="
+            max-width: 100%;">
+                 </div>
+               </div>
+               <!-- /basic donut -->
+             </div>
+           </div>
+           <!-- /pie and donut -->
+         </div>
+       </div>
+     </div>
+     <!-- end row-->
+
+     <div class="row">
+
+       <div class="col-xl-12">
+         <div class="d-flex flex-column h-100">
+           <div class="row">
+             <div class="col-xl-4">
+               <!-- Basic donut -->
+               <div class="card">
+                 <div class="card-header">
+                   <h6 class="card-title font-weight-semibold pt-0  ">PRODUCTIVITY ANALYSIS (CHECKED-IN VS
+                     CHECKED-OUT)</h6>
+                   <span>(NOTE: PRODUCTIVITY CALCULATED BASEDASED ON 8HRS PER DAY)</span>
+                 </div>
+
+                 <div class="card-body">
+                   <img src="assets/images/chart-7.png" alt="Chart-Placeholder" class="chart-image pt-3 pb-5"
+                     loading="lazy" style="
+            max-width: 100%;">
+                 </div>
+               </div>
+               <!-- /basic donut -->
+             </div>
+
+             <div class="col-md-8 col-xl-8 ">
+               <div class="card w-100">
+                 <div class="card-header  py-0">
+                   <h6 class="card-title font-weight-semibold pt-3 mb-0">PRODUCTIVITY ANALYSIS (CHECKED-IN VS
+                     CHECKED-OUT)</h6>
+                   <span>(NOTE: PRODUCTIVITY CALCULATED BASEDASED ON 8HRS PER DAY)</span>
+                 </div>
+
+                 <div class="card-body">
+                   <img src="assets/images/chart-6.png" alt="Chart-Placeholder" class="chart-image pt-3 pb-5"
+                     loading="lazy" style="
+            max-width: 100%;">
+                 </div>
+
+               </div>
+             </div>
+           </div>
+           <!-- /pie and donut -->
+         </div>
+       </div>
+     </div>
+     <!-- end row-->
+   </div>
+ </div> <!-- end col-->

@@ -1,0 +1,14 @@
+.table-fixed {
+  width: 100%;
+}
+.table-fixed thead {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+}
+.table-fixed thead th {
+  background-color: #fff;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+}

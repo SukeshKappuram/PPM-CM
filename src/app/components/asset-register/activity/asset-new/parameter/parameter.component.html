@@ -1,0 +1,58 @@
+<div class="card">
+  <div class="card-header bg-transparent header-elements-inline">
+    <h6 class="card-title font-weight-semibold text-secondary">Additional Fields </h6>
+    <button class="btn btn-sm btn-secondary" *ngIf="userAccess?.canUpdate" type="submit" (click)="save()"
+      [disabled]="!isEditable || !(paraForm.valid)">
+      Save
+    </button>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="paraForm">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="col-form-label col-md-9"> Additional Field <sup class="text-danger">*</sup></label>
+            <kendo-dropdownlist class="form-group" [formControlName]="'additionalField'" [data]="availableParameters" ngDefaultControl
+              [filterable]="true" textField="name" valueField="id" [defaultItem]="defaultItem('Additional Field')"
+              [readonly]="!isEditable" (selectionChange)="onChange($event)">
+              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+              </ng-template>
+            </kendo-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-3 mt-2">
+          <button class="btn bg-transparent border-secondary text-secondary rounded-pill border-2 btn-icon mr-3 legitRipple"
+            (click)="addParameter(selectedParameter)" [disabled]="!isEditable">
+            <i class="bi bi-plus fa-2x"></i>
+          </button>
+        </div>
+      </div>
+      <ng-container *ngFor="let control of parameterValuesFieldAsFormArray?.controls ;let i = index;"
+        formArrayName='parameterValues'>
+        <div class="row" [formGroupName]="i">
+          <div class="col-md-4 col-md-offset-2">
+            <div class="form-group">
+              <app-text-field [formControlName]="'name'" [isReadonly]="true" [formGroup]="getParaForm(control)"
+                [fieldName]="'name'" [label]="'name'" ngDefaultControl [value]="this.selectedParameters[i].name">
+              </app-text-field>
+            </div>
+          </div>
+          <div class="col-md-4 col-md-offset-2">
+            <div class="form-group">
+              <app-text-field [inputType]="selectedParameters[i].type ? 'text' : 'number'" [formControlName]="'value'"
+                [formGroup]="getParaForm(control)" [fieldName]="'value'" [label]="'value'" [isRequired]="true"
+                ngDefaultControl [value]="this.selectedParameters[i].value"
+                [isReadonly]="!isEditable"></app-text-field>
+            </div>
+          </div>
+          <div class="col-md-4 col-md-offset-2 mt-3">
+            <button class="btn btn-sm btn-danger" type="button" (click)="remove(i)"
+              [disabled]="!isEditable">Remove</button>
+          </div>
+        </div>
+      </ng-container>
+    </form>
+  </div>
+</div>

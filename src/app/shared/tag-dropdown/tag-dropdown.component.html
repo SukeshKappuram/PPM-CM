@@ -1,0 +1,7 @@
+<app-label [label]="label" [isRequired]="false" [show]="showLabel"></app-label>
+<tag-input [(ngModel)]="items" [onlyFromAutocomplete]="true" [placeholder]="placeholder" (onAdd)="elementsAdded($event)"
+  (onRemove)="elementsRemoved($event)" [secondaryPlaceholder]="placeholder" [separatorKeyCodes]="[9]"
+  [allowDupes]="false" [separatorKeys]="[',']" [disable]="isReadonly">
+  <tag-input-dropdown [showDropdownIfEmpty]="true" [autocompleteItems]="autocompleteItems">
+  </tag-input-dropdown>
+</tag-input>

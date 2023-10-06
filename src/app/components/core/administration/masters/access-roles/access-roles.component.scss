@@ -1,0 +1,41 @@
+  .table-fixed {
+    width: 100%;
+  }
+
+  .table-fixed thead {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+  }
+
+  .table-fixed thead th {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+  }
+
+  .table-responsive {
+    scrollbar-width: thin;
+    scrollbar-color: #999999 auto;
+    background: #f4fcff !important;
+  }
+  
+  /* Works on Chrome, Edge, and Safari */
+  .table-responsive::-webkit-scrollbar {
+    width: 8px;
+    /* width of the entire scrollbar */
+  }
+  
+  .table-responsive::-webkit-scrollbar-track {
+    background: transparent;
+    /* color of the tracking area */
+  }
+  
+  .table-responsive::-webkit-scrollbar-thumb {
+    background-color: #999999;
+    /* color of the scroll thumb */
+    border-radius: 20px;
+    /* roundness of the scroll thumb */
+    border: 2px solid transparent;
+    /* creates padding around scroll thumb */
+  }

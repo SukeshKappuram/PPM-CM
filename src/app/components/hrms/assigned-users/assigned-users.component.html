@@ -1,0 +1,40 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header #header [items]="[pageType]" [activeItem]="pageTitle" [pageTitle]="pageTitle" [isFilterable]="false">
+  </app-page-header>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-3">
+          <app-label [label]="'HR Groups'" [isRequired]="true"></app-label>
+          <kendo-dropdownlist class="form-group" [data]="dataList" ngDefaultControl textField="name" valueField="id" [filterable]="false"
+            [defaultItem]="'Select Group'" (selectionChange)="onGroupSelectionChange($event)">
+          </kendo-dropdownlist>
+        </div>
+      </div>
+    </div>
+  </div>
+<div>
+  <ng-container *ngIf="gridData?.configuration?.columns?.length">
+    <kendo-expansionpanel title="Assigned Users" [expanded]="true" expandIcon="k-icon k-i-plus"
+      collapseIcon="k-icon k-i-minus">
+      <button type="button" class="btn btn-sm mr-1 btn-secondary float-right"
+        [disabled]="!(assignedUsersSelectedRows && assignedUsersSelectedRows.length > 0)"
+        (click)="onAssignedUsersClick()">Remove
+        Users</button>
+      <br><br>
+      <app-kendo-grid [gridDetails]="gridData" [selectionKey]="'employeeId'" [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+        (rowSelected)="onAssignedUsersRowSelectionChange($event)" [fileName]="pageTitle"></app-kendo-grid>
+    </kendo-expansionpanel>
+  </ng-container>
+  <ng-container *ngIf="additionalGridData?.configuration?.columns?.length">
+    <kendo-expansionpanel title="Additional Users" [expanded]="true" expandIcon="k-icon k-i-plus"
+      collapseIcon="k-icon k-i-minus">
+      <button type="button" class="btn btn-sm mr-1 btn-secondary float-right"
+        [disabled]="!(additionalUsersSelectedRows && additionalUsersSelectedRows.length > 0)" (click)="onAdditionalUsersClick()">Assign
+        Users</button>
+      <br><br>
+      <app-kendo-grid [gridDetails]="additionalGridData" [selectable]="{ checkboxOnly: true, mode: 'multiple' }" [selectionKey]="'employeeId'" (rowSelected)="onAdditionalUsersRowSelectionChange($event)" [fileName]="pageTitle"></app-kendo-grid>
+    </kendo-expansionpanel>
+  </ng-container>
+</div>
+</div>

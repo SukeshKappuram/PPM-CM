@@ -1,0 +1,170 @@
+<div class="row">
+  <div class="col-md-12" *ngIf="tabId===1 || tabId===4">
+    <div class="card">
+      <div class="card-body p-0">
+        <div class="profile-cover">
+          <div class="profile-cover-img" [ngStyle]="{'background-image': assetDefaultImg}">
+          </div>
+          <div class="media align-items-center text-center text-lg-left flex-column flex-lg-row m-0">
+            <div class="mb-lg-0">
+              <a class="profile-thumb">
+                <img [src]="qrImg" class="border-white" width="48" height="48" alt="Qr Code" loading="lazy">
+              </a>
+            </div>
+            <div class="media-body text-white">
+            </div>
+            <div class="ml-lg-3 mt-2 mt-lg-0">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12" *ngIf="tabId===1 && !isNew">
+    <div class="card">
+      <div class="card-header bg-transparent header-elements-inline">
+        <h6 class="card-title font-weight-semibold text-secondary">Next Schedule PPM
+        </h6>
+      </div>
+
+      <div class="card-body">
+        <ul class="media-list">
+          <li class="media">
+            <div class="mr-3">
+              <a class="btn bg-transparent border-primary text-primary rounded-pill border-2 btn-icon">
+                <i class="bi bi-calendar-event"></i>
+              </a>
+            </div>
+            <div class="media-body">
+              {{widgetData?.ppmWidget?.nextServiceDate | localizedDate: 'dd-MMM-yyyy HH:mm'}}
+              <div class="text-muted font-size-sm">Scheduled On</div>
+            </div>
+          </li>
+
+          <li class="media">
+            <div class="mr-3">
+              <a class="btn bg-transparent border-danger text-danger rounded-pill border-2 btn-icon">
+                <i class="bi bi-person-fill"></i>
+              </a>
+            </div>
+
+            <div class="media-body">
+              <a>{{widgetData?.ppmWidget?.resourceName}}</a>
+              <div class="text-muted font-size-sm">{{widgetData?.ppmWidget?.roleName}}</div>
+            </div>
+          </li>
+
+          <li class="media">
+            <div class="mr-3">
+              <a class="btn bg-transparent border-secondary text-secondary rounded-pill border-2 btn-icon">
+                <i class="bi bi-clock-history"></i>
+              </a>
+            </div>
+
+            <div class="media-body">
+              {{widgetData?.ppmWidget?.estimatedTimeInMins}} Minutes
+              <div class="text-muted font-size-sm">Estimated time to resolve
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12" *ngIf="tabId===1 && !isNew">
+    <div class="card">
+      <div class="card-header bg-transparent header-elements-inline">
+        <h6 class="card-title font-weight-semibold text-secondary">Total Workorders
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-center text-center mb-2" *ngIf="widgetData?.workOrderWidgetDetails">
+          <div class="timer-number font-weight-light">
+            {{widgetData?.workOrderWidgetDetails[1]?.count}} <span
+              class="d-block font-size-base mt-2">{{widgetData?.workOrderWidgetDetails[1]?.statusName}}</span>
+          </div>
+          <div class="timer-dots mx-1">:</div>
+          <div class="timer-number font-weight-light">
+            {{widgetData?.workOrderWidgetDetails[0]?.count}} <span
+              class="d-block font-size-base mt-2">{{widgetData?.workOrderWidgetDetails[0]?.statusName}}</span>
+          </div>
+        </div>
+
+        <!-- <div class="media mb-3">
+          <div class="media-body">
+            <h6 class="font-weight-semibold mb-0">Ontime Completion</h6>
+            <span class="text-muted">80.30%</span>
+          </div>
+
+          <div class="ml-3 align-self-center">
+            <i class="bi bi-activity fa-2x text-danger opacity-75"></i>
+          </div>
+        </div> -->
+        <!-- <div class="progress mb-4" style="height: 0.165rem;">
+          <div class="progress-bar bg-danger" style="width: 80%">
+            <span class="sr-only">80% Complete</span>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12" *ngIf="tabId===2 && !isNew">
+    <div class="card">
+      <div class="card-header bg-transparent header-elements-inline">
+        <h6 class="card-title font-weight-semibold text-secondary">Cost Incurred
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-center text-center mb-0">
+          <div class="timer-number font-weight-light" style="font-size: 2rem;">
+            000.000 &nbsp;<span class="d-block font-size-base mt-2"></span>
+          </div>
+          <div class="timer-number font-weight-light" style="font-size: 2rem;">
+            AED <span class="d-block font-size-base mt-2"></span>
+          </div>
+        </div>
+
+        <div class="media mb-3">
+          <div class="media-body">
+            <span class="text-muted">Cumulative costs incurred on the maintenance of this asset (labor & spares)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12" *ngIf="tabId===2 && !isNew">
+    <div class="card">
+      <div class="card-header bg-transparent header-elements-inline">
+        <h6 class="card-title font-weight-semibold text-secondary">Asset Downtime
+
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-center text-center mb-2">
+          <div class="timer-number font-weight-light">
+            00 <span class="d-block font-size-base mt-2">Days</span>
+          </div>
+          <div class="timer-dots mx-1">:</div>
+          <div class="timer-number font-weight-light">
+            00 <span class="d-block font-size-base mt-2">Hours</span>
+          </div>
+          <div class="timer-dots mx-1">:</div>
+          <div class="timer-number font-weight-light">
+            00 <span class="d-block font-size-base mt-2">Mins</span>
+          </div>
+        </div>
+
+        <div class="media mb-3">
+          <div class="media-body">
+            <span class="text-muted">Down time represents the total cummulative time the asset was non
+              operational</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

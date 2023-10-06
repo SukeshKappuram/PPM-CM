@@ -1,0 +1,8 @@
+<ng-container *ngFor="let alert of alerts">
+  <div *ngIf="alert.isAlert" [ngClass]="cssClass(alert)??''">
+    <a class="btn-close close fa-1x" (click)="removeAlert(alert)"></a>
+    <span [innerHTML]="alert.message"></span>
+  </div>
+</ng-container>
+
+<app-toast [alerts]="alerts" (removeToast)="removeAlert($event)"></app-toast>

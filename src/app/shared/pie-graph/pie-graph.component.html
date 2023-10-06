@@ -1,0 +1,31 @@
+<!-- <button class="btn btn-light" kendoButton (click)="exportChart()">Export as Image</button> -->
+<div class="row">
+  <div class="col-md-6" *ngIf="isTabularRequired">
+    <div class="container m-auto w-50">
+      <table class="table table-bordered" style="margin-top: 10rem!important;">
+        <thead>
+          <tr>
+            <th>Label</th>
+            <th>Percentage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of data">
+            <td>{{d[labelKey]}}</td>
+            <td>{{d.value | number:'1.0-2'}} ({{d.percent}} %)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div [ngClass]="isTabularRequired?'col-md-6':'col-md-12'">
+    <kendo-chart #chart [title]="title" [ngClass]="isEnlarged?'Bigger':''">
+      <kendo-chart-legend position="bottom"></kendo-chart-legend>
+      <kendo-chart-series>
+        <kendo-chart-series-item type="pie" [data]="data" [field]="valueKey" [categoryField]="labelKey"
+          [labels]="{ visible: true, content: labelContent }" [colorField]="colorKey">
+        </kendo-chart-series-item>
+      </kendo-chart-series>
+    </kendo-chart>
+  </div>
+</div>

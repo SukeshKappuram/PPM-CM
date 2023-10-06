@@ -1,0 +1,26 @@
+<kendo-chart [title]="data.title" *ngIf="data">
+  <kendo-chart-legend [position]="'bottom'" [orientation]="'horizontal'" [visible]="false"></kendo-chart-legend>
+  <kendo-chart-category-axis>
+    <kendo-chart-category-axis-item [categories]="data.categories">
+    </kendo-chart-category-axis-item>
+  </kendo-chart-category-axis>
+  <kendo-chart-series>
+    <kendo-chart-series-item [type]="type" field="value" noteTextField="notes" [data]="item.data" [name]="item.name"
+      [stack]="isStack" *ngFor="let item of data.series" [labels]="{ position: 'center', visible: isStack }">
+      <kendo-chart-series-item-tooltip>
+        <ng-template let-value="value" let-dataItem="dataItem">
+          {{dataItem.name}}: {{ value }}
+        </ng-template>
+      </kendo-chart-series-item-tooltip>
+    </kendo-chart-series-item>
+    <kendo-chart-series-item [data]="blankData" [labels]="{
+            position: 'left',
+            visible: true,
+            content: setTotal,
+            padding: 0,
+            color: 'red',
+            font: 'bold'
+          }" *ngIf="isStack">
+    </kendo-chart-series-item>
+  </kendo-chart-series>
+</kendo-chart>

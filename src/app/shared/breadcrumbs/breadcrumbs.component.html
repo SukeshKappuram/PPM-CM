@@ -1,0 +1,15 @@
+<div class="breadcrumb-line breadcrumb-line-light header-elements-lg-inline">
+  <div class="d-flex">
+    <div class="breadcrumb">
+      <a class="breadcrumb-item" (click)="home()"><i class="bi bi-house mr-2"></i>Home</a>
+      <span class="breadcrumb-item " *ngFor="let i of items">{{i}}</span>
+      <span class="breadcrumb-item active">{{activeItem}}</span>
+    </div>
+  </div>
+  <div class="float-right position-relative" *ngIf="isFilterApplicable">
+    <span class="position-absolute top-0 start-100 translate-middle p-1-5 bg-danger border border-light rounded-circle" *ngIf="filterConfig?.noOfFiltersApplied > 0">
+      <span class="visually-hidden">{{filterConfig?.noOfFiltersApplied}}</span>
+    </span>
+    <i class="fa-2x cursor-pointer" [ngClass]="filterConfig?.isFilterApplied?'bi bi-funnel-fill': 'bi bi-funnel'" (click)="toggleFilter.emit()"></i>
+  </div>
+</div>

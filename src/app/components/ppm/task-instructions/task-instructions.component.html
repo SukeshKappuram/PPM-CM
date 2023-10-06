@@ -1,0 +1,7 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [items]="['PPM']" [activeItem]="'Task Instructions'" [pageTitle]="'Task Instructions'">
+  </app-page-header>
+  <ng-container *ngIf="gridData?.configuration?.columns?.length">
+      <app-kendo-grid [gridDetails]="gridData" [isViewable]="true" [prefix]="'ASC'" (edited)="modifyInstruction($event)" (deleted)="deleteInstruction($event)" [fileName]="'Task_Instructions'"></app-kendo-grid>
+  </ng-container>
+</div>

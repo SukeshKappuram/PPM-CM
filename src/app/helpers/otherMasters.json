@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Clients",
+    "type": "data",
+    "referenceId": "CL",
+    "listUrl": "GetClients",
+    "addUpdateUrl": "AddOrUpdateClient",
+    "routeEnabled": true,
+    "masterType": "Clients"
+  },
+  {
+    "name": "Projects",
+    "type": "data",
+    "referenceId": "PR",
+    "listUrl": "GetProjects",
+    "addUpdateUrl": "AddOrUpdateProject",
+    "routeEnabled": true,
+    "masterType": "Projects"
+  },
+  {
+    "name": "Customers",
+    "type": "data",
+    "referenceId": "CS",
+    "listUrl": "GetCustomers",
+    "addUpdateUrl": "AddOrUpdateCustomer",
+    "routeEnabled": true,
+    "masterType": "Customers",
+    "hasCustomComponent": "true",
+    "customComponent": "/core/administration/addcustomers",
+    "editCustomComponent": "/core/administration/editcustomers"
+  },
+  {
+    "name": "Vendors",
+    "type": "data",
+    "referenceId": "VD",
+    "listUrl": "GetVendors",
+    "addUpdateUrl": "AddOrUpdateVendor",
+    "routeEnabled": true,
+    "masterType": "Vendors"
+  },
+  {
+    "name": "Accounts",
+    "type": "data",
+    "referenceId": "AC",
+    "listUrl": "GetAccountGridData",
+    "addUpdateUrl": "AddOrUpdateAccount",
+    "routeEnabled": true,
+    "masterType": "Accounts"
+  },
+  {
+    "name": "Access Roles",
+    "type": "data",
+    "referenceId": "AR",
+    "listUrl": "GetRoles",
+    "addUpdateUrl": "AddOrUpdateRole",
+    "routeEnabled": true,
+    "masterType": "AccessRoles",
+    "hasCustomComponent": "true",
+    "customComponent": "/core/administration/access-roles",
+    "editCustomComponent": "/core/administration/access-roles"
+  },
+  {
+    "name": "Stock Details",
+    "type": "data",
+    "referenceId": "STK",
+    "listUrl": "StockDetails",
+    "addUpdateUrl": "AddOrUpdateStock",
+    "routeEnabled": true,
+    "masterType": "StockDetails",
+    "hasCustomComponent": "true",
+    "customComponent": "/stock-management/Stock/newstock",
+    "editCustomComponent": "/stock-management/Stock/editstock"
+  },
+  {
+    "name": "Stock Issue",
+    "type": "data",
+    "referenceId": "SI",
+    "listUrl": "StockIssueGridData",
+    "addUpdateUrl": "AddOrUpdateStock",
+    "routeEnabled": true,
+    "masterType": "StockIssue",
+    "hasCustomComponent": "true",
+    "customComponent": "/stock-management/Stock/newstockissue",
+    "editCustomComponent": "/stock-management/Stock/editstockissue"
+  },
+  {
+    "name": "GRN",
+    "type": "data",
+    "referenceId": "GRN",
+    "listUrl": "GRNDetails",
+    "addUpdateUrl": "AddOrUpdateGRNItemDetails",
+    "routeEnabled": true,
+    "masterType": "GRN",
+    "hasCustomComponent": "true",
+    "customComponent": "/procurement/grn/new-grn",
+    "editCustomComponent": "/procurement/grn/edit-grn"
+  },
+  {
+    "name": "GRN Return",
+    "type": "data",
+    "referenceId": "GRN",
+    "listUrl": "GRNReturnDetails",
+    "addUpdateUrl": "AddOrUpdateGRNItemDetails",
+    "routeEnabled": true,
+    "masterType": "GRN Return",
+    "hasCustomComponent": "true",
+    "customComponent": "/procurement/grn/new-grn",
+    "editCustomComponent": "/procurement/grn/edit-grn"
+  }
+]

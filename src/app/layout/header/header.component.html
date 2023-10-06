@@ -1,0 +1,75 @@
+<!-- Main navbar -->
+<div class="navbar navbar-expand-lg navbar-dark bg-secondary navbar-static">
+  <div class="d-flex flex-1 d-lg-none">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
+      <i class="bi bi-list"></i>
+    </button>
+    <button class="navbar-toggler sidebar-mobile-main-toggle" type="button">
+      <i class="bi bi-arrow-left-right"></i>
+    </button>
+  </div>
+
+  <div class="navbar-brand text-center text-lg-left">
+    <a class="d-inline-block" [routerLink]="Navigate.HOME">
+      <img [src]="logo" class="d-none d-sm-block" alt="logo" loading="lazy">
+      <img *ngIf="!isDemoVersion" src="assets/images/global/logo2-icon.png" class="d-sm-none" alt="logo" loading="lazy">
+    </a>
+  </div>
+
+  <div class="collapse navbar-collapse order-2 order-lg-1" id="navbar-mobile">
+    <ul class="navbar-nav ml-auto">
+      <!-- <li class="nav-item dropdown">
+        <a class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <span>EN</span>
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item">AR</a>
+          <a class="dropdown-item">EN</a>
+        </div>
+        <form action="/UserSettings/ChangeLanguage" method="post" id="languageForm">
+          <input type="hidden" value="" name="Change2locale" id="Change2locale" disabled="">
+          <input type="hidden" value="OfferLetters" name="CurrentController" disabled="">
+          <input type="hidden" value="Info" name="CurrentAction" disabled="">
+          <button type="submit" id="btnChangeLocale" style="display:none"></button>
+          <script>
+            function changeLocale(locale) {
+              document.getElementById('Change2locale').value = locale;
+              document.getElementById('btnChangeLocale').click();
+            }
+
+          </script>
+        </form>
+      </li> -->
+
+      <li class="nav-item dropdown" *ngIf="loggedIn">
+        <a class="navbar-nav-link legitRipple dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-plus-circle"></i>
+        </a>
+
+        <div class="dropdown-menu dropdown-menu-left">
+          <a *ngFor="let action of quickActions" (click)="navigate(action.webUrl)" class="dropdown-item droprdown-item-color btnQuickCase">{{action.name}}</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown dropdown-user" *ngIf="loggedIn">
+        <a class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-bs-toggle="dropdown">
+          <img class="rounded-circle mr-2" height="34" alt="" src="" loading="lazy">
+          <span>Hi, {{userName}}</span>
+        </a>
+
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" (click)="getResourceProfile()">
+             <img src="{{imageUrl}}" width="20px" height="20px" alt="" loading="lazy">
+            My Profile</a>
+          <div class="dropdown-divider"></div>
+          <a (click)="changePassword()" class="dropdown-item"><i class="bi bi-lock"></i> Change Password</a>
+          <div class="dropdown-divider"></div>
+          <a (click)="openBuildDetails()" class="dropdown-item"><i class="bi bi-info-circle"></i> About {{currentBuild?.version}}</a>
+          <div class="dropdown-divider"></div>
+          <a (click)="logout()" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Logout</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- /main navbar -->

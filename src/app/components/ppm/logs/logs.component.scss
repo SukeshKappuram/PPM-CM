@@ -1,0 +1,19 @@
+.btn-check:checked+.btn,
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check)+.btn:active {
+  color: #fff;
+  background-color: var(--themecolor) !important;
+  border-color: var(--themecolor) !important;
+}
+
+.w-100 {
+  width: 100%;
+}
+.red-color {
+  color: red;
+}
+.green-color {
+  color: green;
+}

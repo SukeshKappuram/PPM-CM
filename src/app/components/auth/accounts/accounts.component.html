@@ -1,0 +1,18 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row mt-2">
+      <div class="col-md-12 mb-2 p-2">
+        <h3> Choose your account</h3>
+        <ul class="types-list ml-0">
+          <li *ngFor="let account of accounts" class="mr-1">
+            <label class="types-list__label">
+              <input type="radio" [value]="account.id" id="typeId_1" class="cust-type" name="type-radio"
+                (click)="onAccountChange(account)">
+              <span class="types-list__text">{{account.name}}</span>
+            </label>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

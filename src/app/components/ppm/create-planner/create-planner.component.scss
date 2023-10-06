@@ -1,0 +1,50 @@
+.issuedBtn {
+  background-color: #7CFC00 !important;
+  color: #FFF !important;
+  cursor: pointer;
+}
+
+.droppedBtn {
+  background-color: #DB7093 !important;
+  color: #FFF !important;
+  cursor: pointer;
+}
+
+.blockBtn {
+  background-color: #4c4c4c !important;
+  color: #FFF !important;
+  cursor: pointer;
+}
+
+.cancelledBtn {
+  background-color: #FF4500 !important;
+  color: #FFF !important;
+  cursor: pointer;
+}
+
+.omitBtn {
+  background-color: #ff5c35 !important;
+  color: #FFF !important;
+  cursor: pointer;
+}
+
+
+.pop {
+  font-size: 11px !important;
+  padding: 2px !important;
+  font-weight: 500;
+}
+
+.table-fixed {
+  width: 100%;
+}
+.table-fixed thead {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+}
+.table-fixed thead th {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+}

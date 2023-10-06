@@ -1,0 +1,647 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [items]="['Scheduled Tasks','ST Log']" [activeItem]="'Open ST WO'"
+    [pageTitle]="pageHeader?pageHeader:config?.pageTitle" [pageDescription]="pageDescription" [buttons]="buttons"
+    [badge]="'badge-secondary badge-pill'" [badgeTitle]="badgeTitle" [ignoreCase]="true"
+    (modified)="buttonClicked($event)">
+  </app-page-header>
+  <div class="content" *ngIf="isDataLoaded">
+    <div class="row">
+      <div class="col-md-3 mb-2">
+        <div class="card">
+          <div class="card-header bg-transparent header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-secondary">Account</h6>
+            <div class="header-elements">
+              <span class="badge badge-secondary custom-text" [title]="selectedClient?.name">
+                {{selectedClient?.name}}
+              </span>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <form [formGroup]="accountForm">
+              <div class="col-md-12">
+                <div class="row mb-1">
+                  <label class="col-form-label col-md-4"> Project<sup class="text-danger">*</sup>
+                  </label>
+                  <div class="col-md-8">
+
+                    <kendo-dropdownlist class="form-group" [data]="masterData?.projects" [filterable]="true" textField="name"
+                      valueField="id" [formControlName]="'project'" [defaultItem]="defaultItem('Project')"
+                      [readonly]="true">
+                      <ng-template kendoDropDownListItemTemplate let-dataItem>
+                        <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                      </ng-template>
+                    </kendo-dropdownlist>
+                  </div>
+                </div>
+
+                <div class="row mb-1">
+                  <label class="col-form-label col-md-4"> Building<sup class="text-danger">*</sup>
+                  </label>
+                  <div class="col-md-8">
+                    <kendo-dropdownlist class="form-group" [data]="masterData?.buildings" [filterable]="true" textField="name"
+                      valueField="id" [formControlName]="'building'" [defaultItem]="defaultItem('building')"
+                      [readonly]="true">
+                      <ng-template kendoDropDownListItemTemplate let-dataItem>
+                        <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                      </ng-template>
+                    </kendo-dropdownlist>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header bg-transparent header-elements-inline pl-2">
+            <h6 class="card-title text-secondary font-weight-semibold">Reported by</h6>
+            <div class="header-elements">
+              <a class=" "><i style="font-size: 23px;" class="bi bi-person-check text-secondary"></i></a>
+            </div>
+          </div>
+
+          <div class="card-body" *ngIf="selectedResource">
+            <div class="col-md-12 p-0 mb-3">
+              <ul class="types-list m-0 report-type-top-src">
+                <li *ngFor="let userType of masterData?.reporterTypes" class="mr-1">
+                  <label class="types-list__label">
+                    <input type="radio" value="12" [checked]="userType.id === selectedUserType?.id" class="cust-type"
+                      id="case-customer" name="reporter" [disabled]="true">
+                    <span class="types-list__text build-facilities">{{userType.name}}</span>
+                  </label>
+                </li>
+              </ul>
+
+              <ul class="subtypes-list report-type-src m-0">
+                <li *ngFor="let userSubType of reporterSubTypes" class="mr-1">
+                  <label class="types-list__label">
+                    <input type="radio" data-rtype="12" value="1" [checked]="userSubType.id === selectedUserSubType?.id"
+                      name="resource-checkbox" class="checkboxbtn" [disabled]="true">
+                    <span class="types-list__text">{{userSubType.name}}</span>
+                  </label>
+                </li>
+              </ul>
+            </div>
+
+            <form [formGroup]="reportedbyForm">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row mb-2 form-group form-group-feedback form-group-feedback-right"
+                    [hidden]="!selectedUserSubType?.isSelectable">
+                    <label class="col-form-label col-md-3 px-0">Reporter</label>
+                    <div class="col-md-9">
+                      <kendo-dropdownlist class="form-group" [data]="masterData?.resources" [filterable]="true" textField="name"
+                        valueField="id" [formControlName]="'reporter'" [defaultItem]="defaultItem('reporter')"
+                        [readonly]="true">
+                        <ng-template kendoDropDownListItemTemplate let-dataItem>
+                          <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                        </ng-template>
+                      </kendo-dropdownlist>
+                    </div>
+                  </div>
+
+                  <div class="row mb-2 form-group form-group-feedback form-group-feedback-right">
+                    <label class="col-form-label col-md-3 px-0">Name</label>
+                    <div class="col-md-9">
+                      <app-text-field [formControlName]="'name'" [formGroup]="reportedbyForm" [fieldName]="'name'"
+                        [label]="'Name'" [showLabel]="false" ngDefaultControl [value]="selectedResource?.name"
+                        [isReadonly]="true">
+                      </app-text-field>
+                      <div class="form-control-feedback form-control-feedback-sm text-muted mr-1">
+                        <i class="bi bi-person-fill"></i>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mb-2 form-group form-group-feedback form-group-feedback-right">
+                    <label class="col-form-label col-md-3 px-0">Email</label>
+                    <div class="col-md-9">
+                      <app-text-field [formControlName]="'email'" [formGroup]="reportedbyForm" [fieldName]="'email'"
+                        [label]="'Email'" [showLabel]="false" ngDefaultControl [value]="selectedResource?.email"
+                        [isReadonly]="true">
+                      </app-text-field>
+                      <div class="form-control-feedback form-control-feedback-sm text-muted mr-1">
+                        <i class="bi bi-envelope-fill"></i>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mb-2 form-group form-group-feedback form-group-feedback-right">
+                    <label class="col-form-label col-md-3 px-0"> Mobile </label>
+                    <div class="col-md-3">
+                      <div class="dropdown">
+                        <a class="badge badge-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                          style="padding: 12px 8px;">
+                          {{selectedCountry?.mobileCode}}
+                        </a>
+                        <div class="dropdown-menu border-purple dropdown-menu-right"
+                          style="max-height: 200px !important; overflow-y: auto !important;">
+                          <a class="dropdown-item text-secondary font-size-sm"
+                            *ngFor="let item of masterData?.countryCodes"> {{item.name}}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <app-text-field [formControlName]="'mobile'" [formGroup]="reportedbyForm" [fieldName]="'mobile'"
+                        [label]="'Mobile'" [showLabel]="false" ngDefaultControl [value]="selectedResource?.mobile"
+                        [isReadonly]="true">
+                      </app-text-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header bg-transparent header-elements-inline pl-2">
+            <h6 class="card-title text-secondary font-weight-semibold">Logged by</h6>
+            <span class="font-weight-semibold font-sm" style="font-size: 8pt;">{{ formData?.reportedDate |
+              localizedDate:
+              'dd-MMM-yyyy HH:mm'}}</span>
+          </div>
+          <div class="card-body">
+            <div class="media">
+              <div class="mr-3">
+                <a>
+                  <img src="assets/images/empty-profile.png" class="rounded-circle" width="42" height="42" alt="">
+                </a>
+              </div>
+              <div class="media-body">
+                <h6 class="mb-0" style="font-size: 12px;">
+                  {{loggedByUser?.email?loggedByUser?.email:getLoggedInUser().name}}
+                </h6>
+                <span
+                  class="font-weight-bold">{{loggedByUser?.designation?loggedByUser?.designation:getLoggedInUser().designation}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header bg-transparent header-elements-inline pl-2">
+            <h6 class="card-title text-secondary font-weight-semibold">Dates</h6>
+          </div>
+          <div class="card-body">
+            <div class="col-md-12">
+              <div class="row mb-1">
+                <label class="col-form-label col-md-6"> Scheduled Date :
+                </label>
+                <div class="col-md-6 pt-2">
+                  <span>{{ formData?.reportedDate |
+                    localizedDate:
+                    'dd-MMM-yyyy HH:mm'}}</span>
+                </div>
+              </div>
+              <div class="row mb-1">
+                <label class="col-form-label col-md-6"> Due Date :
+                </label>
+                <div class="col-md-6 pt-2">
+                  <span>{{ formData?.dueDate |
+                    localizedDate:
+                    'dd-MMM-yyyy HH:mm'}}</span>
+                </div>
+              </div>
+              <div class="row mb-1">
+                <label class="col-form-label col-md-6"> Completed Date :
+                </label>
+                <div class="col-md-6 pt-1">
+                  <span>{{ formData?.completionDate |
+                    localizedDate:
+                    'dd-MMM-yyyy HH:mm'}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-header bg-transparent header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-secondary">General</h6>
+            <div class="header-elements">
+            </div>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="generalForm">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="row mb-1 form-group form-group-feedback form-group-feedback-right ">
+                    <div class="col-md-1">
+                      <label class="col-form-label title-width">
+                        Title <sup class="text-danger">*</sup>
+                      </label>
+                    </div>
+
+                    <div class="col-md-11 mb-1_25 pl-5">
+                      <app-text-field [formControlName]="'title'" [label]="'Title'" [formGroup]="generalForm"
+                        [fieldName]="'title'" ngDefaultControl [isRequired]="false" [value]="formData?.title"
+                        [showLabel]="false" [isReadonly]="true">
+                      </app-text-field>
+                      <div class="form-control-feedback form-control-feedback-sm text-muted mr-1">
+                        <i class="bi bi-card-text"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="row mb-2 ">
+                    <label class="col-form-label col-md-3 pl-2">Type <sup class="text-danger">*</sup>
+                    </label>
+                    <div class="col-md-9">
+                      <kendo-dropdownlist class="form-group" [data]="masterData?.types" [filterable]="true" textField="name"
+                        valueField="id" [formControlName]="'type'" [defaultItem]="defaultItem('type')" [disabled]="true"
+                        [readonly]="true">
+                        <ng-template kendoDropDownListItemTemplate let-dataItem>
+                          <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                        </ng-template>
+                      </kendo-dropdownlist>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="row mb-1">
+                    <label class="col-form-label col-md-3">Sub Type<sup class="text-danger">*</sup>
+                    </label>
+                    <div class="col-md-9">
+                      <kendo-dropdownlist class="form-group" [data]="masterData?.subTypes" [filterable]="true" textField="name"
+                        valueField="id" [formControlName]="'subType'" [defaultItem]="defaultItem('subType')"
+                        [disabled]="true" [readonly]="true">
+                        <ng-template kendoDropDownListItemTemplate let-dataItem>
+                          <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                        </ng-template>
+                      </kendo-dropdownlist>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="row mb-1  ">
+                    <label class="col-form-label col-md-3">Category <sup class="text-danger">*</sup>
+                    </label>
+                    <div class="col-md-9">
+                      <kendo-dropdownlist class="form-group" [data]="masterData?.categories" [filterable]="true" textField="name"
+                        valueField="id" [formControlName]="'category'" [defaultItem]="defaultItem('category')"
+                        isReadonly="true" [readonly]="true">
+                        <ng-template kendoDropDownListItemTemplate let-dataItem>
+                          <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                        </ng-template>
+                      </kendo-dropdownlist>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="row mb-1  ">
+                    <label class="col-form-label col-md-3">Channel <sup class="text-danger">*</sup>
+                    </label>
+                    <div class="col-md-9">
+                      <kendo-dropdownlist class="form-group" [data]="masterData?.channels" [filterable]="true" textField="name"
+                        valueField="id" [formControlName]="'channel'" [defaultItem]="defaultItem('channel')">
+                        <ng-template kendoDropDownListItemTemplate let-dataItem>
+                          <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                        </ng-template>
+                      </kendo-dropdownlist>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="row">
+                    <label class="col-form-label col-md-3">LOC <sup class="text-danger">*</sup>
+                    </label>
+                    <div class="col-md-9">
+                      <kendo-dropdownlist class="form-group" [data]="masterData?.locs" [filterable]="true" textField="name" valueField="id"
+                        [formControlName]="'loc'" [defaultItem]="defaultItem('loc')">
+                        <ng-template kendoDropDownListItemTemplate let-dataItem>
+                          <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                        </ng-template>
+                      </kendo-dropdownlist>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6 ">
+                  <div class="row">
+                    <label class="col-from-lable col-md-3">LOC Date <sup class="text-danger">*</sup>
+                    </label>
+                    <div class="col-md-9">
+                      <div class="form-group">
+                        <input type="text" class="form-control" formControlName="locDate" [value]="formData?.locDate"
+                          readonly />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6 ">
+                  <div class="row">
+                    <label class="col-from-lable col-md-3 pt-2">PPM Id
+                    </label>
+                    <div class="col-md-9">
+                      <div class="form-group">
+                        <app-text-field [formControlName]="'ppmId'" [label]="'ppm Id'" [formGroup]="generalForm"
+                          [isReadonly]="true" [fieldName]="'ppmId'" ngDefaultControl [isRequired]="false"
+                          [value]="formData?.ppmCode??''" [showLabel]="false">
+                        </app-text-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6 ">
+                  <div class="row">
+                    <label class="col-from-lable col-md-3 pt-2">Parent WO
+                    </label>
+                    <div class="col-md-9">
+                      <div class="form-group">
+                        <app-text-field [formControlName]="'parentWo'" [label]="'parent Wo'" [formGroup]="generalForm"
+                          [isReadonly]="true" [fieldName]="'parentWo'" ngDefaultControl [isRequired]="false"
+                          [value]="formData?.parentWorkOrder??''" [showLabel]="false">
+                        </app-text-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <label>Summary</label>
+                    <app-textarea-field [formControlName]="'summary'" [formGroup]="generalForm" [isRequired]="false"
+                      [rows]="3" [fieldName]="'summary'" [label]="'Summary'" [showLabel]="false" ngDefaultControl
+                      [value]="currentSummary">
+                    </app-textarea-field>
+                    <a class="btn btn-secondary btn-icon border-transparent rounded-pill btn-sharerep"
+                      data-bs-popup="tooltip" title="" data-bs-original-title="Share to reporter"
+                      (click)="updateSummary()">
+                      <i class="bi bi-send-fill"></i>
+                    </a>
+                  </div>
+
+                  <div class="col-md-12">
+                    <label>Update Summary</label>
+                    <app-textarea-field [formControlName]="'updateSummary'" [label]="'Update Summary'"
+                      [formGroup]="generalForm" [fieldName]="'updateSummary'" ngDefaultControl
+                      [value]="formData?.summary" [showLabel]="false" [rows]="4" [isReadonly]="true">
+                    </app-textarea-field>
+                  </div>
+
+                  <div class="col-md-12" *ngIf="formData?.onHoldReason">
+                    <label class="font-weight-semibold">Onhold Summary Details</label>
+                    <app-textarea-field [formControlName]="'updateHoldSummary'" [formGroup]="generalForm"
+                      [isRequired]="false" [fieldName]="'updateHoldSummary'" [label]="'Update Summary'"
+                      [showLabel]="false" ngDefaultControl [rows]="2" [value]="formData?.onHoldReason"
+                      [isReadonly]="true">
+                    </app-textarea-field>
+                  </div>
+
+                  <div class="col-md-12" *ngIf="formData?.rejectedReason">
+                    <label class="font-weight-semibold">Rejected Summary Details</label>
+                    <app-textarea-field [formControlName]="'rejectedSummary'" [formGroup]="generalForm"
+                      [isRequired]="false" [fieldName]="'rejectedSummary'" [label]="'Rejected Summary'"
+                      [showLabel]="false" ngDefaultControl [rows]="2" [value]="formData?.rejectedReason"
+                      [isReadonly]="true">
+                    </app-textarea-field>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="row mb-2  ">
+                    <label class="col-form-label col-md-3 pl-2">Priority <sup class="text-danger">*</sup>
+                    </label>
+                    <div class="col-md-9">
+                      <kendo-dropdownlist class="form-group" [data]="masterData?.priorities" [filterable]="true" textField="name"
+                        valueField="id" [formControlName]="'priority'" [defaultItem]="defaultItem('priorities')">
+                        <ng-template kendoDropDownListItemTemplate let-dataItem>
+                          <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                        </ng-template>
+                      </kendo-dropdownlist>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="row mb-1">
+                    <label class="col-form-label col-md-3">Fault Code<sup class="text-danger">*</sup>
+                    </label>
+                    <div class="col-md-9">
+                      <kendo-dropdownlist class="form-group" [data]="masterData?.faultCodes" [filterable]="true" textField="name"
+                        valueField="id" [formControlName]="'faultCode'" [defaultItem]="defaultItem('faultCode')">
+                        <ng-template kendoDropDownListItemTemplate let-dataItem>
+                          <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                        </ng-template>
+                      </kendo-dropdownlist>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="row mb-2">
+                    <label class="col-form-label col-md-3 pl-2">Est.Stock Cost <sup class="text-danger">*</sup>
+                    </label>
+                    <div class="col-md-9">
+                      <app-text-field [formControlName]="'estStockCost'" [label]="'Est.Stock Cost'"
+                        [formGroup]="generalForm" [fieldName]="'estStockCost'" ngDefaultControl
+                        [value]="formData?.estimatedStockCost??''" [showLabel]="false">
+                      </app-text-field>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="row mb-1">
+                    <label class="col-form-label col-md-3">Est. Labour Cost<sup class="text-danger">*</sup>
+                    </label>
+                    <div class="col-md-9">
+                      <app-text-field [formControlName]="'estLabourCost'" [label]="'Est. Labour Cost'"
+                        [formGroup]="generalForm" [fieldName]="'estLabourCost'" ngDefaultControl
+                        [value]="formData?.estimatedLabourCost??''" [showLabel]="false">
+                      </app-text-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="row mb-1">
+                    <label class="col-form-label col-md-3">Est. Time</label>
+                    <div class="col-md-9">
+                      <app-text-field [formControlName]="'estTime'" [label]="'Est Time'" [formGroup]="generalForm"
+                        [fieldName]="'estTime'" [placeholder]="'Est. Time'" [tooltip]="'in Minutes'" ngDefaultControl
+                        [value]="formData?.estimatedTime??''" [showLabel]="false">
+                      </app-text-field>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="row mb-1">
+                    <label class="col-form-label col-md-3"> Ref. Number</label>
+                    <div class="col-md-9">
+                      <app-text-field [formControlName]="'refNumber'" [formGroup]="generalForm"
+                        [fieldName]="'refNumber'" [label]="'Ref Number'" [showLabel]="false" ngDefaultControl
+                        [value]="formData?.refNumber" class="mb-0">
+                      </app-text-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Select Location -->
+        <div class="card">
+          <div class="card-header  bg-transparent  header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-secondary">Locations</h6>
+            <!-- <button class="card-header text-right" type="button" class="btn btn-sm btn-secondary" *ngIf="isEditable">
+              Add </button> -->
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered text-nowrap">
+                <thead>
+                  <tr class="bg-purple-100  font-weight-semibold">
+                    <th>Floor</th>
+                    <th>Unit</th>
+                    <th>Room</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let details of selectedLocations">
+                    <td>
+                      {{details.floorName}}
+                    </td>
+                    <td>
+                      {{details.unitName}}
+                    </td>
+                    <td>
+                      {{details.roomName}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-group-control card-group-control-right mr-2" id="accordion-control-right">
+      <div class="card no-shadow" style="width: 101%;">
+        <div class="card-body p-0">
+          <ul class="nav nav-tabs nav-tabs-solid mb-0">
+            <li class="nav-item"><a class="nav-link" (click)="openTab(10)" [ngClass]="tabId===10?'active':''"
+                data-toggle="tab">HSEQ</a></li>
+            <li class="nav-item"><a class="nav-link" (click)="openTab(1)" [ngClass]="tabId===1?'active':''"
+                data-toggle="tab">Resource</a></li>
+            <li class="nav-item"><a class="nav-link" (click)="openTab(2)" [ngClass]="tabId===2?'active':''"
+                data-toggle="tab">Checklist</a></li>
+            <li class="nav-item"><a class="nav-link" (click)="openTab(3)" [ngClass]="tabId===3?'active':''"
+                data-toggle="tab">PMS</a></li>
+            <li class="nav-item"><a class="nav-link" (click)="openTab(4)" [ngClass]="tabId===4?'active':''"
+                data-toggle="tab">Escalation</a></li>
+            <li class="nav-item"><a class="nav-link" (click)="openTab(5)" [ngClass]="tabId===5?'active':''"
+                data-toggle="tab">Sub Tasks</a></li>
+            <li class="nav-item"><a class="nav-link" (click)="openTab(6)" [ngClass]="tabId===6?'active':''"
+                data-toggle="tab">Documents</a></li>
+            <li class="nav-item"><a class="nav-link" (click)="openTab(7)" [ngClass]="tabId===7?'active':''"
+                data-toggle="tab">Images</a></li>
+            <li class="nav-item"><a class="nav-link" (click)="openTab(8)" [ngClass]="tabId===8?'active':''"
+                data-toggle="tab">Emails</a></li>
+            <li class="nav-item"><a class="nav-link" (click)="openTab(9)" [ngClass]="tabId===9?'active':''"
+                data-toggle="tab">Feedback</a></li>
+            <li class="nav-item"><a class="nav-link" (click)="openTab(11)" [ngClass]="tabId===11?'active':''"
+                data-toggle="tab">Stock</a></li>
+            <li class="nav-item"><a class="nav-link" (click)="openTab(12)" [ngClass]="tabId===12?'active':''"
+                data-toggle="tab">MR</a></li>
+          </ul>
+          <div class="tab-content card-body" [ngClass]="{'p-0':tabId<=0}">
+            <div class="tab-pane fade" [ngClass]="tabId===1?'active show':''" id="resource">
+              <app-resource #resources [resources]="masterData?.taskResources" [api]="ApiEndpoints.SCHEDULERAPI"
+                [masterResources]="masterData?.masterResources" [statusId]="statusId" [urlnode]="this.config?.apiUrl">
+              </app-resource>
+            </div>
+
+            <div class="tab-pane fade" [ngClass]="tabId===2 || tabId===10?'active show':''" id="checklist">
+              <app-checklist #checklist [checkListItems]="masterData?.checkListItems" *ngIf="tabId===2;else hseq"
+                [tabId]="11" [isChecklist]="tabId===2" [statusId]="statusId" [api]="ApiEndpoints.SCHEDULERAPI"
+                [urlnode]="this.config?.apiUrl">
+              </app-checklist>
+              <ng-template #hseq>
+                <app-checklist #checklist [statusId]="statusId" [checkListItems]="masterData?.hseqListItems"
+                  [isChecklist]="tabId===2" [tabId]="22" [api]="ApiEndpoints.SCHEDULERAPI"
+                  [urlnode]="this.config?.apiUrl">
+                </app-checklist>
+              </ng-template>
+            </div>
+
+            <div class="tab-pane fade" [ngClass]="tabId===3?'active show':''" id="pms" *ngIf="tabId===3">
+              <app-pms [serviceTypeId]="serviceTypeId" [api]="ApiEndpoints.SCHEDULERAPI"
+                [urlnode]="this.config?.apiUrl"></app-pms>
+            </div>
+
+            <div class="tab-pane fade" [ngClass]="tabId===4?'active show':''" id="escalate" *ngIf="tabId===4">
+              <img class="img-responsive" src="assets/images/under-construction.png" alt="under development"
+                style="max-width:25%" />
+            </div>
+
+            <div class="tab-pane fade" [ngClass]="tabId===5?'active show':''" id="subtask" *ngIf="tabId===5">
+              <app-sub-task #subtasks [taskLogId]="navState?.currentLogId" [gridData]="masterData?.subTasks"
+                [data]="{subTaskTypes:masterData?.subTaskTypes, subTaskStatuses: masterData?.subTaskStatuses}"
+                [statusId]="statusId" [api]="ApiEndpoints.SCHEDULERAPI" [urlnode]="this.config?.apiUrl"></app-sub-task>
+            </div>
+
+            <div class="tab-pane fade" [ngClass]="tabId===6?'active show':''" id="documents" *ngIf="tabId===6">
+              <app-attachments [type]="'Doc'" [taskLogId]="navState?.currentLogId??1"
+                [attachments]="masterData?.documents" [statusId]="statusId" [api]="ApiEndpoints.SCHEDULERAPI"
+                [urlnode]="this.config?.apiUrl">
+              </app-attachments>
+            </div>
+
+            <div class="tab-pane fade" [ngClass]="tabId===7?'active show':''" id="images" *ngIf="tabId===7">
+              <app-attachments [type]="'Img'" [taskLogId]="navState?.currentLogId??1" [attachments]="masterData?.images"
+                [urlnode]="this.config?.apiUrl" [statusId]="statusId" [api]="ApiEndpoints.SCHEDULERAPI">
+              </app-attachments>
+            </div>
+
+            <div class="tab-pane fade" [ngClass]="tabId===8?'active show':''" id="email" *ngIf="tabId===8">
+              <app-emails [api]="ApiEndpoints.SCHEDULERAPI" [urlnode]="this.config?.apiUrl"></app-emails>
+            </div>
+
+            <div class="tab-pane fade" [ngClass]="tabId===9?'active show':''" id="feedback" *ngIf="tabId===9">
+              <app-feedback [feedback]="masterData.feedback" [urlnode]="this.config?.apiUrl"></app-feedback>
+            </div>
+
+            <div class="tab-pane fade" [ngClass]="tabId===11?'active show':''" id="stocks" *ngIf="tabId===11">
+              <!-- <app-stocks></app-stocks> -->
+            </div>
+            <div class="tab-pane fade" [ngClass]="tabId===12?'active show':''" id="stocks" *ngIf="tabId===12">
+              <app-mr-tab [hasEditAccess]="statusId > ServiceStatus.OPEN" [projectId]="formData?.projectId"
+                [taskTypeId]="4" [reportedById]="formData?.reportedById"></app-mr-tab>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+ <!-- Inner content -->
+ <div class="content-inner">
+   <app-page-header [items]="['Work Permit Management']" [activeItem]="'Closed WP'" [pageTitle]="'Closed WP'"
+     [ignoreCase]="true">
+   </app-page-header>
+   <!-- Content area -->
+   <div class="content">
+     <div class="row">
+       <div class="col-md-12">
+         <ng-container *ngIf="conditionalAuditData?.configuration?.columns?.length">
+           <app-kendo-grid [headerTitle]="'Condition Records'" [gridDetails]="conditionalAuditData" [isViewable]="true"
+             [fileName]="'Asset_New'">
+           </app-kendo-grid>
+         </ng-container>
+       </div>
+     </div>
+   </div>
+ </div>

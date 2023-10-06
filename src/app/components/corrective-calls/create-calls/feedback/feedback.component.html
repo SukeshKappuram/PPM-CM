@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="card card-body border shadow-0">
+      <h6>Review by Customer</h6>
+      <div class="col-md-12"  *ngIf="feedback?.ratingId; else NoFeedback">
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-4 text-center text-success">
+                <i class="bi fa-3x" [ngClass]="feedback?.ratingId === 1? 'bi-emoji-smile-fill': 'bi-emoji-smile'"></i>
+                <p>Good</p>
+              </div>
+              <div class="col-md-4 text-center text-warning">
+                <i class="bi fa-3x" [ngClass]="feedback?.ratingId === 2? 'bi-emoji-neutral-fill': 'bi-emoji-neutral'">
+                </i>
+                <p>Medium</p>
+              </div>
+              <div class="col-md-4 text-center text-danger">
+                <i class="bi fa-3x" [ngClass]="feedback?.ratingId === 3? 'bi-emoji-frown-fill': 'bi-emoji-frown'"></i>
+                <p>Poor</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+      </div>
+
+      <ng-template #NoFeedback>
+        <span class="text-center">No Feed Back is available</span>
+      </ng-template>
+
+      <textarea [readOnly]="true" *ngIf="feedback?.ratingId">{{feedback?.feedbackComments}}</textarea>
+      <div class="media">
+        <div class="row">
+          <div class="col-sm-4 p-3"><img src="assets/images/empty-profile.png" class="rounded-circle" width="42"
+              height="42" alt=""></div>
+          <div class="col-sm-8 p-3">
+            <p class="p-2 bg-light rounded-pill mt-2" *ngIf="feedback?.feedbackUserName">{{feedback?.feedbackUserName}}</p>
+          </div>
+        </div>
+
+        <div class="media-body">
+          <!-- <h6 class="mb-0">{{feedback?.feedbackUserId}}</h6> -->
+          <img [src]="feedback?.signatureUrl" width="80px" *ngIf="feedback?.signatureUrl">
+        </div>
+
+        <div class="ml-3 align-self-center" *ngIf="feedback?.feedbackDate">
+          Date : {{feedback?.feedbackDate | localizedDate:'dd-MMM-yyyy HH:mm'}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

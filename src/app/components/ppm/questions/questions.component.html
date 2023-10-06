@@ -1,0 +1,7 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [items]="['PPM']" [activeItem]="'HSEQ'" [pageTitle]="'HSEQ'">
+  </app-page-header>
+  <ng-container *ngIf="gridData?.configuration?.columns?.length">
+    <app-kendo-grid [gridDetails]="gridData" [isViewable]="true" (edited)="edit($event)" [fileName]="'HSEQ'"></app-kendo-grid>
+  </ng-container>
+</div>

@@ -1,0 +1,167 @@
+<div class="row" *ngIf="type === 'Doc'">
+  <div class="col-md-6">
+    <h6 class="d-flex font-weight-semibold flex-nowrap mb-3">
+    </h6>
+
+    <div class="row mb-3">
+      <div class="col-md-3 mb-3">
+        <ngx-dropzone (change)="onSelect($event)" class="dropzone upload-doc" [multiple]="false"
+          [disabled]="statusId === ServiceStatus.CLOSED || isLocked">
+          <ngx-dropzone-label class="font-12">Drop files to upload or CLICK</ngx-dropzone-label>
+          <ngx-dropzone-preview *ngFor="let f of uploadedAttachments" [removable]="true">
+            <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+          </ngx-dropzone-preview>
+        </ngx-dropzone>
+      </div>
+    </div>
+
+    <div class="row">
+      <table class="table table-bordered text-nowrap">
+        <thead>
+          <tr class="bg-purple-100  font-weight-semibold">
+            <td>name</td>
+            <td>Extension</td>
+            <td>Action</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let doc of attachments">
+            <td>{{doc.fileName}}</td>
+            <td>{{doc.extension}}</td>
+            <td>
+              <a href="{{doc?.resourceUrl}}" target="_blank"><i class="bi bi-eye px-3"></i></a>
+              <a (click)="downloadImage(doc)" target="_blank" *ngIf="userAccess?.canDownload"><i class="bi bi-download px-3"></i></a>
+              <a (click)="deleteAttachment(doc)" *ngIf="userAccess?.canDelete"><i class="bi bi-trash px-3"></i></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="type === 'Img'">
+  <div class="col-md-4 border-right">
+    <div class="col-md-12">
+      <h6 class="d-flex font-weight-semibold flex-nowrap  ">
+      </h6>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <ngx-dropzone (change)="onSelect($event)" class="dropzone upload-doc" [multiple]="false"
+          [disabled]="statusId === ServiceStatus.CLOSED || isLocked">
+          <ngx-dropzone-label class="font-12">Drop files to upload or CLICK</ngx-dropzone-label>
+          <ngx-dropzone-preview *ngFor="let f of uploadedAttachments" [removable]="true">
+            <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+          </ngx-dropzone-preview>
+        </ngx-dropzone>
+      </div>
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-12  ">
+            <div class="form-check form-check-inline">
+              <input type="radio" name="image-type" class="form-check-input" id="cc_li_c" [(ngModel)]="isBeforeImage"
+                [value]="true" [checked]="isBeforeImage" [attr.disabled]="statusId === ServiceStatus.CLOSED || isLocked">
+              <label class="form-check-label" for="cc_li_c">Before</label>
+            </div>
+
+            <div class="form-check form-check-inline">
+              <input type="radio" name="image-type" class="form-check-input" id="cc_li_u" [(ngModel)]="isBeforeImage"
+                [value]="false" [checked]="!isBeforeImage" [attr.disabled]="statusId === ServiceStatus.CLOSED || isLocked">
+              <label class="form-check-label" for="cc_li_u">After</label>
+            </div>
+
+          </div>
+          <div class="col-md-12 mt-1">
+            <div>
+              <button class="btn-sm btn btn-outline-secondary ml-auto font-size-sm mt-1"
+                [disabled]="uploadedAttachments.length === 0 || statusId === ServiceStatus.CLOSED"
+                (click)="addAttachments()" *ngIf="!isLocked">Save </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="col-md-12">
+      <h6 class="d-flex font-weight-semibold flex-nowrap  ">
+        <a class="text-body mr-2">Before Images</a>
+      </h6>
+    </div>
+
+    <div class="row">
+      <ng-container *ngFor="let attachment of attachments">
+        <div class="col-md-4" *ngIf="attachment.isBeforeImage">
+          <div class=" flex-row d-flex d-inline-flex mb-2">
+            <div class="card-img-actions text-center mx-1 mt-1">
+              <img class="card-img img-fluid" [src]="attachment.resourceUrl | sanitizeUrl" alt=""
+                style="width: 80px!important; height: 80px !important;" loading="lazy">
+            </div>
+
+            <div class="  ml-2">
+              <h6 class="mb-0 font-sm">{{attachment.fileName}}</h6>
+              <span class="text-muted">{{attachment.extension}}
+                <div>
+                  <a class="btn btn-light btn-icon border-transparent rounded-pill btn-sm me-1" data-bs-popup="tooltip"
+                    href="{{attachment?.resourceUrl}}" target="_blank" title="" data-bs-original-title="Formatting">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                  </a>
+                  <a class="btn btn-light btn-icon border-transparent rounded-pill btn-sm me-1" data-bs-popup="tooltip"
+                    title="" data-bs-original-title="Formatting" *ngIf="userAccess?.canDownload">
+                    <i class="bi bi-download" aria-hidden="true" (click)="downloadImage(attachment)"></i>
+                  </a>
+                  <a class="btn btn-light btn-icon border-transparent rounded-pill btn-sm me-1" data-bs-popup="tooltip"
+                    title="" data-bs-original-title="Formatting" *ngIf="userAccess?.canDelete">
+                    <i class="bi bi-trash" aria-hidden="true" (click)="deleteAttachment(attachment)"></i>
+                  </a>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="col-md-12">
+      <h6 class="d-flex font-weight-semibold flex-nowrap  ">
+        <a class="text-body mr-2">After Images</a>
+      </h6>
+    </div>
+
+    <div class="row">
+      <ng-container *ngFor="let attachment of attachments">
+        <div class="col-md-4" *ngIf="!(attachment.isBeforeImage)">
+          <div class=" flex-row d-flex d-inline-flex mb-2">
+            <div class="card-img-actions text-center mx-1 mt-1">
+              <img class="card-img img-fluid" [src]="attachment.resourceUrl | sanitizeUrl" alt=""
+                style="width: 80px!important; height: 80px !important;" loading="lazy">
+            </div>
+
+            <div class="ml-2">
+              <h6 class="mb-0 font-sm">{{attachment.fileName}}</h6>
+              <span class="text-muted">{{attachment.extension}}
+                <div>
+                  <a class="btn btn-light btn-icon border-transparent rounded-pill btn-sm me-1" data-bs-popup="tooltip"
+                    href="{{attachment?.resourceUrl}}" target="_blank" title="" data-bs-original-title="Formatting">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                  </a>
+                  <a class="btn btn-light btn-icon border-transparent rounded-pill btn-sm me-1" data-bs-popup="tooltip"
+                    title="" data-bs-original-title="Formatting" *ngIf="userAccess?.canDownload">
+                    <i class="bi bi-download" aria-hidden="true" (click)="downloadImage(attachment)"></i>
+                  </a>
+
+                  <a class="btn btn-light btn-icon border-transparent rounded-pill btn-sm me-1" data-bs-popup="tooltip"
+                    title="" data-bs-original-title="Formatting" *ngIf="userAccess?.canDelete">
+                    <i class="bi bi-trash" aria-hidden="true" (click)="deleteAttachment(attachment)"></i>
+                  </a>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

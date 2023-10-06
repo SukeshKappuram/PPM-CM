@@ -1,0 +1,22 @@
+<div class="card p-0 m-0">
+  <div class="modal-header bg-secondary text-white">
+    <h6 class="modal-title">Batch Details</h6>
+    <button type="button" class="btn-close btn-close-white" mat-button mat-dialog-close aria-label="Close"></button>
+  </div>
+  <table class="table table-bordered text-nowrap">
+      <tr>
+        <th>Batch Id</th>
+        <th>Batch Code</th>
+        <th>Unit Price</th>
+        <th>Quantity</th>
+        <th>Batch Price</th>
+      </tr>
+      <tr *ngFor="let stock of stocks">
+        <td>{{stock.batchId}}</td>
+        <td>{{stock.batchCode}}</td>
+        <td>{{stock.unitPrice}}</td>
+        <td>{{stock.quantity}}</td>
+        <td>{{stock.batchPrice}}</td>
+      </tr>
+  </table>
+</div>

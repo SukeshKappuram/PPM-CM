@@ -1,0 +1,19 @@
+<kendo-chart [title]="data.title">
+  <kendo-chart-title text="Projects Vs Month"></kendo-chart-title>
+  <kendo-chart-legend [position]="'bottom'" [orientation]="'horizontal'"></kendo-chart-legend>
+  <kendo-chart-category-axis>
+      <kendo-chart-category-axis-item [categories]="data.legends">
+      </kendo-chart-category-axis-item>
+  </kendo-chart-category-axis>
+  <kendo-chart-series>
+    <kendo-chart-series-item type="line" field="value" noteTextField="notes"
+           [data]="item.data" [name]="item.name" [stack]="true"
+          *ngFor="let item of data.series" >
+          <kendo-chart-series-item-tooltip>
+              <ng-template let-value="value">
+                  {{item.name}}: {{ value }}
+              </ng-template>
+          </kendo-chart-series-item-tooltip>
+      </kendo-chart-series-item>
+  </kendo-chart-series>
+</kendo-chart>

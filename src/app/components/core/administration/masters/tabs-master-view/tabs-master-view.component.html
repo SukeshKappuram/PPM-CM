@@ -1,0 +1,2424 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [items]="['Core','Administration']" [activeItem]="currentView" [pageTitle]="pageTitle"
+    [buttons]="buttons" (modified)="buttonClicked($event)">
+  </app-page-header>
+
+  <div class="content">
+    <div class="d-flex align-items-start flex-column flex-md-row">
+      <!-- Left content -->
+      <div class="w-100 order-2 order-md-1">
+        <div class="row">
+          <div class="col-xl-12 col-md-12">
+            <div class="navbar navbar-expand-lg navbar-light border-top">
+              <div class="text-center d-lg-none w-100">
+                <button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse"
+                  data-target="#navbar-second">
+                  <i class="bi bi-list mr-2"></i>
+                  Profile navigation
+                </button>
+              </div>
+              <div class="navbar-collapse collapse" id="navbar-second">
+                <ul class="nav navbar-nav nav-highlight">
+                  <li class="nav-item"><a class="navbar-nav-link" [ngClass]="activeTabId === 1?'active':''"
+                      (click)="activeTabId=1" data-toggle="tab">
+                      <i class="bi bi-list mr-2"></i>
+                      General</a>
+                  </li>
+                  <li class="nav-item" *ngIf="currentView === MasterTypes.PROJECTS">
+                    <a class="navbar-nav-link" [ngClass]="activeTabId === 2?'active':''" (click)="activeTabId=2"
+                      data-toggle="tab">
+                      <i class="bi bi-building mr-2"></i>
+                      Project</a>
+                  </li>
+                  <li class="nav-item" *ngIf="currentView === MasterTypes.PROJECTS">
+                    <a class="navbar-nav-link" [ngClass]="activeTabId === 3?'active':''" (click)="activeTabId=3"
+                      data-toggle="tab">
+                      <i class="bi bi-person-bounding-box mr-2"></i>
+                      Clients</a>
+                  </li>
+                  <li class="nav-item" *ngIf="currentView === MasterTypes.UNITS">
+                    <a class="navbar-nav-link" [ngClass]="activeTabId === 4?'active':''" (click)="activeTabId=4"
+                      data-toggle="tab">
+                      <i class="bi bi-clipboard2-check mr-2"></i>
+                      Classification</a>
+                  </li>
+                  <li class="nav-item" *ngIf="currentView === MasterTypes.UNITS">
+                    <a class="navbar-nav-link" [ngClass]="activeTabId === 5?'active':''" (click)="activeTabId=5"
+                      data-toggle="tab">
+                      <i class="bi bi-geo-alt mr-2"></i>
+                      GIS</a>
+                  </li>
+                  <li class="nav-item" *ngIf="currentView === MasterTypes.UNITS">
+                    <a class="navbar-nav-link" [ngClass]="activeTabId === 6?'active':''" (click)="activeTabId=6"
+                      data-toggle="tab">
+                      <i class="bi bi-currency-dollar mr-2"></i>
+                      Finance</a>
+                  </li>
+                  <li class="nav-item" *ngIf="currentView === MasterTypes.UNITS">
+                    <a class="navbar-nav-link" [ngClass]="activeTabId === 7?'active':''" (click)="activeTabId=7"
+                      data-toggle="tab">
+                      <i class="bi bi-briefcase mr-2"></i>
+                      Cases</a>
+                  </li>
+                  <li class="nav-item" *ngIf="currentView === MasterTypes.UNITS">
+                    <a class="navbar-nav-link" [ngClass]="activeTabId === 8?'active':''" (click)="activeTabId=8"
+                      data-toggle="tab">
+                      <i class="bi bi-people mr-2"></i>
+                      Customers</a>
+                  </li>
+                  <li class="nav-item" *ngIf="currentView === MasterTypes.UNITS">
+                    <a class="navbar-nav-link" [ngClass]="activeTabId === 9?'active':''" (click)="activeTabId=9"
+                      data-toggle="tab">
+                      <i class="bi bi-list-check mr-2"></i>
+                      Agreements</a>
+                  </li>
+                  <li class="nav-item" *ngIf="currentView === MasterTypes.PROJECTS">
+                    <a class="navbar-nav-link" [ngClass]="activeTabId === 10?'active':''" (click)="activeTabId=10"
+                      data-toggle="tab">
+                      <i class="bi bi-ui-checks-grid mr-2"></i>
+                      Others</a>
+                  </li>
+                  <li class="nav-item"
+                    *ngIf="currentView !== MasterTypes.CLIENTS && currentView !== MasterTypes.MAN_POWER">
+                    <a class="navbar-nav-link" [ngClass]="activeTabId === 11?'active':''"
+                      (click)="activeTabId=11;getDocuments(1);" data-toggle="tab">
+                      <i class="bi bi-file-image mr-2"></i>
+                      Images</a>
+                  </li>
+                  <li class="nav-item"
+                    *ngIf="currentView === MasterTypes.MASTER_DEVELOPMENT || currentView === MasterTypes.ZONES || currentView === MasterTypes.UNITS || currentView === MasterTypes.CLIENTS|| currentView === MasterTypes.MAN_POWER">
+                    <a class="navbar-nav-link" [ngClass]="activeTabId === 12?'active':''"
+                      (click)="activeTabId=12;getDocuments(2);" data-toggle="tab">
+                      <i class="bi bi-file-earmark-text mr-2"></i>
+                      Documents</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="tab-content flex-1 mt-3" *ngIf="isDataLoaded">
+              <div class="tab-pane fade" [ngClass]="activeTabId === 1?'show active':''" id="general-info">
+                <div class="row" *ngIf="currentView !== MasterTypes.MAN_POWER && currentView !== MasterTypes.VENDORS">
+                  <div class="col-xl-8 col-md-8">
+                    <div class="card">
+                      <div class="card-header bg-transparent  header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue">General Info</h6>
+                      </div>
+                      <div class="card-body">
+                        <form [formGroup]="generalInfo" *ngIf="currentView === MasterTypes.PROJECTS">
+                          <div class="row">
+                            <div class="col-sm-4 col-md-6 col-lg-4 mb-2">
+                              <app-text-field [formControlName]="'refNo'" [formGroup]="generalInfo"
+                                [fieldName]="'refNo'" [label]="'Ref No'" ngDefaultControl [isRequired]="false"
+                                [value]="'PRJ'+pad(currentLocation?.id??0,4)" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 col-md-6 col-lg-4 mb-2">
+                              <app-dropdown [formControlName]="'status'" [label]="'Status'" [formGroup]="generalInfo"
+                                [fieldName]="'status'" [dataList]="masterData?.statuses" ngDefaultControl
+                                [value]="currentLocation?.statusId??''">
+                              </app-dropdown>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-dropdown [formControlName]="'accountProfile'" [label]="'Account Profile'"
+                                [formGroup]="generalInfo" [fieldName]="'accountProfile'"
+                                [dataList]="masterData?.accounts" ngDefaultControl
+                                [value]="currentLocation?.accountId??''" [isReadonly]="currentLocation?.accountId">
+                              </app-dropdown>
+                            </div>
+                            <div class="col-sm-4 col-md-4 mb-2">
+                              <app-text-field [formControlName]="'communityCode'" [formGroup]="generalInfo"
+                                [fieldName]="'communityCode'" [label]="'Community Code'" ngDefaultControl
+                                [value]="currentLocation?.code??''">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-8 col-md-8 mb-2">
+                              <app-text-field [formControlName]="'communityTitle'" [formGroup]="generalInfo"
+                                [fieldName]="'communityTitle'" [label]="'Community Title'" ngDefaultControl
+                                [value]="currentLocation?.title??''">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 col-md-6 col-lg-4 mb-2">
+                              <app-text-field [formControlName]="'mainRefNo'" [formGroup]="generalInfo"
+                                [fieldName]="'mainRefNo'" [label]="'Main Ref No'" ngDefaultControl
+                                [value]="currentLocation?.refNo??''">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 col-md-6 col-lg-4 mb-2">
+                              <app-dropdown [formControlName]="'projectType'" [label]="'Project Type'"
+                                [formGroup]="generalInfo" [fieldName]="'projectType'"
+                                [dataList]="masterData?.projectTypes" ngDefaultControl
+                                [value]="currentLocation?.projectTypeId??''" [isRequired]="false">
+                              </app-dropdown>
+                            </div>
+                            <div class="col-sm-4 col-md-6 col-lg-4 mb-2">
+                              <app-text-field [formControlName]="'projectAlias'" [formGroup]="generalInfo"
+                                [fieldName]="'projectAlias'" [label]="'Project Alias'" ngDefaultControl
+                                [isRequired]="false" [value]="currentLocation?.projectAlias??''">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </form>
+
+                        <form [formGroup]="generalInfo" *ngIf="currentView === MasterTypes.ZONES">
+                          <div class="row">
+                            <div class="col-sm-4 col-md-6 col-lg-4 mb-2">
+                              <app-text-field [formControlName]="'refNo'" [formGroup]="generalInfo"
+                                [fieldName]="'refNo'" [label]="'RefNo'" ngDefaultControl [isRequired]="false"
+                                [value]="'SZ'+pad(currentLocation?.id??0,4)" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 col-md-6 col-lg-4 mb-2">
+                              <app-text-field [formControlName]="'zone'" [formGroup]="generalInfo" [fieldName]="'zone'"
+                                [label]="'Zone'" ngDefaultControl [value]="currentLocation?.name??''">
+                              </app-text-field>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-text-field [formControlName]="'code'" [formGroup]="generalInfo" [fieldName]="'code'"
+                                [label]="'Code'" ngDefaultControl [value]="currentLocation?.code??''"
+                                [isReadonly]="currentLocation?.code">
+                              </app-text-field>
+
+                            </div>
+                            <div class="col-sm-4 col-md-4 mb-2">
+                              <app-dropdown [formControlName]="'category'" [label]="'Category'"
+                                [formGroup]="generalInfo" [fieldName]="'category'"
+                                [dataList]="masterData?.communityTypes" ngDefaultControl
+                                [value]="currentLocation?.communityTypeId??''">
+                              </app-dropdown>
+                            </div>
+                            <div class="col-sm-4 col-md-4 mb-2">
+                              <app-dropdown [formControlName]="'masterDevelopment'" [label]="'Master Development'"
+                                [formGroup]="generalInfo" [fieldName]="'masterDevelopment'"
+                                [dataList]="masterData?.masterDevelopments" ngDefaultControl
+                                [value]="currentLocation?.masterDevelopmentId??''"
+                                (selectionChange)="onMasterDevelopmentChange($event)">
+                              </app-dropdown>
+                            </div>
+                            <div class="col-sm-4 col-md-6 col-lg-4 mb-2">
+                              <app-text-field [formControlName]="'country'" [formGroup]="generalInfo"
+                                [fieldName]="'country'" [label]="'Country'" ngDefaultControl
+                                [value]="selectedCountry?.name??''" [isReadonly]="true" [isRequired]="false">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 col-md-6 col-lg-4 mb-2">
+                              <app-text-field [formControlName]="'state'" [formGroup]="generalInfo"
+                                [fieldName]="'state'" [label]="'State'" ngDefaultControl
+                                [value]="selectedState?.name??''" [isReadonly]="true" [isRequired]="false">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 col-md-6 col-lg-4 mb-2">
+                              <app-text-field [formControlName]="'city'" [formGroup]="generalInfo" [fieldName]="'city'"
+                                [label]="'City'" ngDefaultControl [value]="selectedCity?.name??''" [isReadonly]="true"
+                                [isRequired]="false">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-4 col-md-6 col-lg-4 mb-2">
+                              <app-dropdown [formControlName]="'developedBy'" [label]="'Developed By'"
+                                [formGroup]="generalInfo" [fieldName]="'developedBy'"
+                                [dataList]="masterData?.developers" ngDefaultControl
+                                [value]="currentLocation?.developerId??''">
+                              </app-dropdown>
+                            </div>
+                            <app-textarea-field [formControlName]="'description'" [formGroup]="generalInfo"
+                              [fieldName]="'description'" [label]="'Description'" ngDefaultControl
+                              [value]="currentLocation?.description??''" [isRequired]="false">
+                            </app-textarea-field>
+                          </div>
+                        </form>
+
+                        <form [formGroup]="generalInfo" *ngIf="currentView === MasterTypes.MASTER_DEVELOPMENT">
+                          <div class="row">
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-text-field [formControlName]="'refNo'" [formGroup]="generalInfo"
+                                [fieldName]="'refNo'" [label]="'Ref No'" ngDefaultControl [isRequired]="false"
+                                [value]="'MD'+pad(currentLocation?.id,4)" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-8 col-md-8 col-lg-8 mb-2">
+                              <app-text-field [formControlName]="'name'" [formGroup]="generalInfo" [fieldName]="'name'"
+                                [label]="'Name'" ngDefaultControl [value]="currentLocation?.name??''">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4 col-lg-4 mb-2">
+                              <app-text-field [formControlName]="'code'" [formGroup]="generalInfo" [fieldName]="'code'"
+                                [label]="'Code'" ngDefaultControl [value]="currentLocation?.code??''"
+                                [isReadonly]="currentLocation?.code">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-dropdown [formControlName]="'category'" [label]="'Category'"
+                                [formGroup]="generalInfo" [fieldName]="'category'"
+                                [dataList]="masterData?.communityTypes" ngDefaultControl
+                                [value]="currentLocation?.communityTypeId??''">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-dropdown [formControlName]="'developedBy'" [label]="'Developed By'"
+                                [formGroup]="generalInfo" [fieldName]="'developedBy'"
+                                [dataList]="masterData?.developers" ngDefaultControl
+                                [value]="currentLocation?.developerId??''">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-dropdown [formControlName]="'country'" [label]="'Country'" [formGroup]="generalInfo"
+                                [fieldName]="'country'" [dataList]="masterData?.countries" ngDefaultControl
+                                [value]="currentLocation?.countryId??''" (selectionChange)="countrySelected($event)">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-dropdown [formControlName]="'state'" [label]="'State'" [formGroup]="generalInfo"
+                                #md_states [fieldName]="'state'" [dataList]="states" ngDefaultControl
+                                [value]="currentLocation?.stateId??''" (selectionChange)="stateSelected($event)">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-dropdown [formControlName]="'city'" [label]="'City'" [formGroup]="generalInfo"
+                                #md_cities [fieldName]="'city'" [dataList]="cities" ngDefaultControl
+                                [value]="currentLocation?.cityId??''" [isRequired]="false">
+                              </app-dropdown>
+                            </div>
+                            <div>
+                              <app-textarea-field [formControlName]="'description'" [formGroup]="generalInfo"
+                                [fieldName]="'description'" [label]="'Description'" ngDefaultControl
+                                [value]="currentLocation?.description??''" [isRequired]="false">
+                              </app-textarea-field>
+                            </div>
+                          </div>
+                        </form>
+
+                        <form [formGroup]="generalInfo" *ngIf="currentView === MasterTypes.BUILDINGS">
+                          <div class="row">
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-text-field [formControlName]="'code'" [formGroup]="generalInfo" [fieldName]="'code'"
+                                [label]="'Code'" ngDefaultControl [value]="currentLocation?.code??''"
+                                [isReadonly]="currentLocation?.code">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-dropdown [formControlName]="'category'" [label]="'Category'"
+                                [formGroup]="generalInfo" [fieldName]="'category'"
+                                [dataList]="masterData?.communityTypes" ngDefaultControl
+                                [value]="currentLocation?.communityTypeId??''" [isRequired]="false">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-lg-8 col-md-8 mb-2">
+                              <app-text-field [formControlName]="'bulidingName'" [formGroup]="generalInfo"
+                                [fieldName]="'bulidingName'" [label]="'Buliding Name'" ngDefaultControl
+                                [value]="currentLocation?.name??''">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-dropdown [formControlName]="'status'" [label]="'Status'" [formGroup]="generalInfo"
+                                [fieldName]="'status'" [dataList]="statuses" ngDefaultControl
+                                [value]="currentLocation?.buildingStatus??''">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 mb-2">
+                              <app-textarea-field [formControlName]="'description'" [formGroup]="generalInfo"
+                                [fieldName]="'description'" [label]="'Description'" ngDefaultControl
+                                [value]="currentLocation?.description??''" [isRequired]="false">
+                              </app-textarea-field>
+                            </div>
+                          </div>
+                        </form>
+
+                        <form [formGroup]="generalInfo" *ngIf="currentView === MasterTypes.UNITS">
+                          <div class="row">
+                            <div class="col-lg-6 mb-2">
+                              <app-text-field [formControlName]="'code'" [formGroup]="generalInfo" [fieldName]="'code'"
+                                [label]="'Code'" ngDefaultControl [value]="currentLocation?.code??''"
+                                [isReadonly]="currentLocation?.code">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-6 col-md-6 col-lg-6 ">
+                              <label class="m-0 ml-2">Select Type </label>
+                              <div class="card-body pl-0 pb-0">
+                                <ul class="types-list">
+                                  <li class="mr-1" (click)="propertyType='Apartment'">
+                                    <label class="types-list__label">
+                                      <input id="idUnit" type="radio" class="cust-type" name="PropertyTypeId"
+                                        value="apartment" formControlName="propertyTypeName">
+                                      <span class="types-list__text" style="width:100%">Apartment</span>
+                                    </label>
+                                  </li>
+                                  <li class="mr-1" (click)="propertyType='Villa'">
+                                    <label class="types-list__label">
+                                      <input id="idVilla" type="radio" class="cust-type" name="PropertyTypeId"
+                                        value="villa" style="width:100%" checked="checked"
+                                        formControlName="propertyTypeName">
+                                      <span class="types-list__text">Villa</span>
+                                    </label>
+                                  </li>
+                                  <li (click)="propertyType='Container'">
+                                    <label class="types-list__label">
+                                      <input id="idContainer" type="radio" class="cust-type" name="PropertyTypeId"
+                                        value="container" style="width:100%" checked="checked"
+                                        formControlName="propertyTypeName">
+                                      <span class="types-list__text">Container</span>
+                                    </label>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                              <div class="card-header   header-elements-inline">
+                                <h4 class="card-title font-size-lg font-weight-semibold"> Select Space Type</h4>
+                              </div>
+                              <div class="card-body">
+                                <ul class="types-list ml-0">
+                                  <li class="mr-1" *ngFor="let spaceType of masterData?.unitSpaceTypes">
+                                    <label class="types-list__label">
+                                      <input type="radio" [value]="spaceType.id" class="lease-sub-type"
+                                        name="SpaceTypeId" id="SpaceTypeId" formControlName="unitSpaceType">
+                                      <span class="types-list__text">{{spaceType.name}}</span>
+                                    </label>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-6 col-lg-4 ">
+                              <app-text-field [formControlName]="'propertyNumber'" [formGroup]="generalInfo"
+                                [fieldName]="'propertyNumber'" [isRequired]="false" [label]="'Property Number'"
+                                [placeholder]="propertyType + ' No.'" ngDefaultControl
+                                [value]="currentLocation?.propertyNumber??''">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 ">
+                              <app-dropdown [formControlName]="'unitType'" [label]="'Unit Type'"
+                                [formGroup]="generalInfo" [fieldName]="'unitType'" [dataList]="masterData?.unitTypes"
+                                ngDefaultControl [value]="currentLocation?.unitTypeId??''">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 ">
+                              <app-dropdown [formControlName]="'rentalStatus'" [label]="'Rental Status'"
+                                [formGroup]="generalInfo" [fieldName]="'rentalStatus'"
+                                [dataList]="masterData?.rentalStatusTypes" ngDefaultControl
+                                [value]="currentLocation?.rentalStatusId??''">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 ">
+                              <app-dropdown [formControlName]="'unitStatus'" [label]="'Unit Status'"
+                                [formGroup]="generalInfo" [fieldName]="'unitStatus'"
+                                [dataList]="masterData?.unitStatuses" ngDefaultControl
+                                [value]="currentLocation?.unitStatusId??''">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 ">
+                              <app-dropdown [formControlName]="'floor'" [label]="'Floor'" [formGroup]="generalInfo"
+                                [fieldName]="'floor'" [dataList]="masterData?.floors" ngDefaultControl
+                                [value]="currentLocation?.floorId??''">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 ">
+                              <app-dropdown [formControlName]="'buildingCode'" [label]="'Building Code'"
+                                [formGroup]="generalInfo" [fieldName]="'buildingCode'"
+                                [dataList]="masterData?.buildings" ngDefaultControl
+                                [value]="currentLocation?.buildingId??''"
+                                (selectionChange)="onMasterDevelopmentChange($event)">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-sm-4 col-md-6 col-lg-4 ">
+                              <app-text-field [formControlName]="'bulidingName'" [formGroup]="generalInfo"
+                                [fieldName]="'bulidingName'" [label]="'Buliding Name'" ngDefaultControl
+                                [value]="selectedBuilding?.name??''" [isRequired]="false" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </form>
+
+                        <form [formGroup]="generalInfo" *ngIf="currentView === MasterTypes.CLIENTS">
+                          <div class="row">
+                            <div class="col-lg-4 mb-2">
+                              <app-text-field [formControlName]="'refNo'" [formGroup]="generalInfo"
+                                [fieldName]="'refNo'" [label]="'Ref No'" ngDefaultControl
+                                [value]="'CL'+pad(currentLocation?.id,4)" [isRequired]="false" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-4 mb-2">
+                              <app-text-field [formControlName]="'code'" [formGroup]="generalInfo" [fieldName]="'code'"
+                                [label]="'Code'" ngDefaultControl [value]="currentLocation?.code??''"
+                                [isReadonly]="currentLocation?.code">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-4 mb-2">
+                              <app-dropdown [formControlName]="'status'" [label]="'Status'" [formGroup]="generalInfo"
+                                [fieldName]="'status'" [dataList]="masterData?.statuses" ngDefaultControl
+                                [value]="currentLocation?.statusId??''" [isRequired]="false"
+                                *ngIf="currentLocation?.statusId; else NoDropDown">
+                              </app-dropdown>
+                              <ng-template #NoDropDown>
+                                <app-text-field [formControlName]="'status'" [formGroup]="generalInfo"
+                                  [fieldName]="'status'" [label]="'Status'" ngDefaultControl [value]="statuses[0].name"
+                                  [isRequired]="false" [isReadonly]="true">
+                                </app-text-field>
+                              </ng-template>
+                            </div>
+
+                            <div class="col-sm-4 mb-2">
+                              <app-text-field [formControlName]="'clientName'" [formGroup]="generalInfo"
+                                [fieldName]="'clientName'" [label]="'Client Name'" ngDefaultControl
+                                [value]="currentLocation?.name??''">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-4 mb-2">
+                              <app-text-field [formControlName]="'vatRegNumber'" [formGroup]="generalInfo"
+                                [fieldName]="'vatRegNumber'" [label]="'Vat Reg Number'" ngDefaultControl
+                                [value]="currentLocation?.taxNo??''" [isRequired]="false">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    <div class="card"
+                      *ngIf="currentView === MasterTypes.PROJECTS || currentView === MasterTypes.BUILDINGS || currentView === MasterTypes.UNITS || currentView === MasterTypes.CLIENTS">
+                      <div class="card-header  bg-transparent  header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue">
+                          {{currentView === MasterTypes.CLIENTS?'Current Address':'Locations'}}</h6>
+                      </div>
+                      <div class="card-body">
+                        <form [formGroup]="locations"
+                          *ngIf="currentView === MasterTypes.PROJECTS || currentView === MasterTypes.BUILDINGS">
+                          <div class="row">
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-dropdown [formControlName]="'country'" [label]="'Country'" [formGroup]="locations"
+                                [fieldName]="'country'" [dataList]="masterData?.countries" ngDefaultControl
+                                [value]="currentLocation?.countryId??''" (selectionChange)="countrySelected($event)">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-dropdown [formControlName]="'state'" [label]="'State'" [formGroup]="locations"
+                                #md_states [fieldName]="'state'" [dataList]="states" ngDefaultControl
+                                [value]="currentLocation?.stateId??''" (selectionChange)="stateSelected($event)">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-dropdown [formControlName]="'city'" [label]="'City'" [formGroup]="locations"
+                                #md_cities [fieldName]="'city'" [dataList]="cities" ngDefaultControl
+                                [value]="currentLocation?.cityId??''" [isRequired]="false">
+                              </app-dropdown>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-dropdown [formControlName]="'masterDevelopment'" [label]="'Master Development'"
+                                [formGroup]="locations" [fieldName]="'masterDevelopment'"
+                                [dataList]="masterData?.masterDevelopments" ngDefaultControl
+                                [value]="currentLocation?.masterDevelopmentId??''" [isRequired]="false">
+                              </app-dropdown>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-dropdown [formControlName]="'zone'" [label]="'Zone'" [formGroup]="locations"
+                                [fieldName]="'zone'" [dataList]="masterData?.zones" ngDefaultControl
+                                [value]="currentLocation?.zoneId??''" [isRequired]="false">
+                              </app-dropdown>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-text-field [formControlName]="'streetNo'" [formGroup]="locations"
+                                [fieldName]="'streetNo'" [label]="'Street No'" ngDefaultControl
+                                [value]="currentLocation?.streetNo??''" [isRequired]="false">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-text-field [formControlName]="'streetName'" [formGroup]="locations"
+                                [fieldName]="'streetName'" [label]="'Street Name'" ngDefaultControl
+                                [value]="currentLocation?.streetName??''" [isRequired]="false">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-2">
+                              <app-text-field [formControlName]="'zipCode'" [formGroup]="locations"
+                                [fieldName]="'zipCode'" [label]="'Zip Code'" [placeholder]="'PO BOX/ZipCode'"
+                                ngDefaultControl [value]="currentLocation?.zipCode??currentLocation?.pinCode"
+                                (keypress)="validateNumericInput($event,6,10)">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </form>
+                        <form [formGroup]="locations" *ngIf="currentView === MasterTypes.UNITS">
+                          <div class="row">
+                            <div class="col-lg-4 mb-2">
+                              <app-text-field [formControlName]="'country'" [formGroup]="locations"
+                                [fieldName]="'country'" [label]="'Country'" ngDefaultControl [isRequired]="false"
+                                [value]="selectedCountry?.name??''" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 mb-2">
+                              <app-text-field [formControlName]="'state'" [formGroup]="locations" [fieldName]="'state'"
+                                [label]="'State'" ngDefaultControl [isRequired]="false"
+                                [value]="selectedState?.name??''" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 mb-2">
+                              <app-text-field [formControlName]="'city'" [formGroup]="locations" [fieldName]="'city'"
+                                [label]="'City'" ngDefaultControl [isRequired]="false" [value]="selectedCity?.name??''"
+                                [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 mb-2">
+                              <app-text-field [formControlName]="'streetName'" [formGroup]="locations"
+                                [fieldName]="'streetName'" [label]="'Street Name'" ngDefaultControl [isRequired]="false"
+                                [value]="selectedBuilding?.streetName??''" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 mb-2">
+                              <app-text-field [formControlName]="'streetNo'" [formGroup]="locations"
+                                [fieldName]="'streetNo'" [label]="'Street No'" ngDefaultControl [isRequired]="false"
+                                [value]="selectedBuilding?.streetNo??''" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 mb-2">
+                              <app-text-field [formControlName]="'landMark'" [formGroup]="locations"
+                                [fieldName]="'landMark'" [label]="'Land Mark'" ngDefaultControl [isRequired]="false"
+                                [value]="currentLocation?.landMark??''">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 mb-2">
+                              <app-text-field [formControlName]="'pinCode'" [formGroup]="locations"
+                                [fieldName]="'pinCode'" [label]="'Pin Code'" ngDefaultControl [isRequired]="false"
+                                [value]="selectedBuilding?.pinCode??''" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 mb-2">
+                              <app-text-field [formControlName]="'buildingStatus'" [formGroup]="locations"
+                                [fieldName]="'buildingStatus'" [label]="'Building Status'" ngDefaultControl
+                                [isRequired]="false" [value]="selectedBuilding?.buildingStatus" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-12 mb-2">
+                              <app-text-field [formControlName]="'description'" [formGroup]="locations"
+                                [fieldName]="'description'" [label]="'Description'" ngDefaultControl
+                                [isRequired]="false" [value]="currentLocation?.description??''">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </form>
+                        <form [formGroup]="locations" *ngIf="currentView === MasterTypes.CLIENTS">
+                          <div class="row">
+                            <div class="col-sm-4 mb-2">
+                              <app-dropdown [formControlName]="'country'" [label]="'Country'" [formGroup]="locations"
+                                [fieldName]="'country'" [dataList]="masterData?.countries" ngDefaultControl
+                                [value]="currentLocation?.countryId??''" (selectionChange)="countrySelected($event)">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-sm-4 mb-2">
+                              <app-dropdown #md_states [formControlName]="'state'" [label]="'State'"
+                                [formGroup]="locations" [fieldName]="'state'" [dataList]="states" ngDefaultControl
+                                [value]="currentLocation?.stateId??''" (selectionChange)="stateSelected($event)">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-sm-4 mb-2">
+                              <app-dropdown #md_cities [formControlName]="'city'" [label]="'City'"
+                                [formGroup]="locations" [fieldName]="'city'" [dataList]="cities" ngDefaultControl
+                                [value]="currentLocation?.cityId??''" [isRequired]="false">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-sm-6 mb-2">
+                              <app-text-field [formControlName]="'streetNo'" [formGroup]="locations"
+                                [fieldName]="'streetNo'" [label]="'Street No'" ngDefaultControl
+                                [value]="currentLocation?.streetNo??''" [isRequired]="false">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-6 mb-2">
+                              <app-text-field [formControlName]="'streetName'" [formGroup]="locations"
+                                [fieldName]="'streetName'" [label]="'Street Name'" ngDefaultControl
+                                [value]="currentLocation?.streetName??''" [isRequired]="false">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-6 mb-2">
+                              <app-text-field [formControlName]="'landMark'" [formGroup]="locations"
+                                [fieldName]="'landMark'" [label]="'Land Mark'" ngDefaultControl
+                                [value]="currentLocation?.landmark??''" [isRequired]="false">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-6 mb-2">
+                              <app-text-field [formControlName]="'zipCode'" [formGroup]="locations"
+                                [fieldName]="'zipCode'" [label]="'ZipCode'" [placeholder]="'PO Box/Zip Code'"
+                                ngDefaultControl [value]="currentLocation?.zipCode??''" [isRequired]="false"
+                                (keypress)="validateNumericInput($event,6,10)">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-6 mb-2">
+                              <app-text-field [formControlName]="'mainEmail'" [formGroup]="locations"
+                                [fieldName]="'mainEmail'" [label]="'Main Email'" ngDefaultControl
+                                [value]="currentLocation?.emailAddress??''" [isRequired]="false">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-1 mb-2">
+                              <div class="dropdown mt-3">
+                                <a class="badge badge-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                  style="padding: 11px 8px;">
+                                  {{mobileCode?.dialCode}}
+                                </a>
+                                <div class="dropdown-menu border-purple dropdown-menu-right"
+                                  style="max-height: 200px !important; overflow-y: auto !important;">
+                                  <a class="dropdown-item text-secondary font-size-sm"
+                                    *ngFor="let item of masterData?.countries" (click)="countryCodeSelected(item)">
+                                    {{item.code + ' ' +item.dialCode}} </a>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-5 mb-2">
+                              <app-text-field [formControlName]="'mobileNo'" [formGroup]="locations"
+                                [fieldName]="'mobileNo'" [label]="'Mobile No'" ngDefaultControl
+                                [value]="currentLocation?.mobileNo??''" [isRequired]="false"
+                                (keypress)="validateNumericInput($event,6,15)">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-1 mb-2">
+                              <div class="dropdown mt-3">
+                                <a class="badge badge-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                  style="padding: 11px 8px;">
+                                  {{faxNoCode?.dialCode}}
+                                </a>
+                                <div class="dropdown-menu border-purple dropdown-menu-right"
+                                  style="max-height: 200px !important; overflow-y: auto !important;">
+                                  <a class="dropdown-item text-secondary font-size-sm"
+                                    *ngFor="let item of masterData?.countries"
+                                    (click)="countryCodeSelected(item, CountryCodes.FAX)">
+                                    {{item.code + ' ' +item.dialCode}} </a>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-5 mb-2">
+                              <app-text-field [formControlName]="'faxNo'" [formGroup]="locations" [fieldName]="'faxNo'"
+                                [label]="'Fax No'" ngDefaultControl [value]="currentLocation?.faxNo??''"
+                                [isRequired]="false" (keypress)="validateNumericInput($event,6,15)">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-5 mb-2">
+                              <app-text-field [formControlName]="'telePhoneNo'" [formGroup]="locations"
+                                [fieldName]="'telePhoneNo'" [label]="'Tele Phone No'" ngDefaultControl
+                                [value]="currentLocation?.telePhoneNo??''" [isRequired]="false"
+                                (keypress)="validateNumericInput($event,6,15)">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    <div class="card"
+                      *ngIf="currentView !== MasterTypes.PROJECTS && currentView !== MasterTypes.CLIENTS">
+                      <div class="card-header  bg-transparent  header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue">
+                          {{currentView === MasterTypes.BUILDINGS?'Dimensions':'Other Details'}}</h6>
+                      </div>
+                      <div class="card-body">
+                        <div class="row">
+                          <div
+                            [ngClass]="currentView === MasterTypes.BUILDINGS || currentView === MasterTypes.UNITS?'col-md-6':'col-md-12'">
+                            <form [formGroup]="builtupArea"
+                              *ngIf="currentView === MasterTypes.ZONES || currentView === MasterTypes.MASTER_DEVELOPMENT || currentView === MasterTypes.BUILDINGS || currentView === MasterTypes.UNITS">
+                              <div class="row">
+                                <div class="col-lg-6 col-md-6 mb-2">
+                                  <app-text-field [formControlName]="'builtupAreaSft'" [formGroup]="builtupArea"
+                                    [fieldName]="'builtupAreaSft'" [label]="'Built up Area Sft'"
+                                    [placeholder]="'Built up Area (Sq. Ft.) '" ngDefaultControl
+                                    [value]="currentLocation?.builtUpAreaSqFt??0 | number:'1.2-2'" [pipe]="'number'"
+                                    (inputChange)="convertToMeters($event.target,1)">
+                                  </app-text-field>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 mb-2">
+                                  <app-text-field [formControlName]="'builtupAreaSmt'" [formGroup]="builtupArea"
+                                    [fieldName]="'builtupAreaSmt'" [label]="'Built up Area Smt'" [isReadonly]="true"
+                                    [placeholder]="'Built up Area (Sq. M.) '" ngDefaultControl
+                                    [value]="buildAreaInSqMtrs | number:'1.2-2'" [isRequired]="false">
+                                  </app-text-field>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                          <div
+                            [ngClass]="currentView === MasterTypes.BUILDINGS || currentView === MasterTypes.UNITS?'col-md-6':'col-md-12'">
+                            <form [formGroup]="plotArea"
+                              *ngIf="currentView === MasterTypes.ZONES || currentView === MasterTypes.MASTER_DEVELOPMENT || currentView === MasterTypes.BUILDINGS || currentView === MasterTypes.UNITS">
+                              <div class="row">
+                                <div class="col-lg-6 col-md-6 mb-2">
+                                  <app-text-field [formControlName]="'plotAreaSft'" [formGroup]="plotArea"
+                                    [fieldName]="'plotAreaSft'" [label]="'Plot Area Sft'"
+                                    [placeholder]="'Plot Area (Sq. Ft.)  '" ngDefaultControl
+                                    [value]="currentLocation?.plotAreaSqFt??0| number:'1.2-2'" [pipe]="'number'"
+                                    (inputChange)="convertToMeters($event.target,3)">
+                                  </app-text-field>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 mb-2">
+                                  <app-text-field [formControlName]="'plotAreaSmt'" [formGroup]="plotArea"
+                                    [fieldName]="'plotAreaSmt'" [label]="'Plot Area Smt'" [isReadonly]="true"
+                                    [placeholder]="'Plot Area (Sq. M.)  '" ngDefaultControl
+                                    [value]="plotAreaInSqMtrs | number:'1.2-2'" [isRequired]="false">
+                                  </app-text-field>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                          <form [formGroup]="otherDetails" *ngIf="currentView === MasterTypes.UNITS">
+                            <div class="row">
+                              <div class="col-sm-3 mb-2">
+                                <app-dropdown [formControlName]="'bedrooms'" [label]="'Bedrooms'"
+                                  [formGroup]="otherDetails" [fieldName]="'bedrooms'"
+                                  [dataList]="masterData?.unitBedRooms" ngDefaultControl
+                                  [value]="currentLocation?.unitBedRoomId??''" [isRequired]="false">
+                                </app-dropdown>
+                              </div>
+                              <div class="col-sm-3 mb-2">
+                                <app-dropdown [formControlName]="'bathrooms'" [label]="'Bathrooms'"
+                                  [formGroup]="otherDetails" [fieldName]="'bathrooms'"
+                                  [dataList]="masterData?.unitBathRooms" ngDefaultControl
+                                  [value]="currentLocation?.unitBathRoomId??''" [isRequired]="false">
+                                </app-dropdown>
+                              </div>
+                              <div class="col-sm-3 mb-2">
+                                <app-text-field [formControlName]="'noOfRooms'" [formGroup]="otherDetails"
+                                  [inputType]="'number'" [fieldName]="'noOfRooms'" [label]="'No Of Rooms'"
+                                  [placeholder]="'No. of Rooms'" ngDefaultControl [isRequired]="false"
+                                  [value]="currentLocation?.noOfRooms??''">
+                                </app-text-field>
+                              </div>
+                              <div class="col-sm-3 mb-2">
+                                <app-text-field [formControlName]="'noOfParkingLots'" [formGroup]="otherDetails"
+                                  [inputType]="'number'" [fieldName]="'noOfParkingLots'" [label]="'No Of Parking Lots'"
+                                  [placeholder]="'No. of Parking Lots'" ngDefaultControl [isRequired]="false"
+                                  [value]="currentLocation?.noOfParkings??''">
+                                </app-text-field>
+                              </div>
+                              <div class="col-sm-4 mb-2">
+                                <app-text-field [formControlName]="'unitView'" [formGroup]="otherDetails"
+                                  ngDefaultControl [fieldName]="'unitView'" [label]="'Unit View'" [isRequired]="false"
+                                  [value]="currentLocation?.unitView??''">
+                                </app-text-field>
+                              </div>
+                              <div class="col-sm-4 mb-2">
+                                <app-text-field [formControlName]="'developedBy'" [formGroup]="otherDetails"
+                                  ngDefaultControl [fieldName]="'developedBy'" [label]="'Developed By'"
+                                  [isRequired]="false" [value]="developedBy?.name" [isReadonly]="true">
+                                </app-text-field>
+                              </div>
+                              <div class="col-sm-4 mb-2">
+                                <app-text-field [formControlName]="'notes'" [formGroup]="otherDetails" ngDefaultControl
+                                  [fieldName]="'notes'" [label]="'Notes'" [isRequired]="false"
+                                  [value]="currentLocation?.notes??''">
+                                </app-text-field>
+                              </div>
+                              <div class="col-md-12">
+                                <div
+                                  class="custom-control custom-checkbox custom-control-secondary custom-control-inline">
+                                  <input type="checkbox" class="custom-control-input" id="chkIsFurnished"
+                                    checked="checked" data-val="true" formControlName="isFurnished"
+                                    [value]="currentLocation?.isFurnished??false"
+                                    data-val-required="The IsFurnished field is required." name="IsFurnished">
+                                  <label class="custom-control-label pt-1 font-size-12"
+                                    for="chkIsFurnished">Furnished?</label>
+                                </div>
+
+                                <div
+                                  class="custom-control custom-checkbox custom-control-secondary custom-control-inline">
+                                  <input type="checkbox" class="custom-control-input" id="chkIsPetsAllowed"
+                                    checked="checked" data-val="true" formControlName="isPetsAllowed"
+                                    [value]="currentLocation?.arePetsAllowed??false"
+                                    data-val-required="The IsPetsAllowed field is required." name="IsPetsAllowed">
+                                  <label class="custom-control-label pt-1 font-size-12" for="chkIsPetsAllowed">
+                                    Pets Allowed?</label>
+                                </div>
+
+                                <div
+                                  class="custom-control custom-checkbox custom-control-secondary custom-control-inline">
+                                  <input type="checkbox" class="custom-control-input" id="chkIsStorage" data-val="true"
+                                    formControlName="isPoolAvailable" [value]="currentLocation?.isSwimmingPool??false"
+                                    data-val-required="The IsStorage field is required." name="IsStorage">
+                                  <label class="custom-control-label pt-1 font-size-12" for="chkIsStorage">
+                                    Swimming Pool Available?</label>
+                                </div>
+
+                                <div
+                                  class="custom-control custom-checkbox custom-control-secondary custom-control-inline">
+                                  <input type="checkbox" class="custom-control-input" id="chkHasBalcony" data-val="true"
+                                    formControlName="hasBalcony" data-val-required="The Balcony field is required."
+                                    name="HasBalcony" [value]="currentLocation?.hasBalcony??false">
+                                  <label class="custom-control-label pt-1 font-size-12" for="chkHasBalcony">
+                                    Has Balcony</label>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+
+                        <form [formGroup]="dimensions" *ngIf="currentView === MasterTypes.BUILDINGS">
+                          <div class="row">
+                            <div class="col-sm-4 col-md-6 col-lg-3 mb-2">
+                              <app-text-field [formControlName]="'commonAreaSft'" [formGroup]="dimensions"
+                                [fieldName]="'commonAreaSft'" [label]="'Common Area Sft'"
+                                [placeholder]="'Common Area(Sq. ft.)'" ngDefaultControl
+                                [value]="currentLocation?.commonAreaSqft??0| number:'1.2-2'" [pipe]="'number'"
+                                (inputChange)="convertToMeters($event.target,2)">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 col-md-6 col-lg-3 mb-2">
+                              <app-text-field [formControlName]="'commonAreaSmt'" [formGroup]="dimensions"
+                                [fieldName]="'commonAreaSmt'" [label]="'Common Area Smt'" [isReadonly]="true"
+                                [inputType]="'number'" [placeholder]="'Common Area(Sq. M.)'" ngDefaultControl
+                                [value]="commonAreaInSqMtrs | number:'1.2-2'" [isRequired]="false">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 col-md-6 col-lg-3 mb-2">
+                              <app-text-field [formControlName]="'unitAreaSft'" [formGroup]="dimensions"
+                                [fieldName]="'unitAreaSft'" [label]="'Unit Area Sft'" [isReadonly]="true"
+                                [inputType]="'number'" [placeholder]="'Unit Area (Sq. ft.)'" ngDefaultControl
+                                [isRequired]="false" [value]="">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 col-md-6 col-lg-3 mb-2">
+                              <app-text-field [formControlName]="'unitAreaSmt'" [formGroup]="dimensions"
+                                [fieldName]="'unitAreaSmt'" [label]="'Unit Area Sft'" [isReadonly]="true"
+                                [inputType]="'number'" [placeholder]="'Unit Area (Sq. M.)'" ngDefaultControl
+                                [isRequired]="false" [value]="">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </form>
+
+                        <form [formGroup]="otherDetails" *ngIf="currentView === MasterTypes.ZONES">
+                          <div class="row" *ngIf="currentView === MasterTypes.ZONES">
+                            <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
+                              <app-dropdown [formControlName]="'direction'" [label]="'Direction'"
+                                [secondaryLabelKey]="'name'" [formGroup]="otherDetails" [fieldName]="'direction'"
+                                [dataList]="directions" ngDefaultControl [value]="currentLocation?.direction??''"
+                                [isRequired]="false">
+                              </app-dropdown>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6 mb-2">
+                              <app-text-field [formControlName]="'dimension'" [formGroup]="otherDetails"
+                                [fieldName]="'dimension'" [label]="'Dimension'" ngDefaultControl [isRequired]="false"
+                                [value]="currentLocation?.dimension??''">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    <div class="card" *ngIf="currentView === MasterTypes.BUILDINGS">
+                      <div class="card-header bg-transparent  header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue"> Additional Info </h6>
+                      </div>
+
+                      <div class="card-body">
+                        <div class="col-md-12">
+                          <form [formGroup]="additionalInfo">
+                            <div class="row">
+                              <div class="col-sm-4 col-md-6 col-lg-3 mb-2">
+                                <app-text-field [formControlName]="'propertyNo'" [formGroup]="additionalInfo"
+                                  [fieldName]="'propertyNo'" [label]="'Property No'" ngDefaultControl
+                                  [isRequired]="false" [value]="currentLocation?.propertyNo??''">
+                                </app-text-field>
+                              </div>
+
+                              <div class="col-sm-4 col-md-6 col-lg-3 mb-2">
+                                <app-text-field [formControlName]="'makaniNo'" [formGroup]="additionalInfo"
+                                  [fieldName]="'makaniNo'" [label]="'Makani No'" ngDefaultControl [isRequired]="false"
+                                  [value]="currentLocation?.makaniNo??''">
+                                </app-text-field>
+                              </div>
+
+                              <div class="col-sm-4 col-md-6 col-lg-3 mb-2">
+                                <app-text-field [formControlName]="'noofUnits'" [formGroup]="additionalInfo"
+                                  [fieldName]="'noofUnits'" [label]="'No of Units'" [inputType]="'number'"
+                                  [placeholder]="'No. of Units'" ngDefaultControl [isRequired]="false"
+                                  [value]="currentLocation?.noOfUnits??''">
+                                </app-text-field>
+                              </div>
+
+                              <div class="col-sm-4 col-md-6 col-lg-3 mb-2">
+                                <app-text-field [formControlName]="'noofParkingLots'" [formGroup]="additionalInfo"
+                                  [fieldName]="'noofParkingLots'" [label]="'No of Parking Lots'" [inputType]="'number'"
+                                  [placeholder]="'No. of Parking Lots'" ngDefaultControl [isRequired]="false"
+                                  [value]="currentLocation?.parkingLots??''">
+                                </app-text-field>
+                              </div>
+
+                              <div class="col-sm-4 col-md-6 col-lg-3 mb-2">
+                                <app-text-field [formControlName]="'rateperSqFt'" [formGroup]="additionalInfo"
+                                  [fieldName]="'rateperSqFt'" [label]="'Rate per Sq Ft'" [inputType]="'number'"
+                                  [placeholder]="'Rate per Sq.Ft'" ngDefaultControl [isRequired]="false"
+                                  [value]="currentLocation?.ratePerSqft??''">
+                                </app-text-field>
+                              </div>
+
+                              <div class="col-sm-4 col-md-6 col-lg-3 mb-2">
+                                <app-text-field [formControlName]="'buildingAge'" [formGroup]="additionalInfo"
+                                  [fieldName]="'buildingAge'" [label]="'Building Age'" [inputType]="'number'"
+                                  ngDefaultControl [isRequired]="false" [value]="currentLocation?.buildingAge??''">
+                                </app-text-field>
+                              </div>
+
+                              <div class="col-sm-3 col-md-3 col-lg-3 mb-2">
+                                <app-text-field [formControlName]="'handoverDate'" [formGroup]="additionalInfo"
+                                  [fieldName]="'handoverDate'" [label]="'Handover Date'" ngDefaultControl
+                                  [value]="currentLocation?.handoverDate | localizedDate" [pipe]="'date'"
+                                  [isRequired]="false">
+                                </app-text-field>
+                              </div>
+
+                              <div class="col-sm-3 col-md-3 col-lg-3 mb-2">
+                                <app-text-field [formControlName]="'dLPPeriod'" [formGroup]="additionalInfo"
+                                  [fieldName]="'dLPPeriod'" [label]="'DLP Period'" ngDefaultControl [isRequired]="false"
+                                  [value]="currentLocation?.dlpPeriod??''">
+                                </app-text-field>
+                              </div>
+
+                              <div class="col-sm-3 col-md-3 col-lg-3 mb-2">
+                                <app-text-field [formControlName]="'constructionValue'" [formGroup]="additionalInfo"
+                                  [fieldName]="'constructionValue'" [label]="'Construction Value'"
+                                  [inputType]="'number'" ngDefaultControl [isRequired]="false"
+                                  [value]="currentLocation?.constructionValue??''">
+                                </app-text-field>
+                              </div>
+
+                              <div class="col-lg-4 col-md-4 mb-2">
+                                <app-dropdown [formControlName]="'developedBy'" [label]="'Developed By'"
+                                  [formGroup]="additionalInfo" [fieldName]="'developedBy'"
+                                  [dataList]="masterData?.developers" ngDefaultControl
+                                  [value]="currentLocation?.developerId??''">
+                                </app-dropdown>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-xl-4 col-md-4">
+                    <div class="card" *ngIf="currentView === MasterTypes.PROJECTS">
+                      <div class="card-header  bg-transparent  header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue">Finance</h6>
+                      </div>
+                      <div class="card-body">
+                        <form [formGroup]="finance">
+                          <div class="col-sm-4 col-md-6 col-lg-12 mb-2">
+                            <app-text-field [formControlName]="'projectValue'" [formGroup]="finance"
+                              [fieldName]="'projectValue'" [label]="'Project Value'" ngDefaultControl
+                              [value]="currentLocation?.projectValue??''" [pipe]="'number'">
+                            </app-text-field>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="card"
+                      *ngIf="currentView === MasterTypes.BUILDINGS || currentView === MasterTypes.MASTER_DEVELOPMENT || currentView === MasterTypes.ZONES || currentView === MasterTypes.UNITS">
+                      <div class="card-header bg-transparent  header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue"> QR Code </h6>
+                        <div class="header-elements">
+                          <div class="list-icons">
+                            <a class="list-icons-item" data-action="collapse"></a>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="card-body text-center">
+                        <div class="card-img-actions border d-inline-block mb-3">
+                          <div class="custom-card-body-content-block">
+                            <div class="row" *ngIf="currentLocation?.qrCodeUrl">
+                              <div class="col-md-12 text-center">
+                                <img [src]="currentLocation?.qrCodeUrl" class="img-fluid">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="card" *ngIf="currentView === MasterTypes.BUILDINGS">
+                      <div class="card-header  bg-transparent  header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue">Facilities</h6>
+                      </div>
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-sm-12 col-md-12 col-lg-12  ">
+                            <ul class="types-list">
+                              <li *ngFor="let facility of facilities" class="mr-1">
+                                <label class="types-list__label">
+                                  <input type="checkbox" class="cust-type" id="Facility" name="Facilities" value="true">
+                                  <span class="types-list__text">{{facility}}</span>
+                                </label>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="card"
+                      *ngIf="currentView === MasterTypes.BUILDINGS || currentView === MasterTypes.UNITS">
+                      <div class="card-header  bg-transparent   header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue">Other Reference</h6>
+                      </div>
+                      <div class="card-body">
+                        <form [formGroup]="otherReferences">
+                          <div class="row">
+                            <div class="col-sm-4 col-md-6 col-lg-6  ">
+                              <app-text-field [formControlName]="'reference1'" [formGroup]="otherReferences"
+                                [fieldName]="'reference1'" [label]="'Reference 1'" [placeholder]="'Reference No 1'"
+                                ngDefaultControl [isRequired]="false" [value]="''">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 col-md-6 col-lg-6  ">
+                              <app-text-field [formControlName]="'reference2'" [formGroup]="otherReferences"
+                                [fieldName]="'reference2'" [label]="'Reference 2'" [placeholder]="'Reference No 2'"
+                                ngDefaultControl [isRequired]="false" [value]="''">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    <div class="card" *ngIf="currentView === MasterTypes.UNITS">
+                      <div class="card-header  bg-transparent  header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue">
+                          Govt Reference No.
+                        </h6>
+                      </div>
+                      <div class="card-body">
+                        <form [formGroup]="govtRefNo">
+                          <div clasgeos="row">
+                            <div class="col-lg-6 mb-2">
+                              <app-text-field [formControlName]="'tawtheeqNo'" [formGroup]="govtRefNo"
+                                [fieldName]="'tawtheeqNo'" [label]="'Tawtheeq No.'" ngDefaultControl
+                                [isRequired]="false" [value]="">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    <div class="card"
+                      *ngIf="currentView === MasterTypes.BUILDINGS || currentView === MasterTypes.UNITS">
+                      <div class="card-header bg-white header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue">Utilities</h6>
+                        <div class="header-elements">
+                          <div class="list-icons ml-3">
+                            <div class="dropdown">
+                              <a style="cursor:pointer" class="input-group-text text-warning" type="button"
+                                id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-plus-circle"></i>
+                              </a>
+                              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" (click)="addUtilities('electricity')">Electricity</a></li>
+                                <li><a class="dropdown-item" (click)="addUtilities('telecom')">Telecom</a></li>
+                                <li><a class="dropdown-item" (click)="addUtilities('tse')">TSE</a></li>
+                                <li><a class="dropdown-item" (click)="addUtilities('gas')">Gas</a></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-body">
+                        <form [formGroup]="utilitiesInfo">
+                          <div class="row">
+                            <div class="col-lg-12 col-md-12 mb-2" *ngIf="utilitiesList.has('electricity')">
+                              <app-text-field [formControlName]="'electricity'" [formGroup]="utilitiesInfo"
+                                [fieldName]="'electricity'" [label]="'Electricity'" ngDefaultControl [value]="''">
+                              </app-text-field>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-12 col-md-12 mb-2" *ngIf="utilitiesList.has('telecom')">
+                              <app-text-field [formControlName]="'telecom'" [formGroup]="utilitiesInfo"
+                                [fieldName]="'telecom'" [label]="'Telecom'" ngDefaultControl [value]="">
+                              </app-text-field>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-12 col-md-12 mb-2" *ngIf="utilitiesList.has('tse')">
+                              <app-text-field [formControlName]="'tse'" [formGroup]="utilitiesInfo" [fieldName]="'tse'"
+                                [label]="'tse'" [placeholder]="'#TSE'" ngDefaultControl [value]="">
+                              </app-text-field>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-12 col-md-12 mb-2" *ngIf="utilitiesList.has('gas')">
+                              <app-text-field [formControlName]="'gas'" [formGroup]="utilitiesInfo" [fieldName]="'gas'"
+                                [label]="'Gas'" ngDefaultControl [value]="">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <app-geo-locations #geoLocation [latitude]="currentLocation?.latitude" [longitude]="currentLocation?.longitude"
+                      *ngIf="currentView !== MasterTypes.PROJECTS && currentView !== MasterTypes.UNITS && currentView !== MasterTypes.CLIENTS">
+                    </app-geo-locations>
+                  </div>
+                </div>
+                <div class="row" *ngIf="currentView === MasterTypes.MAN_POWER || currentView === MasterTypes.VENDORS">
+                  <div class="col-md-4" id="divGeneralInfo">
+                    <div class="card">
+                      <div class="card-header  bg-transparent  header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue">
+                          {{currentView === MasterTypes.VENDORS?'General Info':'Personal Information'}}
+                        </h6>
+                      </div>
+                      <div class="card-body">
+                        <div class="col-md-6 mx-auto p-0">
+                          <div class="card-img-actions d-inline-block mb-3">
+                            <img class="img-fluid rounded-circle" id="6095603e-782d-4d5d-a215-b231bc7395d7"
+                              src="{{imageUrl}}" width="100" height="100" alt="">
+                            <div class="card-img-actions-overlay rounded-circle">
+                              <a href="javascript:;" onclick="$('#fileAttachProfilePic').click();"
+                                class="btn btn-outline bg-white text-white border-white border-2 btn-icon rounded-round">
+                                <i class="bi bi-plus"></i>
+                              </a>
+                            </div>
+                            <input id="fileAttachProfilePic" data-iscircle="false" (change)="onChangeProfile($event)"
+                              style="display:none" name="fileAttachProfilePic" type="file" multiple="" value="">
+                            <input type="hidden" name="ProfilePicDocNos" id="ProfilePicDocNos" accept="image/*"
+                              value="">
+                          </div>
+                        </div>
+                        <form [formGroup]="personalInfo" *ngIf="currentView === MasterTypes.MAN_POWER">
+                          <div class="row mt-4">
+                            <div class="col-md-12 mb-2">
+                              <ul class="types-list ml-0">
+                                <li *ngFor="let skillset of masterData?.resourceTypes" class="mr-1">
+                                  <label class="types-list__label">
+                                    <input type="radio" [value]="skillset.id" id="typeId_1" class="cust-type"
+                                      name="type-radio" formControlName="resourceType"
+                                      (click)="onMasterDevelopmentChange({value:skillset.id})">
+                                    <span class="types-list__text">{{skillset.name}}</span>
+                                  </label>
+                                </li>
+                              </ul>
+                              <ul class="subtypes-list ml-0" *ngIf="selectedResourceTypeId > 0">
+                                <li *ngFor="let subtype of resourceSubTypes" class="mr-1">
+                                  <label class="types-list__label">
+                                    <input type="radio" [value]="subtype.id" id="subtypeId_1" class="cust-type"
+                                      name="subtype-radio" formControlName="resourceSubType"
+                                      (click)="resourceSubTypeChanged(subtype.name)">
+                                    <span class="types-list__text">{{subtype.name}}</span>
+                                  </label>
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                              <div class="row">
+                                <div class="col-sm-6 mb-2">
+                                  <app-text-field [formControlName]="'code'" [formGroup]="personalInfo"
+                                    [fieldName]="'code'" [label]="'Code'" ngDefaultControl
+                                    [value]="currentLocation?.code??''" [isReadonly]="currentLocation?.code">
+                                  </app-text-field>
+                                </div>
+                                <div class="col-sm-6 mb-2">
+                                  <app-text-field [formControlName]="'userId'" [formGroup]="personalInfo"
+                                    [fieldName]="'userId'" [label]="'User Id'" ngDefaultControl
+                                    [value]="currentLocation?.resourceUserId??''"
+                                    [isReadonly]="currentLocation?.resourceUserId">
+                                  </app-text-field>
+                                </div>
+                                <div class="col-sm-6 mb-2">
+                                  <app-text-field [formControlName]="'firstName'" [formGroup]="personalInfo"
+                                    [fieldName]="'firstName'" [label]="'First Name'" ngDefaultControl
+                                    [value]="currentLocation?.firstName">
+                                  </app-text-field>
+                                </div>
+
+                                <div class="col-sm-6 mb-2">
+                                  <app-text-field [formControlName]="'lastName'" [formGroup]="personalInfo"
+                                    [fieldName]="'lastName'" [label]="'Last Name'" ngDefaultControl
+                                    [value]="currentLocation?.lastName">
+                                  </app-text-field>
+                                </div>
+
+                                <div class="col-sm-2 mb-2">
+                                  <div class="dropdown mt-3">
+                                    <a class="badge badge-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                      style="padding: 11px 8px;">
+                                      {{mobileCode?.dialCode}}
+                                    </a>
+                                    <div class="dropdown-menu border-purple dropdown-menu-right"
+                                      style="max-height: 200px !important; overflow-y: auto !important;">
+                                      <a class="dropdown-item text-secondary font-size-sm"
+                                        *ngFor="let item of masterData?.countries" (click)="countryCodeSelected(item)">
+                                        {{item.code + ' ' +item.dialCode}} </a>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="col-sm-5 mb-1 pl-2">
+                                  <app-text-field [formControlName]="'mobileNo'" [formGroup]="personalInfo"
+                                    [fieldName]="'mobileNo'" [label]="'Mobile No'"
+                                    (keypress)="validateNumericInput($event,6,15)" ngDefaultControl
+                                    [value]="currentLocation?.mobileNo" (keypress)="validateNumericInput($event,6,15)">
+                                  </app-text-field>
+                                </div>
+
+                                <div class="col-sm-5 mb-1" style="margin-top: 30px;">
+                                  <div class="custom-control custom-switch custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="sc_li_c"
+                                      [formControlName]="'isBlueColler'" [disabled]="!isEditable"
+                                      (change)="validateEmail($event.target)">
+                                    <label class="custom-control-label" for="sc_li_c">Is Blue Collar</label>
+                                  </div>
+                                </div>
+
+                                <div class="col-sm-12 mb-2" *ngIf="!isEmailRequired">
+                                  <app-label [label]="'Supervisor'" [isRequired]="false"></app-label>
+                                  <kendo-dropdownlist class="form-group" [data]="filteredData?.supervisors" [filterable]="true" textField="name" valueField="id"
+                                    [formControlName]="'supervisor'" [defaultItem]="'Select Supervisor'"
+                                    [readonly]="!isEditable" (filterChange)="handleFilter($event,'supervisors')">
+                                  </kendo-dropdownlist>
+                                </div>
+
+                                <div class="col-sm-7 mb-2">
+                                  <app-text-field [formControlName]="'email'" [formGroup]="personalInfo"
+                                    [fieldName]="'email'" [label]="'Email'" ngDefaultControl
+                                    [value]="currentLocation?.email" [isRequired]="isEmailRequired">
+                                  </app-text-field>
+                                </div>
+
+                                <div class="col-sm-5 mt-4">
+                                  <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="chkAssignWork"
+                                      name="IsAssignWork" formControlName="isAssignWork" />
+                                    <label class="custom-control-label" for="chkAssignWork">
+                                      <span class="font-weight-semibold mr-1">Assign Work</span>
+                                    </label>
+                                  </div>
+                                </div>
+
+                                <div class="col-sm-6 mt-2">
+                                  <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="chkWebLogin"
+                                      name="IsWebLogin" formControlName="isWebLogin" />
+                                    <label class="custom-control-label" for="chkWebLogin">
+                                      <span class="font-weight-semibold mr-1">Can Login Web</span>
+                                    </label>
+                                  </div>
+                                </div>
+
+                                <div class="col-sm-6 mt-2">
+                                  <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="chkMobileLogin"
+                                      name="IsMobileLogin" formControlName="isMobileLogin" />
+                                    <label class="custom-control-label" for="chkMobileLogin">
+                                      <span class="font-weight-semibold mr-1">Can Login Mobile</span>
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                        <form [formGroup]="generalInfo" *ngIf="currentView === MasterTypes.VENDORS">
+                          <div class="row mt-4">
+                            <div class="col-md-12 mb-2">
+                              <ul class="types-list ml-0">
+                                <li *ngFor="let vendorType of masterData?.vendorTypes" class="mr-1">
+                                  <label class="types-list__label">
+                                    <input type="radio" [value]="vendorType.id" id="typeId_1" class="cust-type"
+                                      name="type-radio" formControlName="vendorType">
+                                    <span class="types-list__text 01">{{vendorType.name}}</span>
+                                  </label>
+                                </li>
+                              </ul>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                              <div class="row">
+                                <div class="col-sm-6 mb-2">
+                                  <app-text-field [formControlName]="'refNo'" [formGroup]="generalInfo"
+                                    [fieldName]="'refNo'" [label]="'Ref No'" ngDefaultControl
+                                    [value]="'VD'+pad(currentLocation?.id??0,4)" [isReadonly]="true">
+                                  </app-text-field>
+                                </div>
+
+                                <div class="col-sm-6 mb-2">
+                                  <app-text-field [formControlName]="'code'" [formGroup]="generalInfo"
+                                    [fieldName]="'code'" [label]="'Code'" ngDefaultControl
+                                    [value]="currentLocation?.code" [isReadonly]="currentLocation?.code">
+                                  </app-text-field>
+                                </div>
+
+                                <div class="col-sm-6 mb-2">
+                                  <app-dropdown [formControlName]="'status'" [formGroup]="generalInfo"
+                                    [fieldName]="'status'" [label]="'Status'" ngDefaultControl
+                                    [dataList]="masterData?.statuses" [value]="currentLocation?.statusId??''">
+                                  </app-dropdown>
+                                </div>
+
+                                <div class="col-sm-6 mb-2">
+                                  <app-text-field [formControlName]="'trn'" [formGroup]="generalInfo"
+                                    [fieldName]="'trn'" [label]="'trn'" [placeholder]="'#TRN'" ngDefaultControl
+                                    [value]="currentLocation?.taxNo">
+                                  </app-text-field>
+                                </div>
+
+                                <div class="col-sm-12 mb-2">
+                                  <app-text-field [formControlName]="'name'" [formGroup]="generalInfo"
+                                    [fieldName]="'name'" [label]="'Name'" ngDefaultControl
+                                    [value]="currentLocation?.name">
+                                  </app-text-field>
+                                </div>
+
+                                <div class="col-sm-12 mt-4">
+                                  <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="chkPrimary" name="IsPrimary"
+                                      formControlName="isPrimary" />
+                                    <label class="custom-control-label" for="chkPrimary">
+                                      <span class="font-weight-semibold mr-1">Mark as Primary Vendor</span>
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header  bg-transparent  header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue">
+                          {{currentView === MasterTypes.MAN_POWER?'General Info':'Contact Person'}}
+                        </h6>
+                      </div>
+                      <div class="card-body">
+                        <form [formGroup]="generalInfo" *ngIf="currentView === MasterTypes.MAN_POWER">
+                          <div class="row">
+                            <div class="col-lg-12 mb-2">
+                              <app-dropdown [formControlName]="'accountProfile'" [label]="'Account Profile'"
+                                [formGroup]="generalInfo" [fieldName]="'accountProfile'"
+                                [dataList]="masterData?.accounts" ngDefaultControl
+                                [value]="currentLocation?.accountProfileId??''">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-sm-6 mb-2">
+                              <app-dropdown [formControlName]="'status'" [label]="'Status'" [formGroup]="generalInfo"
+                                [fieldName]="'status'" [dataList]="resourceStatuses" ngDefaultControl
+                                [value]="currentLocation?.status??''" [isRequired]="false"
+                                *ngIf="currentLocation?.status; else NoDropDown">
+                              </app-dropdown>
+                              <ng-template #NoDropDown>
+                                <app-text-field [formControlName]="'status'" [formGroup]="generalInfo"
+                                  [fieldName]="'status'" [label]="'Status'" ngDefaultControl [isRequired]="false"
+                                  [value]="'New'" [isReadonly]="true">
+                                </app-text-field>
+                              </ng-template>
+                            </div>
+
+                            <div class="col-sm-6 mb-2" *ngIf="currentView === MasterTypes.MAN_POWER">
+                              <app-text-field [formControlName]="'password'" [formGroup]="generalInfo"
+                                [fieldName]="'password'" [label]="'Password'" ngDefaultControl
+                                [value]="currentLocation?.password" [inputType]="PasswordView['password']">
+                              </app-text-field>
+                              <div class="form-control-feedback form-control-feedback-sm form-control-feedback-toggle text-muted mr-1">
+                                <i [ngClass]="PasswordView['password'] === 'password'?'bi bi-eye':'bi bi-eye-slash'"
+                                  (click)="togglePassword('password')"></i>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-6 mb-2" *ngIf="currentView !== MasterTypes.MAN_POWER">
+                              <app-text-field [formControlName]="'code'" [formGroup]="generalInfo" [fieldName]="'code'"
+                                [label]="'Code'" ngDefaultControl [value]="currentLocation?.code??''"
+                                [isReadonly]="currentLocation?.code">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-lg-12 mb-2" *ngIf="masterData?.sources">
+                              <app-dropdown [formControlName]="'source'" [label]="'Source'" #rs_source
+                                [formGroup]="generalInfo" [fieldName]="'source'" [dataList]="masterData?.sources"
+                                ngDefaultControl [value]="currentLocation?.clientOrVendorSourceId??''">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-lg-12 mb-2">
+                              <app-dropdown [formControlName]="'division'" [label]="'Division'"
+                                [formGroup]="generalInfo" [fieldName]="'division'" [dataList]="masterData?.divisions"
+                                ngDefaultControl [value]="currentLocation?.divisionId??''"
+                                (selectionChange)="divisionSelected($event)">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-lg-12 mb-2">
+                              <app-dropdown #md_dept [formControlName]="'department'" [label]="'Department'"
+                                [formGroup]="generalInfo" [fieldName]="'department'" [dataList]="departments"
+                                ngDefaultControl [value]="currentLocation?.departmentId??''">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-lg-12 mb-2">
+                              <app-dropdown [formControlName]="'designation'" [label]="'Designation'"
+                                [formGroup]="generalInfo" [fieldName]="'designation'"
+                                [dataList]="masterData?.designations" ngDefaultControl
+                                [value]="currentLocation?.designationId??''">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-sm-6 mb-2" *ngIf="currentView === MasterTypes.MAN_POWER">
+                              <app-text-field [formControlName]="'cost'" [formGroup]="generalInfo" [fieldName]="'cost'"
+                                [label]="'Cost'" ngDefaultControl [value]="currentLocation?.cost??''"
+                                [isReadonly]="currentLocation?.cost" [placeholder]="'Resource Cost Per Hour'">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </form>
+                        <form [formGroup]="personalInfo" *ngIf="currentView === MasterTypes.VENDORS">
+                          <div class="row">
+                            <div class="col-sm-12 mb-2">
+                              <app-text-field [formControlName]="'name'" [formGroup]="personalInfo" [fieldName]="'name'"
+                                [label]="'Name'" ngDefaultControl [isRequired]="false"
+                                [value]="currentLocation?.contactPerson??''">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-12 mb-2">
+                              <app-text-field [formControlName]="'emailAddress'" [formGroup]="personalInfo"
+                                [fieldName]="'emailAddress'" [label]="'Email Address'" ngDefaultControl
+                                [value]="currentLocation?.contactPersonEmail??''">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-2 mb-2">
+                              <div class="dropdown mt-3">
+                                <a class="badge badge-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                  style="padding: 11px 8px;">
+                                  {{alternateMobileCode?.dialCode}}
+                                </a>
+                                <div class="dropdown-menu border-purple dropdown-menu-right"
+                                  style="max-height: 200px !important; overflow-y: auto !important;">
+                                  <a class="dropdown-item text-secondary font-size-sm"
+                                    *ngFor="let item of masterData?.countries"
+                                    (click)="countryCodeSelected(item,CountryCodes.ALTERNATE)">
+                                    {{item.code + ' ' +item.dialCode}} </a>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-10 mb-2 pl-3">
+                              <app-text-field [formControlName]="'mobileNo'" [formGroup]="personalInfo"
+                                [fieldName]="'mobileNo'" [label]="'Mobile No'" ngDefaultControl
+                                [value]="currentLocation?.contactPersonMobileNumber??''"
+                                [isReadonly]="currentLocation?.mobileNo" (keypress)="validateNumericInput($event,6,15)">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <form [formGroup]="otherDetails"
+                      *ngIf="currentView === MasterTypes.MAN_POWER || currentView === MasterTypes.VENDORS">
+                      <div class="card">
+                        <div class="card-header  bg-transparent  header-elements-inline">
+                          <h6 class="card-title font-weight-semibold text-blue">Skill Set</h6>
+                        </div>
+                        <div class="card-body">
+                          <ul class="types-list mt-2" *ngIf="currentView === MasterTypes.MAN_POWER">
+                            <li *ngFor="let skillSet of  masterData?.resourceSkillSets; let i = index" class="mr-1"
+                              (click)="skillSetSelected(skillSet.id)">
+                              <label class="types-list__label">
+                                <input type="checkbox" class="cust-type" [id]="'skill-set'+i" [name]="'Skillset'+i"
+                                  [value]="skillSet.id" [checked]="selectedSkillSet.has(skillSet.id)">
+                                <span class="types-list__text  build-facilities">{{skillSet.name}}</span>
+                              </label>
+                            </li>
+                          </ul>
+                          <ul class="types-list mt-2" *ngIf="currentView === MasterTypes.VENDORS">
+                            <li *ngFor="let skillSet of  masterData?.vendorServices; let i = index" class="mr-1"
+                              (click)="skillSetSelected(skillSet.id)">
+                              <label class="types-list__label">
+                                <input type="checkbox" class="cust-type" [id]="'skill-set'+i" [name]="'Skillset'+i"
+                                  [value]="skillSet.id" [checked]="selectedSkillSet.has(skillSet.id)">
+                                <span class="types-list__text  build-facilities">{{skillSet.name}}</span>
+                              </label>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf="currentView === MasterTypes.MAN_POWER">
+                        <div class="col-md-6">
+                          <div class="card">
+                            <div class="card-header  bg-transparent  header-elements-inline">
+                              <h6 class="card-title font-weight-semibold text-blue">Languages
+                              </h6>
+                            </div>
+                            <div class="card-body">
+                              <ul class="types-list mt-2">
+                                <li *ngFor="let lang of masterData?.resourceLanguages; let i = index" class="mr-1"
+                                  (click)="languagesSelected(lang.id)">
+                                  <label class="types-list__label">
+                                    <input type="checkbox" class="cust-type" [id]="'language-'+i" [name]="'Language'+i"
+                                      [value]="lang.id" [checked]="selectedLanguages.has(lang.id)">
+                                    <span class="types-list__text  build-facilities">{{lang.name}}</span>
+                                  </label>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="card">
+                            <div class="card-header  bg-transparent  header-elements-inline">
+                              <h6 class="card-title font-weight-semibold text-blue">
+                                Role & Access Permission
+                              </h6>
+                            </div>
+                            <div class="card-body">
+                              <div class="row">
+                                <div class="col-lg-6 mb-2">
+                                  <app-dropdown [formControlName]="'role'" [label]="'Role'" [formGroup]="otherDetails"
+                                    [fieldName]="'role'" [dataList]="masterData?.roles" ngDefaultControl
+                                    [value]="currentLocation?.roleId??''" (selectionChange)="rolesSelected($event)">
+                                  </app-dropdown>
+                                </div>
+                                <div class="col-sm-6 mb-2">
+                                  <app-dropdown #md_roles [formControlName]="'roleAccess'" [label]="'Role Access'"
+                                    [formGroup]="otherDetails" [fieldName]="'roleAccess'" [dataList]="roleAccesses"
+                                    ngDefaultControl [value]="currentLocation?.roleAccessId??''">
+                                  </app-dropdown>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <div class="card">
+                      <div class="card-header  bg-transparent  header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue">Current Addess</h6>
+                      </div>
+                      <div class="card-body">
+                        <form [formGroup]="locations">
+                          <div class="row">
+                            <div class="col-lg-4 mb-2">
+                              <app-dropdown [formControlName]="'country'" [label]="'Country'" [formGroup]="locations"
+                                [fieldName]="'country'" [dataList]="masterData?.countries" ngDefaultControl
+                                [value]="currentLocation?.countryId??''" (selectionChange)="countrySelected($event)">
+                              </app-dropdown>
+                            </div>
+                            <div class="col-sm-4 mb-2">
+                              <app-dropdown [formControlName]="'state'" [label]="'State'" [formGroup]="locations"
+                                [fieldName]="'state'" [dataList]="states" ngDefaultControl
+                                [value]="currentLocation?.stateId??''" (selectionChange)="stateSelected($event)">
+                              </app-dropdown>
+                            </div>
+                            <div class="col-sm-4 mb-2">
+                              <app-dropdown [formControlName]="'city'" [label]="'City'" [formGroup]="locations"
+                                [fieldName]="'city'" [dataList]="cities" ngDefaultControl
+                                [value]="currentLocation?.cityId??''">
+                              </app-dropdown>
+                            </div>
+                            <div class="col-sm-6 mb-2">
+                              <app-text-field [formControlName]="'streetNo'" [formGroup]="locations"
+                                [fieldName]="'streetNo'" [label]="'Street No'" ngDefaultControl [isRequired]="false"
+                                [value]="currentLocation?.streetNo">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-6 mb-2">
+                              <app-text-field [formControlName]="'streetName'" [formGroup]="locations"
+                                [fieldName]="'streetName'" [label]="'Street Name'" ngDefaultControl [isRequired]="false"
+                                [value]="currentLocation?.streetName">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-6 mb-2">
+                              <app-text-field [formControlName]="'landMark'" [formGroup]="locations"
+                                [fieldName]="'landMark'" [label]="'Land Mark'" ngDefaultControl [isRequired]="false"
+                                [value]="currentLocation?.landMark ?? currentLocation?.landmark">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-6 mb-2">
+                              <app-text-field [formControlName]="'zipCode'" [formGroup]="locations"
+                                [fieldName]="'zipCode'" [label]="'ZipCode'" ngDefaultControl [isRequired]="false"
+                                [value]="currentLocation?.postalCode ?? currentLocation?.zipCode"
+                                (keypress)="validateNumericInput($event,6,10)">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <form [formGroup]="personalInfo" *ngIf="currentView === MasterTypes.MAN_POWER">
+                    <div class="card">
+                      <div class="card-header  bg-transparent  header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue">Emails Info</h6>
+                      </div>
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-sm-6 mt-2">
+                            <app-textarea-field [formControlName]="'additionalEmails'" [formGroup]="personalInfo"
+                              [fieldName]="'additionalEmails'" [label]="'Additional Emails'" ngDefaultControl
+                              [value]="currentLocation?.additionalEmails" [rows]="1" [isRequired]="isEmailsRequired" [isReadonly]="!isEmailsRequired">
+                            </app-textarea-field>
+                          </div>
+                          <div class="col-sm-6 mt-4">
+                            <div class="custom-control custom-switch custom-control-inline">
+                              <input type="checkbox" class="custom-control-input" id="sc_li_ae"
+                                [formControlName]="'hasAdditionalEmails'" [disabled]="!isEditable"
+                                (change)="validateEmails($event.target)">
+                              <label class="custom-control-label" for="sc_li_ae">Has Additional Emails</label>
+                            </div>
+                          </div>
+                          <div class="col-sm-4 col-md-6 col-lg-4 mb-2">
+                            <app-dropdown [formControlName]="'workType'" [isRequired]="false" [label]="'Work Type'"
+                              [placeholder]="'Work Type'" [formGroup]="personalInfo"
+                              [fieldName]="'workType'" [dataList]="masterData?.workTypes" ngDefaultControl
+                              [value]="currentLocation?.resourceWorkTypeId??''">
+                            </app-dropdown>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    </form>
+                    <div class="card" *ngIf="currentView === MasterTypes.VENDORS">
+                      <div class="card-header bg-transparent">
+                        <span class="card-title font-weight-semibold">Contact Info</span>
+                      </div>
+                      <div class="card-body">
+                        <form [formGroup]="contactInfo">
+                          <div class="row">
+                            <div class="col-sm-6 mb-2">
+                              <app-text-field [formControlName]="'emailAddress'" [formGroup]="contactInfo"
+                                [fieldName]="'emailAddress'" [label]="'Email Address'" [placeholder]="'Main Email'"
+                                ngDefaultControl [value]="currentLocation?.mainEmail??''">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-1 mb-2">
+                              <div class="dropdown mt-3">
+                                <a class="badge badge-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                  style="padding: 11px 8px;">
+                                  {{mobileCode?.dialCode}}
+                                </a>
+                                <div class="dropdown-menu border-purple dropdown-menu-right"
+                                  style="max-height: 200px !important; overflow-y: auto !important;">
+                                  <a class="dropdown-item text-secondary font-size-sm"
+                                    *ngFor="let item of masterData?.countries" (click)="countryCodeSelected(item)">
+                                    {{item.code + ' ' +item.dialCode}} </a>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-5 mb-2">
+                              <app-text-field [formControlName]="'mobileNo'" [formGroup]="contactInfo"
+                                [fieldName]="'mobileNo'" [label]="'Mobile No'" ngDefaultControl
+                                [value]="currentLocation?.mobileNumber??''"
+                                (keypress)="validateNumericInput($event,6,15)">
+                              </app-text-field>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-sm-1 mb-2">
+                              <div class="dropdown mt-3">
+                                <a class="badge badge-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                  style="padding: 11px 8px;">
+                                  {{landLineCode?.dialCode}}
+                                </a>
+                                <div class="dropdown-menu border-purple dropdown-menu-right"
+                                  style="max-height: 200px !important; overflow-y: auto !important;">
+                                  <a class="dropdown-item text-secondary font-size-sm"
+                                    *ngFor="let item of masterData?.countries"
+                                    (click)="countryCodeSelected(item,CountryCodes.LANDLINE)">
+                                    {{item.code + ' ' +item.dialCode}} </a>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-5 mb-2">
+                              <app-text-field [formControlName]="'landlineNo'" [formGroup]="contactInfo"
+                                [fieldName]="'landlineNo'" [label]="'Landline No'" [placeholder]="'Land Line'"
+                                ngDefaultControl [value]="currentLocation?.landLineNumber??''"
+                                (keypress)="validateNumericInput($event,6,15)">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-1 mb-2">
+                              <div class="dropdown mt-3">
+                                <a class="badge badge-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                  style="padding: 11px 8px;">
+                                  {{faxNoCode?.dialCode}}
+                                </a>
+                                <div class="dropdown-menu border-purple dropdown-menu-right"
+                                  style="max-height: 200px !important; overflow-y: auto !important;">
+                                  <a class="dropdown-item text-secondary font-size-sm"
+                                    *ngFor="let item of masterData?.countries"
+                                    (click)="countryCodeSelected(item,CountryCodes.FAX)">
+                                    {{item.code + ' ' +item.dialCode}} </a>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-5 mb-2">
+                              <app-text-field [formControlName]="'faxNo'" [formGroup]="contactInfo"
+                                [fieldName]="'faxNo'" [label]="'Fax No'" ngDefaultControl
+                                [value]="currentLocation?.faxNumber??''" (keypress)="validateNumericInput($event,6,10)"
+                                [isRequired]="false">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-6 mb-2">
+                              <app-text-field [formControlName]="'tollFreeNo'" [formGroup]="contactInfo"
+                                [fieldName]="'tollFreeNo'" [label]="'Toll Free No'" [placeholder]="'Toll Free Number'"
+                                ngDefaultControl [value]="currentLocation?.tollFreeNumber??''"
+                                (keypress)="validateNumericInput($event,6,15)" [isRequired]="false">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" [ngClass]="activeTabId === 2?'show active':''" id="project-Details"
+                *ngIf="currentView === MasterTypes.PROJECTS">
+                <div class="row">
+                  <div class="col-xl-8">
+                    <div class="card">
+                      <div class="card-header bg-transparent  header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue">Services / Contract
+                          Details</h6>
+                      </div>
+                      <div class="card-body">
+                        <form [formGroup]="services">
+                          <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
+                              <h6 class="font-size-sm font-weight-bold text-blue">Services</h6>
+                              <div class="form-group">
+                                <div class="row">
+                                  <div class="card-body pl-0 pb-0">
+                                    <ul class="types-list">
+                                      <li class="mr-1" *ngFor="let srvType of serviceTypes">
+                                        <label class="types-list__label">
+                                          <input type="radio" [value]="srvType.name" class="cust-type" name="type-radio"
+                                            id="TypeId" formControlName="serviceType">
+                                          <span class="types-list__text owner">{{srvType.name}}</span>
+                                        </label>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-12">
+                              <h6 class="font-size-sm font-weight-bold text-blue">Contract Info</h6>
+                              <div class="row">
+                                <div class="col-sm-4 col-md-6 col-lg-4 mb-2">
+                                  <app-text-field [formControlName]="'startDate'" [formGroup]="services"
+                                    [fieldName]="'startDate'" [label]="'Start Date'" ngDefaultControl
+                                    [value]="currentLocation?.startDate | localizedDate" [pipe]="'date'">
+                                  </app-text-field>
+                                </div>
+                                <div class="col-sm-4 col-md-6 col-lg-4 mb-2">
+                                  <app-text-field [formControlName]="'endDate'" [formGroup]="services"
+                                    [fieldName]="'endDate'" [label]="'End Date'" ngDefaultControl
+                                    [value]="currentLocation?.endDate | localizedDate" [pipe]="'date'">
+                                  </app-text-field>
+                                </div>
+                                <div class="col-sm-4 col-md-6 col-lg-4 mb-2">
+                                  <app-text-field [formControlName]="'reviewDate'" [formGroup]="services"
+                                    [fieldName]="'reviewDate'" [label]="'Review Date'" ngDefaultControl
+                                    [value]="currentLocation?.reviewDate | localizedDate" [pipe]="'date'">
+                                  </app-text-field>
+                                </div>
+                                <div class="col-sm-4 col-md-6 col-lg-4 mt-4">
+                                  <div
+                                    class="custom-control custom-checkbox custom-control-secondary custom-control-inline">
+                                    <input type="checkbox" class="custom-control-input" id="chkIsOveridden"
+                                      checked="checked" data-val="true" formControlName="isOveridden"
+                                      [value]="currentLocation?.isOveridden??false"
+                                      data-val-required="The IsOveridden field is required." name="IsOveridden">
+                                    <label class="custom-control-label pt-0 font-size-12" for="chkIsOveridden">Is
+                                      Overidden Workorder ?</label>
+                                  </div>
+                                </div>
+                                <div class="col-sm-4 col-md-6 col-lg-4 mb-2">
+                                  <app-dropdown [formControlName]="'frequencyType'" [label]="'Frequency Type'"
+                                    [placeholder]="'PM Auto Issuance'" [formGroup]="services"
+                                    [fieldName]="'frequencyType'" [dataList]="issuanceList" ngDefaultControl
+                                    [value]="currentLocation?.issuanceTypeId??''"
+                                    (selectionChange)="changeIssuance($event)">
+                                  </app-dropdown>
+                                </div>
+                                <div class="col-sm-3 col-md-4 col-lg-3 mb-2" *ngIf="IssuanceType !== 0">
+                                  <app-text-field [inputType]="'number'" [min]="0" [max]="28"
+                                    [formControlName]="'frequency'" [formGroup]="services" [fieldName]="'frequency'"
+                                    [label]="'Frequency'" ngDefaultControl [value]="currentLocation?.autoIssuanceValue">
+                                  </app-text-field>
+                                </div>
+                                <div class="col-sm-1 col-md-1 col-lg-1 mt-4" *ngIf="IssuanceType === 2">
+                                  Day
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    <div class="card">
+                      <div class="card-header  bg-transparent  header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue">Dimensions</h6>
+                      </div>
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <form [formGroup]="builtupArea">
+                              <div class="row">
+                                <div class="col-lg-6 col-md-6 mb-2">
+                                  <app-text-field [formControlName]="'builtupAreaSft'" [formGroup]="builtupArea"
+                                    [fieldName]="'builtupAreaSft'" [label]="'Built up Area Sft'"
+                                    [placeholder]="'Built up Area (Sq. Ft.) '" ngDefaultControl
+                                    [value]="currentLocation?.builtUpAreaSqFt??0 | number:'1.2-2'" [pipe]="'number'"
+                                    (inputChange)="convertToMeters($event.target,1)" [isRequired]="false">
+                                  </app-text-field>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 mb-2">
+                                  <app-text-field [formControlName]="'builtupAreaSmt'" [formGroup]="builtupArea"
+                                    [fieldName]="'builtupAreaSmt'" [label]="'Built up Area Smt'" [isReadonly]="true"
+                                    [placeholder]="'Built up Area (Sq. M.) '" ngDefaultControl
+                                    [value]="buildAreaInSqMtrs | number:'1.2-2'" [isRequired]="false">
+                                  </app-text-field>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                          <div class="col-md-6">
+                            <form [formGroup]="plotArea">
+                              <div class="row">
+                                <div class="col-lg-6 col-md-6 mb-2">
+                                  <app-text-field [formControlName]="'plotAreaSft'" [formGroup]="plotArea"
+                                    [fieldName]="'plotAreaSft'" [label]="'Plot Area Sft'"
+                                    [placeholder]="'Plot Area (Sq. Ft.)  '" ngDefaultControl
+                                    [value]="currentLocation?.plotAreaSqFt??0| number:'1.2-2'" [pipe]="'number'"
+                                    (inputChange)="convertToMeters($event.target,2)" [isRequired]="false">
+                                  </app-text-field>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 mb-2">
+                                  <app-text-field [formControlName]="'plotAreaSmt'" [formGroup]="plotArea"
+                                    [fieldName]="'plotAreaSmt'" [label]="'Plot Area Smt'" [isReadonly]="true"
+                                    [placeholder]="'Plot Area (Sq. M.) '" ngDefaultControl
+                                    [value]="plotAreaInSqMtrs| number:'1.2-2'" [isRequired]="false">
+                                  </app-text-field>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+
+                          <form [formGroup]="otherDetails">
+                            <div class="row">
+                              <div class="col-lg-6 col-md-6 mb-2">
+                                <app-dropdown [formControlName]="'developedBy'" [label]="'Developed By'"
+                                  [formGroup]="otherDetails" [fieldName]="'developedBy'"
+                                  [dataList]="masterData?.vendors" ngDefaultControl [value]="currentLocation?.vendorId">
+                                </app-dropdown>
+                              </div>
+                              <div class="col-lg-9 col-md-9 mb-2">
+                                <app-textarea-field [formControlName]="'comment'" [formGroup]="otherDetails"
+                                  [fieldName]="'comment'" [label]="'Comment'" ngDefaultControl
+                                  [value]="currentLocation?.comments">
+                                </app-textarea-field>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xl-4">
+                    <app-geo-locations #geoLocation [latitude]="currentLocation?.latitude" [longitude]="currentLocation?.longitude"></app-geo-locations>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" [ngClass]="activeTabId === 3?'show active':''" id="client-Details"
+                *ngIf="currentView === MasterTypes.PROJECTS">
+                <div class="row">
+                  <div class="col-xl-8">
+                    <div class="card">
+                      <div class="card-header  bg-transparent  header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue">Client
+                        </h6>
+                      </div>
+                      <div class="card-body">
+                        <form [formGroup]="clientDetails">
+                          <div class="row">
+
+                            <div class="col-lg-4 mb-2">
+                              <app-dropdown [formControlName]="'client'" [label]="'Client'" [formGroup]="clientDetails"
+                                [fieldName]="'client'" [dataList]="masterData?.clients" ngDefaultControl
+                                [value]="currentLocation?.clientId" [isRequired]="false"
+                                (selectionChange)="onMasterDevelopmentChange($event)">
+                              </app-dropdown>
+                            </div>
+
+                            <div class="col-sm-4 mb-2">
+                              <app-text-field [formControlName]="'vatRegNumber'" [formGroup]="clientDetails"
+                                [fieldName]="'vatRegNumber'" [label]="'Vat Reg Number'"
+                                [placeholder]="'#VAT Reg Number'" ngDefaultControl [value]="selectedClient?.taxNo??''"
+                                [isRequired]="false" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-4 mb-2">
+                              <app-text-field [formControlName]="'country'" [formGroup]="clientDetails"
+                                [fieldName]="'country'" [label]="'Country'" ngDefaultControl
+                                [value]="selectedClient?.countryName??''" [isRequired]="false" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-4 mb-2">
+                              <app-text-field [formControlName]="'state'" [formGroup]="clientDetails"
+                                [fieldName]="'state'" [label]="'State'" ngDefaultControl
+                                [value]="selectedClient?.stateName??''" [isRequired]="false" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-4 mb-2">
+                              <app-text-field [formControlName]="'city'" [formGroup]="clientDetails"
+                                [fieldName]="'city'" [label]="'City'" ngDefaultControl
+                                [value]="selectedClient?.cityName??''" [isRequired]="false" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-4 mb-2">
+                              <app-text-field [formControlName]="'streetNo'" [formGroup]="clientDetails"
+                                [fieldName]="'streetNo'" [label]="'Street No'" ngDefaultControl
+                                [value]="selectedClient?.streetNo??''" [isRequired]="false" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-6 mb-2">
+                              <app-text-field [formControlName]="'streetName'" [formGroup]="clientDetails"
+                                [fieldName]="'streetName'" [label]="'Street Name'" ngDefaultControl
+                                [value]="selectedClient?.streetName??''" [isRequired]="false" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-6 mb-2">
+                              <app-text-field [formControlName]="'email'" [formGroup]="clientDetails"
+                                [fieldName]="'email'" [label]="'Email'" ngDefaultControl
+                                [value]="selectedClient?.emailAddress??''" [isRequired]="false" [isReadonly]="true">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-6 mb-2">
+                              <app-text-field [formControlName]="'alternativeEmail'" [formGroup]="clientDetails"
+                                [fieldName]="'alternativeEmail'" [label]="'Alternative Email'" ngDefaultControl
+                                [value]="''" [isRequired]="false">
+                              </app-text-field>
+                            </div>
+
+                            <div class="col-sm-1 mb-2">
+                              <div class="dropdown mt-3">
+                                <a class="badge badge-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                  style="padding: 11px 8px;">
+                                  {{mobileCode?.dialCode}}
+                                </a>
+                                <div class="dropdown-menu border-purple dropdown-menu-right"
+                                  style="max-height: 200px !important; overflow-y: auto !important;">
+                                  <a class="dropdown-item text-secondary font-size-sm"
+                                    *ngFor="let item of masterData?.countries" (click)="countryCodeSelected(item)">
+                                    {{item.code + ' ' +item.dialCode}} </a>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-3 mb-2">
+                              <app-text-field [formControlName]="'mobileNo'" [formGroup]="clientDetails"
+                                [fieldName]="'mobileNo'" [label]="'Mobile No'" ngDefaultControl
+                                [value]="selectedClient?.mobileNo??''" [isRequired]="false" [isReadonly]="true"
+                                (keypress)="validateNumericInput($event,6,15)">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xl-4">
+                    <div class="card">
+                      <div class="card-header  bg-transparent   header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-blue">Other Reference</h6>
+                      </div>
+                      <div class="card-body">
+                        <form [formGroup]="otherReferences">
+                          <div class="row">
+                            <div class="col-sm-4 col-md-6 col-lg-6  ">
+                              <app-text-field [formControlName]="'reference1'" [formGroup]="otherReferences"
+                                [fieldName]="'reference1'" [label]="'Reference 1'" [placeholder]="'Reference No 1'"
+                                ngDefaultControl [isRequired]="false" [value]="currentLocation?.refCode1">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 col-md-6 col-lg-6  ">
+                              <app-text-field [formControlName]="'reference2'" [formGroup]="otherReferences"
+                                [fieldName]="'reference2'" [label]="'Reference 2'" [placeholder]="'Reference No 2'"
+                                ngDefaultControl [isRequired]="false" [value]="currentLocation?.refCode2">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 col-md-6 col-lg-6  ">
+                              <app-text-field [formControlName]="'profitCenter'" [formGroup]="otherReferences"
+                                [fieldName]="'profitCenter'" [label]="'Profit Center'" ngDefaultControl
+                                [isRequired]="false" [value]="currentLocation?.profitCentre">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 col-md-6 col-lg-6  ">
+                              <app-text-field [formControlName]="'glCode'" [formGroup]="otherReferences"
+                                [fieldName]="'glCode'" [label]="'Gl Code'" [placeholder]="'#GL Code'" ngDefaultControl
+                                [isRequired]="false" [value]="currentLocation?.glAccount">
+                              </app-text-field>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" [ngClass]="activeTabId === 4?'show active':''" id="classification-Details">
+              </div>
+              <div class="tab-pane fade" [ngClass]="activeTabId === 5?'show active':''" id="gis">
+              </div>
+              <div class="tab-pane fade" [ngClass]="activeTabId === 6?'show active':''" id="finance">
+              </div>
+              <div class="tab-pane fade" [ngClass]="activeTabId === 8?'show active':''" id="OwnerDetails">
+                <div class="card">
+                  <div class="card-header bg-transparent header-elements-inline">
+                    <h5 class="card-title font-weight-semibold font-size-lg"> Customers </h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="content">
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <div id="divListView" class="row" style="width:100%" data-role="listview" role="listbox">
+
+                              <div class="col-xl-3" style="cursor:pointer"
+                                onclick="window.location.href='/customers/Info/178/38'"
+                                data-uid="fe006cdc-5ae7-470c-9c01-b7b1d74d3979" role="option" aria-selected="false">
+
+                                <div class="card border-left-danger rounded-0">
+                                  <div class="card-body">
+                                    <div class="media">
+                                      <div class="mr-3">
+                                        <a href="javascript:">
+
+                                          <img src="assets/images/users/User-15.png" class="rounded-circle" width="42"
+                                            height="42" alt="">
+
+                                        </a>
+                                      </div>
+                                      <div class="media-body">
+                                        <h6 class="mb-0 font-size-sm font-weight-semibold">Prakash Naidu</h6>
+                                        <span class="text-muted">Hydra 4</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="card-footer d-flex justify-content-between">
+                                    <span class="text-danger font-weight-bold font-size-sm ">Owner</span>
+                                    <ul class="list-inline mb-0 font-size-sm">
+                                      <li class="list-inline-item">0102</li>
+                                      <li class="list-inline-item">FL001</li>
+                                    </ul>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                            <div id="pager" class="k-pager-wrap k-widget k-floatwrap" data-role="pager"><a href="#"
+                                aria-label="Go to the first page" title="Go to the first page"
+                                class="k-link k-pager-nav k-pager-first k-state-disabled" data-page="1"
+                                tabindex="-1"><span class="k-icon k-i-arrow-end-left"></span></a><a href="#"
+                                aria-label="Go to the previous page" title="Go to the previous page"
+                                class="k-link k-pager-nav k-state-disabled" data-page="1" tabindex="-1"><span
+                                  class="k-icon k-i-arrow-60-left"></span></a>
+                              <ul class="k-pager-numbers k-reset">
+                                <li class="k-current-page"><span class="k-link k-pager-nav">1</span></li>
+                                <li><span class="k-state-selected">1</span></li>
+                              </ul><a href="#" aria-label="Go to the next page" title="Go to the next page"
+                                class="k-link k-pager-nav k-state-disabled" data-page="1" tabindex="-1"><span
+                                  class="k-icon k-i-arrow-60-right"></span></a><a href="#"
+                                aria-label="Go to the last page" title="Go to the last page"
+                                class="k-link k-pager-nav k-pager-last k-state-disabled" data-page="1"
+                                tabindex="-1"><span class="k-icon k-i-arrow-end-right"></span></a><span
+                                class="k-pager-info k-label">1 - 1 of 1 items</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" [ngClass]="activeTabId === 10?'show active':''" id="Others"
+                *ngIf="currentView === MasterTypes.PROJECTS && currentLocation?.id > 0">
+                <app-project-privileges [projectId]="currentLocation?.id"></app-project-privileges>
+              </div>
+              <div class="tab-pane fade" [ngClass]="activeTabId === 11?'show active':''" id="images">
+                <div class="row">
+                  <div class="col-xl-8">
+                    <div class="card">
+                      <div class="card-header bg-transparent header-elements-inline">
+                        <h6 class="card-title font-weight-semibold text-secondary">Images
+                        </h6>
+                        <button class="btn btn-sm btn-secondary" type="submit" (click)="uploadImages()"
+                          [disabled]="!isEditable">
+                          Save
+                        </button>
+                      </div>
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-xl-3 col-sm-6" *ngFor="let asset of documents; let i = index">
+                            <div class="card">
+                              <div class="card-img-actions text-center mx-1 mt-1">
+                                <img class="card-img img-fluid" [src]="asset.resourceUrl | sanitizeUrl" alt=""
+                                  style="width: 150px!important; height: 100px !important;" loading="lazy">
+                                <div class="card-img-actions-overlay card-img">
+                                  <a class="btn btn-outline-white border-2 btn-icon rounded-pill ml-2">
+                                    <i class="bi bi-x-circle" (click)="delete(asset,1)"></i>
+                                  </a>
+                                </div>
+                              </div>
+                              <div class="card-body">
+                                <div class="d-flex align-items-start flex-wrap">
+                                  <div class="font-weight-semibold">Image _ {{asset.id}}</div>
+                                  <span class="font-size-sm text-muted ml-auto">
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <form action="" method="post" class="dropzone dz-clickable" id="dropzone_single"
+                              enctype="multipart/form-data">
+                              <div class="dz-default dz-message">
+                                <button class="dz-button" type="button" (click)="file.click()" [disabled]="!isEditable">
+                                  Drop file to upload
+                                  <span>or CLICK</span>
+                                </button>
+                                <input type="file" #file data-multiple-caption="{count} files selected" multiple
+                                  style="display:none" (change)="onChange($event)" [disabled]="!isEditable" />
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" [ngClass]="activeTabId === 12?'show active':''" id="documents"
+                *ngIf="currentView === MasterTypes.MASTER_DEVELOPMENT || currentView === MasterTypes.ZONES || currentView === MasterTypes.MAN_POWER">
+                <div class="row">
+                  <div class="col-xl-12">
+                    <div class="card" *ngIf="currentView === MasterTypes.MAN_POWER">
+                      <div class="card-header bg-white header-elements-inline">
+                        <h6 class="card-title">Upload Documents</h6>
+                        <div class="header-elements">
+                          <div class="list-icons3">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-body">
+                        <form [formGroup]="docImagesInfo">
+                          <div class="row">
+                            <div class="col-sm-3 mb-2">
+                              <app-text-field [formControlName]="'title'" [formGroup]="docImagesInfo"
+                                [placeholder]="'Title'" ngDefaultControl [value]="''" [isRequired]="true">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-3 mb-2">
+                              <app-text-field [formControlName]="'subtitle'" [formGroup]="docImagesInfo"
+                                [placeholder]="'Sub Title'" ngDefaultControl [value]="''" [isRequired]="true">
+                              </app-text-field>
+                            </div>
+                            <div class="col-sm-4 mb-2">
+                              <form action="" method="post" class="dropzone dz-clickable" id="dropzone_single2"
+                                enctype="multipart/form-data">
+                                <div class="dz-default dz-message">
+                                  <button class="dz-button" type="button" (click)="file1.click()"
+                                    [disabled]="!isEditable">
+                                    Drop file to upload
+                                    <span>or CLICK</span>
+                                  </button>
+                                  <input type="file" #file1 data-multiple-caption="{count} files selected" multiple
+                                    style="display:none" (change)="selectDocImages($event)" [disabled]="!isEditable" />
+                                </div>
+                              </form>
+                            </div>
+                            <div class="col-sm-1 mb-2">
+                              <div class="">
+                                <div class="card-img-actions text-center mx-1 mt-1" *ngFor="let doc of docImages">
+                                  <img class="card-img img-fluid" [src]="doc.resourceUrl | sanitizeUrl" alt=""
+                                    style="width: 150px!important; height: 100px !important;" loading="lazy">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-1 mb-2">
+                              <button class="btn btn-sm btn-secondary float-right"
+                                (click)="uploadDocs(0,docImages)">save</button>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="table-responsive">
+                                <table class="table table-bordered text-nowrap">
+                                  <thead>
+                                    <tr class="bg-purple-100  font-weight-semibold">
+                                      <td>Title</td>
+                                      <td>Sub Title</td>
+                                      <td>Document</td>
+                                      <td>Action</td>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="let doc of documents">
+                                      <td>{{doc.title}}</td>
+                                      <td>{{doc.subTitle}}</td>
+                                      <td>
+                                        <div class="">
+                                          <div class="card-img-actions text-center mx-1 mt-1">
+                                            <img class="card-img img-fluid" [src]="doc.resourceUrl | sanitizeUrl" alt=""
+                                              style="width: 150px!important; height: 100px !important;" loading="lazy">
+                                          </div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <i class="bi bi-trash px-3" (click)="delete(doc,2)"></i>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    <div class="card"
+                      *ngIf="currentView === MasterTypes.MASTER_DEVELOPMENT || currentView === MasterTypes.ZONES">
+                      <div class="card-header bg-white header-elements-inline">
+                        <h6 class="card-title">Upload Documents</h6>
+                        <div class="header-elements">
+                          <div class="list-icons">
+                            <button class="btn btn-sm btn-secondary float-right" (click)="uploadFiles()">save</button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="table-responsive">
+                              <table class="table table-bordered text-nowrap">
+                                <thead>
+                                  <tr class="bg-purple-100  font-weight-semibold">
+                                    <td>File Name</td>
+                                    <td>Type</td>
+                                    <td>Actions</td>
+                                  </tr>
+                                </thead>
+                                <tbody *ngIf="documents.length > 0; else NoDocs">
+                                  <tr *ngFor="let doc of documents">
+                                    <td>{{doc.fileName}}</td>
+                                    <td>{{doc.attachmentType}}</td>
+                                    <td>
+                                      <i class="bi bi-trash px-3" (click)="delete(doc,2)"></i>
+                                      <a href="{{doc.documentUrl}}" target="_blank">
+                                        <i class="bi bi-download px-3"></i>
+                                      </a>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                                <ng-template #NoDocs>
+                                  <tbody>
+                                    <td colspan="3" class="text-center">No Documents Uploaded</td>
+                                  </tbody>
+                                </ng-template>
+                              </table>
+                            </div>
+                          </div>
+                          <div class="col-md-12 mt-2">
+                            <form action="" method="post" class="dropzone dz-clickable" id="dropzone_single"
+                              enctype="multipart/form-data">
+                              <div class="dz-default dz-message">
+                                <button class="dz-button" type="button" (click)="file.click()" [disabled]="!isEditable">
+                                  Drop file to upload
+                                  <span>or CLICK</span>
+                                </button>
+                                <input type="file" #file data-multiple-caption="{count} files selected" multiple
+                                  style="display:none" (change)="selectFiles($event)" [disabled]="!isEditable" />
+                              </div>
+                            </form>
+                            <ul class="list-group pt-2" *ngIf="selectedFiles.length > 0 && progressInfos.length === 0">
+                              <li class="list-group-item" *ngFor="let file of selectedFiles; let f= index">
+                                <i class="bi bi-file mr-2"></i>
+                                {{getFileName(file)}}
+                                <i class="bi bi-x-circle text-danger ml-2"></i>
+                              </li>
+                            </ul>
+                            <div *ngFor="let progressInfo of progressInfos" class="mb-2 pt-2">
+                              <span>{{ progressInfo.fileName }}</span>
+                              <div class="progress">
+                                <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                                  attr.aria-valuenow="{{ progressInfo.value }}" aria-valuemin="0" aria-valuemax="100"
+                                  [ngStyle]="{ width: progressInfo.value + '%' }">
+                                  {{ progressInfo.value }}%
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

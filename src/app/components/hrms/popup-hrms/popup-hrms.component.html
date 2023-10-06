@@ -1,0 +1,62 @@
+<div class="card p-0 m-0">
+    <div class="modal-header bg-secondary text-white">
+        <h6 class="modal-title">{{data?.title}}</h6>
+        <button type="button" class="btn-close btn-close-white" mat-button mat-dialog-close aria-label="Close"></button>
+    </div>
+    <div class="col-md-12">
+        <form [formGroup]="recepientsForm">
+            <p>Delivery Type</p>
+            <ul class="types-list m-0 report-type-top-src">
+                <li *ngFor="let delivery of data?.filteredData?.deliveryTypes">
+                    <label class="types-list__label">
+                        <input type="checkbox" [value]="delivery?.id" checked="" formControlName="deliveryType" class="cust-type" id="case-all"
+                            name="Delivery Type">
+                        <span class="types-list__text build-facilities">{{delivery?.name}}</span>
+                    </label>
+                </li>
+            </ul>
+
+            <p>Resource</p>
+            <ul class="types-list report-type-src m-0">
+                <li *ngFor="let resource of data?.filteredData?.resourceTypes">
+                    <label class="types-list__label">
+                        <input type="radio" name="resource" class="radiobtn" [value]="resource?.id">
+                        <span class="types-list__text selecttype_checked">{{resource?.name}}</span>
+                    </label>
+                </li>
+            </ul>
+
+            <p>Projects</p>
+            <ul class="types-list m-0 report-type-top-src">
+                <li>
+                    <label class="types-list__label">
+                        <input type="radio" name="Communities">
+                        <span class="types-list__text build-facilities">ALL</span>
+                    </label>
+                </li>
+                <li>
+                    <label class="types-list__label">
+                        <input type="radio" name="Communities">
+                        <span class="types-list__text build-facilities">SPECIFIC</span>
+                    </label>
+                </li>
+            </ul>
+
+            <p>Building</p>
+            <ul class="types-list m-0 report-type-top-src">
+                <li>
+                    <label class="types-list__label">
+                        <input type="radio" name="Building">
+                        <span class="types-list__text build-facilities">ALL</span>
+                    </label>
+                </li>
+                <li>
+                    <label class="types-list__label">
+                        <input type="radio" value="12" class="cust-type" id="case-inappmessages" name="Building">
+                        <span class="types-list__text build-facilities">SPECIFIC</span>
+                    </label>
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>

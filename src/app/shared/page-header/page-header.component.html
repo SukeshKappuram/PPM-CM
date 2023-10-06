@@ -1,0 +1,47 @@
+<!-- Page header -->
+<div class="page-header page-header-light">
+  <div class="page-header-content header-elements-inline">
+    <div class="page-title">
+      <h4>
+        <i class="bi bi-arrow-left-circle mr-2 cursor-pointer" (click)="back()"></i>
+        <span class="font-weight-semibold pr-2">
+          <ng-container *ngIf="ignoreCase;else titleCase">
+            {{pageTitle}}
+          </ng-container>
+          <ng-template #titleCase>
+            {{pageTitle | titlecase}}
+          </ng-template>
+          <span class="font-weight-bold" [hidden]="pageTag===''">{{pageTag}}</span>
+        </span>
+        <span class="badge" [ngClass]="badge" [hidden]="badgeTitle===''">{{badgeTitle}}</span>
+        <small class="d-block text-muted description">{{pageDescription}}</small>
+      </h4>
+    </div>
+
+    <div class="header-elements">
+      <ng-container *ngFor="let button of buttons">
+        <div class="dropdown" *ngIf="button.isDropdown; else btn">
+          <a class="btn dropdown-toggle" [ngClass]="button.fill?'btn-secondary':'btn-outline-secondary'"
+            data-bs-toggle="dropdown">
+            <i class="mr-2" [ngClass]="button.icon" [hidden]="button.icon === ''"></i>
+            {{button.label}}
+          </a>
+          <div class="dropdown-menu  border-purple dropdown-menu-right">
+            <a class="dropdown-item text-secondary font-size-sm" *ngFor="let item of button.dropdownList"
+              (click)="modified.emit(item)"> {{item}} </a>
+          </div>
+        </div>
+        <ng-template #btn>
+          <button class="btn btn-sm mr-1" [ngClass]="button.fill?'btn-secondary':'btn-outline-secondary'"
+            (click)="modified.emit(button.id)" style="text-transform: capitalize;min-width: 100px;"
+            [disabled]="button.isDisabled">
+            <i class="mr-2" [ngClass]="button.icon" [hidden]="button.icon === ''"></i>
+            {{button.label}}
+          </button>
+        </ng-template>
+      </ng-container>
+    </div>
+  </div>
+  <app-breadcrumbs [items]="items" [activeItem]="activeItem?pageTitle:''" [isFilterApplicable]="isFilterable" (toggleFilter)="toggleFilter.emit()"></app-breadcrumbs>
+</div>
+<!-- /page header -->

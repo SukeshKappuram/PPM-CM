@@ -1,0 +1,127 @@
+<!-- Inner content -->
+<div class="content-inner" (scroll)="scrollHandler($event)">
+
+  <app-page-header [items]="['PPM', 'Reports']" [activeItem]="'Create'" [pageTitle]="'PPM Reports'"></app-page-header>
+
+  <!-- Content area -->
+  <div class="content">
+    <app-alert id="alert-taskInstructions"></app-alert>
+    <!-- Inner content -->
+    <div class="content-inner">
+
+      <!-- Content area -->
+      <div class="content">
+        <div class="card">
+          <div class="card-header bg-transparent header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-secondary">PPM Reports</h6>
+            <div class="header-elements">
+            </div>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="reportsForm">
+              <div class="row">
+                <div class="col-md-3">
+                  <app-text-field [formControlName]="'fromDate'" [formGroup]="reportsForm" [fieldName]="'fromDate'"
+                    [label]="'From Date'" ngDefaultControl [isRequired]="false" [value]="'' | localizedDate"
+                    [pipe]="'date'">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-3">
+                  <app-text-field [formControlName]="'toDate'" [formGroup]="reportsForm" [fieldName]="'toDate'"
+                    [label]="'To Date'" ngDefaultControl [isRequired]="false" [value]="'' | localizedDate"
+                    [pipe]="'date'">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-3">
+                   <app-label [label]="'Contract'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [formControlName]="'contract'" [data]="" textField="name" valueField="id"
+                    [filterable]="true"  [defaultItem]="'Select contract'">
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-md-3">
+                   <app-label [label]="'Building'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [formControlName]="'building'" [data]="" textField="name" valueField="id"
+                    [filterable]="true"  [defaultItem]="'Select building'">
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-md-3">
+                   <app-label [label]="'LOC'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [formControlName]="'loc'" [data]="" textField="name" valueField="id"
+                    [filterable]="true"  [defaultItem]="'Select loc'">
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-md-3">
+                  <app-label [label]="'Range'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [formControlName]="'range'" [data]="" textField="name" valueField="id"
+                    [filterable]="true"  [defaultItem]="'Select range'">
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-md-3">
+                  <a class="btn btn-block btn-secondary mt-3 " style="text-transform: capitalize;">
+                    Submit
+                  </a>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="card-header bg-transparent header-elements-inline">
+              <h6 class="card-title font-weight-semibold text-secondary">PPM Reports</h6>
+              <div class="header-elements">
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead class=" bg-secondary text-white">
+                    <tr>
+                      <td>S.no</td>
+                      <td>Reports name</td>
+                      <td>Open Pdf</td>
+                    </tr>
+
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>02</td>
+                      <td>Asset Summary</td>
+                      <td><a><i class="bi bi-file-earmark-pdf "></i></a></td>
+                    </tr>
+
+                    <tr>
+                      <td>03</td>
+                      <td>Asset Summary</td>
+                      <td><a><i class="bi bi-file-earmark-pdf "></i></a></td>
+                    </tr>
+
+                    <tr>
+                      <td>04</td>
+                      <td>Asset Summary</td>
+                      <td><a><i class="bi bi-file-earmark-pdf"></i></a></td>
+                    </tr>
+
+                    <tr>
+                      <td>04</td>
+                      <td>Asset Summary</td>
+                      <td><a><i class="bi bi-file-earmark-pdf"></i></a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /content area -->
+      </div>
+      <!-- /inner content -->
+    </div>
+    <!-- /content area -->
+  </div>
+  <!-- /inner content -->

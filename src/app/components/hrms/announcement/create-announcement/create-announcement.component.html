@@ -1,0 +1,126 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+    <app-page-header [items]="['HRMS', 'Announcement']" [activeItem]="'Create'" [pageTitle]="'NewAnnouncement'"
+        [buttons]="buttons" (modified)="buttonClicked($event)">
+    </app-page-header>
+
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header bg-transparent header-elements-inline">
+                                <h6 class="card-title font-weight-semibold text-secondary">General</h6>
+                                <div class="header-elements">
+                                </div>
+                            </div>
+                            <div class="content">
+                                <form [formGroup]="generalForm">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <app-text-field [formControlName]="'refNo'" [formGroup]="generalForm"
+                                                [fieldName]="'refNo'" [label]="'Ref No'" [placeholder]="'Ref No'"
+                                                ngDefaultControl [value]="" [isReadonly]="true" [isRequired]="false">
+                                            </app-text-field>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <app-label [label]="'Announcement Type'" [isRequired]="true"></app-label>
+                                            <kendo-dropdownlist class="form-group" [data]="filteredData?.announcementTypes"
+                                                [filterable]="true" textField="name" valueField="id"
+                                                [formControlName]="'announcementType'"
+                                                [defaultItem]="'Select Announcement Type'" [readonly]="!isEditable">
+                                            </kendo-dropdownlist>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <app-text-field [formControlName]="'issueDate'" [formGroup]="generalForm"
+                                                [fieldName]="'issueDate'" [label]="'Issue Date'"
+                                                [placeholder]="'Issue Date'" ngDefaultControl [value]="" [pipe]="'date'"
+                                                [isRequired]="false">
+                                            </app-text-field>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <app-text-field [formControlName]="'expiryDate'"
+                                                    [formGroup]="generalForm" [fieldName]="'expiryDate'"
+                                                    [label]="'Expiry Date'" [placeholder]="'Expiry Date'"
+                                                    ngDefaultControl [value]="" [pipe]="'date'" [isRequired]="false">
+                                                </app-text-field>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <app-text-field [formControlName]="'title'" [formGroup]="generalForm"
+                                                [fieldName]="'title'" [label]="'Title'" ngDefaultControl [value]=""
+                                                [isRequired]="false" [isReadonly]="false">
+                                            </app-text-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <kendo-editor [value]="value" style="height: 570px;"></kendo-editor>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 ">
+                        <div class="card">
+                            <div class="card-header bg-transparent header-elements-inline">
+                                <h6 class="card-title font-weight-semibold text-secondary">Recepients</h6>
+                                <div class="header-elements">
+                                </div>
+                            </div>
+                            <h6 class="card-header bg-transparent header-elements-inline">To add Recipients, please
+                                <a (click)="showRecepients()"> Click Here</a>
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header bg-transparent header-elements-inline-new">
+                                <h6 class="card-title font-weight-semibold text-secondary">Notice Images max</h6><span
+                                    style="color: red;">*(width: 375px, height: 296px)</span>
+                                <div class="header-elements">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <ngx-dropzone (change)="onSelect($event)" class="dropzone upload-doc"
+                                    [multiple]="false">
+                                    <ngx-dropzone-label class="font-12">Drop files to upload or
+                                        CLICK</ngx-dropzone-label>
+                                    <!-- <ngx-dropzone-preview *ngFor="let f of uploadedAttachments" [removable]="true">
+                                        <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                                    </ngx-dropzone-preview> -->
+                                </ngx-dropzone>
+                                <h5 style="color: red;">Note: Image file shouldnot be exceed size of 2MB</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header bg-transparent header-elements-inline-new">
+                                <h6 class="card-title font-weight-semibold text-secondary">Documents</h6><span
+                                    style="color: red;">*(Only PDF Files)</span>
+                            </div>
+                            <div class="col-md-12">
+                                <ngx-dropzone (change)="onSelect($event)" class="dropzone upload-doc"
+                                    [multiple]="false">
+                                    <ngx-dropzone-label class="font-12">Drop files to upload or
+                                        CLICK</ngx-dropzone-label>
+                                    <!-- <ngx-dropzone-preview *ngFor="let f of uploadedAttachments" [removable]="true">
+                                    <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                                </ngx-dropzone-preview> -->
+                                </ngx-dropzone>
+                                <h5 style="color: red;">Note: Doc file shouldnot exceed size of 2MB</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

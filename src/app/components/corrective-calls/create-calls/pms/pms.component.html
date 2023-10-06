@@ -1,0 +1,27 @@
+<div class="row">
+  <!-- <div class="col-md-6 pl-0">
+    <div class="chart-container">
+      <div class="chart has-fixed-height" id="bars_basic" style="width: 600px; height: 250px;"></div>
+    </div>
+  </div> -->
+  <div class="col-md-7">
+    <div class="table-responsive">
+      <table class="table table-bordered text-nowrap">
+        <thead>
+          <tr class="bg-secondary text-white">
+            <th class="font-weight-bold" *ngFor="let col of performanceMetrics?.configuration?.columns">
+              {{col.displayText}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of performanceMetrics?.data">
+            <td>{{row.activityName}}</td>
+            <td>{{row.slaDate | localizedDate: 'dd-MMM-yyyy HH:mm'}}</td>
+            <td>{{row.actualDate | localizedDate:'dd-MMM-yyyy HH:mm'}}</td>
+            <td>{{row.timeVariation}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="collapsible email-detail-head" id="divCaseEmailView" data-role="listview" role="listbox"
+      *ngFor="let item of emails;index as i">
+      <div class="card collapse-header " role="option" aria-selected="false">
+        <a class="card-header email-sent d-flex justify-content-between align-items-center"
+          [ngClass]="currentEmail!==i?'collapsed':''" data-toggle="collapse" [attr.aria-expanded]="currentEmail===i"
+          (click)="getLogGrid(i);" [id]="'email'+i">
+          <div class="collapse-title media " style="width:100%;">
+            <div class="pr-1">
+              <div class="avatar-email mr-75">
+                <img src="assets/images/empty-profile.png" class="rounded img-fluid" width="30" height="30">
+              </div>
+            </div>
+            <div class="media-body mt-25" style="width:97%;">
+              <div class="d-sm-inline d-none">
+                {{item.fromEmail}} </div>
+              <div class="d-sm-inline d-none" style="float:right;">
+                {{item.sentDate | localizedDate: 'dd-MMM-yyyy HH:mm'}}</div>
+              <br>
+              <div class="text-muted d-block" style="float:left;">Subject - {{item.subject}}</div>
+              <br>
+              <div class="text-muted d-block">{{item.toEmail}}</div>
+            </div>
+          </div>
+        </a>
+        <div id="accordion-control-right-group2" [ngClass]="currentEmail!==i?'collapse':'collapse show'"
+          [attr.data-parent]="'#email' + i">
+          <div class="card-content email-content-bg   email-sent  ">
+            <div class="card-body py-1">
+              <div [innerHTML]="item.body.replace('col-md-7','col-md-12')"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

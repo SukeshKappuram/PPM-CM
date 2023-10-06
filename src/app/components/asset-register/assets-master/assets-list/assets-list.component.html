@@ -1,0 +1,70 @@
+<!-- Inner content -->
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [pageTitle]="pageTitle" [pageDescription]="pageDescription??''" [buttons]="buttons"
+    [items]="menuItems" [activeItem]="pageTitle" (modified)="modifyAsset()">
+  </app-page-header>
+
+  <div class="notification-area">
+    <app-alert id="alert-assetsList"></app-alert>
+  </div>
+
+  <ng-container *ngIf="gridData?.configuration?.columns?.length">
+    <ng-container *ngIf="dataFormat === DataFormat.Grid">
+      <app-kendo-grid #assetGrid [gridDetails]="gridData" (edited)="modifyAsset($event)" (deleted)="deleteAsset($event)"
+        [fileName]="pageTitle" [selectable]="false"></app-kendo-grid>
+    </ng-container>
+    <ng-container *ngIf="dataFormat === DataFormat.Table">
+      <div class="content">
+        <div class="row">
+          <div class="col-md-3">
+            <app-dropdown #subSystemCodes
+              [label]="additionalFieldsType === AdditionalFieldsType.SUBSYSTEMS ?'Subsystem':'Subgroups'"
+              [dataList]="dataList" (selectionChange)="updateGrid($event)" [valueKey]="'id'" [labelKey]="'name'">
+            </app-dropdown>
+          </div>
+          <div class="col-md-9">
+            <button type="button" class="btn btn-secondary float-right save" [disabled]="!isFormModified"
+              (click)="saveData()">Save Assets</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <!-- Basic datatable -->
+            <div class="card">
+              <div class="card-header bg-transparent header-elements-inline">
+                <h3 class="card-title font-weight-semibold text-secondary">{{pageTitle}}</h3>
+              </div>
+              <div class="card-body">
+                <table class="table datatable-basic">
+                  <thead>
+                    <tr>
+                      <th *ngFor="let col of gridData.configuration.columns">{{col.displayText}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of gridData.data">
+                      <td>
+                        <div class="form-check form-check-inline">
+                          <input type="checkbox" class="form-check-input" id="dc_li_c"
+                            [checked]="isChecked(row.subSytemIds??row.subGroupIds)"
+                            (change)="updateStatus($event,row.paramterId ?? row.parameterId)">
+                          <label class="form-check-label" for="dc_li_c"></label>
+                        </div>
+                      </td>
+                      <td>{{row.name}}</td>
+                      <td>{{getType(row.type)}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- /basic datatable -->
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+  <img class="img-responsive" src="assets/images/under-construction.png" alt="under development"
+    style="max-width:50%" *ngIf="isUnderDevelopment"/>
+</div>

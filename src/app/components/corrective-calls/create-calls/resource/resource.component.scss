@@ -1,0 +1,22 @@
+.input-datetime {
+  width: 145px;
+}
+
+.font-size-11 {
+  font-size: 11px;
+}
+
+.resource-box {
+  border: 1px solid #049aad;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f2fbff;
+}
+
+.resource-box:hover {
+  border: 1px solid #fb8c05;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #fff4e7;
+  transition: all 0.2s;
+}

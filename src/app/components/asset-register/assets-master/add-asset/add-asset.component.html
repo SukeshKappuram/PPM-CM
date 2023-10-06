@@ -1,0 +1,37 @@
+<!-- Basic modal -->
+<div class="card p-0 m-0">
+  <div class="modal-header bg-secondary text-white">
+    <h6 class="modal-title">{{formData.assetTitle}}</h6>
+    <button type="button" class="btn-close btn-close-white" mat-button mat-dialog-close aria-label="Close"></button>
+  </div>
+
+  <form class="modal-body" [formGroup]="assetForm">
+    <div class="row">
+      <div [ngClass]="f.fieldType === InputType.MultiLine ? 'col-md-12' : 'col-md-4'" [hidden]="f.isHidden"
+        *ngFor="let f of formFieldBuilder">
+        <app-text-field [formControl]="f.formControl" *ngIf="f.fieldType === InputType.Text"
+          [placeholder]="f.displayText" [formGroup]="assetForm" [fieldName]="f.fieldName" [label]="f.displayText"
+          ngDefaultControl [isHidden]="f.isHidden" [value]="f.value" [isReadonly]="!f.isEditable"
+          [isRequired]="f.isRequired"></app-text-field>
+        <app-textarea-field [formControl]="f.formControl" *ngIf="f.fieldType === InputType.MultiLine" [value]="f.value"
+          [placeholder]="f.displayText" [formGroup]="assetForm" [fieldName]="f.fieldName" [label]="f.displayText"
+          ngDefaultControl></app-textarea-field>
+        <app-dropdown [formControlName]="f.fieldName" *ngIf="f.fieldType === InputType.DropDown" [labelKey]="'name'"
+          [valueKey]="'id'" [placeholder]="f.displayText" [formGroup]="assetForm" [fieldName]="f.fieldName"
+          [label]="f.displayText" [value]="f.value" [dataList]="f.fieldData" ngDefaultControl
+          (selectionChange)="onSeletionChange($event, f.propertyName)"></app-dropdown>
+          <div class="form-group" *ngIf="f.fieldType === InputType.ColorPicker">
+            <app-label [label]="f.displayText" [isRequired]="f.isRequired"> </app-label>
+            <kendo-colorpicker [formControlName]="f.fieldName" [value]="f.value" class="w100"
+            (valueChange)="onColorChange($event, f.propertyName)"></kendo-colorpicker>
+          </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" mat-button mat-dialog-close>Close</button>
+    <button type="button" class="btn btn-secondary" (click)="save()" [disabled]="!assetForm.valid">Save changes</button>
+  </div>
+</div>
+<!-- /basic modal -->

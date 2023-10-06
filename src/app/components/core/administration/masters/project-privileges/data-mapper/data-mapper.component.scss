@@ -1,0 +1,18 @@
+.multiDropdown {
+  margin-left: 10px;
+  min-width: 100% !important;
+  margin-top: 44px;
+  max-height: calc(100vh - 200px) !important;
+  overflow: hidden !important;
+}
+
+.customInputField {
+  height: 39px;
+  font-size: 10px;
+  border-bottom: 1px solid var(--themecolor) !important;
+  margin-top: 0px;
+  &::placeholder {
+    color: #515365;
+    font-size: 10px;
+  }
+}

@@ -1,0 +1,339 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [items]="['Unit PM', 'Create']" [activeItem]="'Create'" [pageTitle]="'Unit PM'" [buttons]="buttons"
+    (modified)="buttonClicked($event)">
+  </app-page-header>
+
+  <!-- Content area -->
+  <div class="content" *ngIf="isDataLoaded;else UD">
+    <app-alert id="alert-scheduler"></app-alert>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-11">
+            <div class="card">
+              <div class="card-header bg-transparent header-elements-inline">
+                <h6 class="card-title font-weight-semibold text-secondary">Select Unit</h6>
+                <div class="header-elements">
+                </div>
+              </div>
+
+              <div class="card-body">
+                <form [formGroup]="unitPmForm">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <app-label [label]="'Project'"></app-label>
+                      <kendo-dropdownlist class="form-group" [data]="filteredData?.projects" [filterable]="true" textField="name"
+                        valueField="id" (filterChange)="handleFilter($event,'projects')" [formControlName]="'project'"
+                        [defaultItem]="defaultItem('Project')" (selectionChange)="projectSelected($event)">
+                      </kendo-dropdownlist>
+                    </div>
+                    <div class="col-md-3">
+                      <app-label [label]="'Building'"></app-label>
+                      <kendo-dropdownlist class="form-group" [data]="filteredData?.buildings" [filterable]="true" textField="name"
+                        valueField="id" (filterChange)="handleFilter($event,'buildings')" [formControlName]="'building'"
+                        [defaultItem]="defaultItem('Building')" (valueChange)="buildingSelected($event)">
+                        <ng-template kendoDropDownListItemTemplate let-dataItem>
+                          <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                        </ng-template>
+                      </kendo-dropdownlist>
+                    </div>
+                    <div class="col-md-3">
+                      <app-label [label]="'Floor'"></app-label>
+                      <kendo-dropdownlist class="form-group" [data]="filteredData?.floors" [filterable]="true" textField="name"
+                        valueField="id" (filterChange)="handleFilter($event,'floors')" [formControlName]="'floor'"
+                        [defaultItem]="defaultItem('Floor')">
+                      </kendo-dropdownlist>
+                    </div>
+
+                    <div class="col-md-3">
+                      <app-label [label]="'Unit'"></app-label>
+                      <kendo-dropdownlist class="form-group" [data]="filteredData?.units" [filterable]="true" textField="code"
+                        valueField="id" (filterChange)="handleFilter($event,'units')" [formControlName]="'unit'"
+                        [defaultItem]="defaultItem('Unit')" (valueChange)="unitSelected()">
+                      </kendo-dropdownlist>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-1">
+            <div class="card">
+              <div class="card-body text-center">
+                <div class="card-img-actions d-inline-block mb-3">
+                  <img class="img-fluid rounded-circle" [src]="asset?.assetImageUrl??'assets/images/noimage-SM.png'"
+                    width="175" [alt]="asset?.assetImageUrl" loading="lazy">
+                  <h6 class="font-weight-semibold mb-0">{{asset?.name}}</h6>
+                  <div class="card-img-actions-overlay card-img rounded-circle">
+                    <a class="btn btn-outline-white border-2 btn-icon rounded-pill">
+                      <i class="bi bi-pencil"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" *ngIf="assetData.length > 0">
+          <div class="card-header bg-transparent header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-secondary">Assets</h6>
+            <div class="header-elements">
+            </div>
+          </div>
+
+          <div class="card-body">
+            <form [formGroup]="assetDetailsForm">
+              <div class="table-responsive" style="max-height: 200px; overflow-y: auto;">
+                <table class="table table-striped table-bordered text-nowrap table-fixed">
+                  <thead>
+                    <th>Asset Id</th>
+                    <th>Asset Code</th>
+                    <th>Asset Name</th>
+                  </thead>
+                  <tbody class="table-striped p-3 table-bordered" formArrayName="assetsDetails">
+                    <ng-container *ngFor="let details of assetsDetails.controls; let i = index">
+                      <tr [formGroupName]="i">
+                        <td>
+                          <app-text-field [formControlName]="'assetId'" [formGroup]="assetDetailsForm"
+                            [fieldName]="'assetId'" [label]="'Asset Id'" ngDefaultControl [value]="assetData[i].assetId"
+                            [isRequired]="false" [isReadonly]="true" [showLabel]="false">
+                          </app-text-field>
+                        </td>
+                        <td>
+                          <app-text-field [formControlName]="'assetCode'" [formGroup]="assetDetailsForm"
+                            [fieldName]="'assetCode'" [label]="'Asset Code'" ngDefaultControl
+                            [value]="assetData[i].assetCode" [isRequired]="false" [isReadonly]="true"
+                            [showLabel]="false">
+                          </app-text-field>
+                        </td>
+                        <td>
+                          <app-text-field [formControlName]="'assetName'" [formGroup]="assetDetailsForm"
+                            [fieldName]="'assetName'" [label]="'Asset Name'" ngDefaultControl
+                            [value]="assetData[i].assetName" [isRequired]="false" [isReadonly]="true"
+                            [showLabel]="false">
+                          </app-text-field>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header bg-transparent header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-secondary">Set PPM</h6>
+            <div class="header-elements">
+            </div>
+          </div>
+
+          <div class="card-body">
+            <form [formGroup]="setPPMForm">
+              <div class="row">
+                <div class="col-md-3">
+                  <app-text-field [formControlName]="'ppmCode'" [formGroup]="setPPMForm" [fieldName]="'ppmCode'"
+                    [label]="'#PPM Code'" [placeholder]="'#PPM Code'" ngDefaultControl
+                    [value]="schedulerData?.ppmCode??''" [isRequired]="false" [isReadonly]="true">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-3">
+                  <app-label [label]="'Instruction Set'"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.taskInstructions" [filterable]="true" textField="name"
+                    valueField="id" (filterChange)="handleFilter($event,'taskInstructions')"
+                    [formControlName]="'instructionSet'" [defaultItem]="defaultItem('Instruction')"
+                    (valueChange)="getInstructionData($event)">
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-md-3">
+                  <app-text-field [formControlName]="'family'" [formGroup]="setPPMForm" [fieldName]="'family'"
+                    [label]="'Family'" ngDefaultControl [value]="schedulerData?.family??''" [isRequired]="false"
+                    [isReadonly]="!isEditable">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-3">
+                  <app-label [label]="'Priority'"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.priorities" [filterable]="true" textField="name"
+                    valueField="id" (filterChange)="handleFilter($event,'priorities')" [formControlName]="'priority'"
+                    [defaultItem]="defaultItem('Priority')">
+                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                      <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                    </ng-template>
+                  </kendo-dropdownlist>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <app-text-field [formControlName]="'estimationTime'" [formGroup]="setPPMForm"
+                    [fieldName]="'estimationTime'" [inputType]="'number'" [label]="'Estimation Time'" ngDefaultControl
+                    [value]="instruction?.estimatedTimeInMins??''" [isRequired]="false" [isReadonly]="true">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-3">
+                  <app-text-field [formControlName]="'estimationMen'" [formGroup]="setPPMForm"
+                    [fieldName]="'estimationMen'" [inputType]="'number'" [label]="'Estimation Men'" ngDefaultControl
+                    [value]="instruction?.noOfStaff??''" [isRequired]="false" [isReadonly]="true">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-3">
+                  <app-text-field [formControlName]="'stockLabCost'" [formGroup]="setPPMForm"
+                    [fieldName]="'stockLabCost'" [label]="'StockLab Cost'" [pipe]="'currency'" ngDefaultControl
+                    [isRequired]="false" [value]="instruction?.estimatedStockCost??''" [isReadonly]="true">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-3">
+                  <app-text-field [formControlName]="'totalCost'" [formGroup]="setPPMForm" [fieldName]="'totalCost'"
+                    [label]="'Total Cost'" [pipe]="'currency'" ngDefaultControl [isRequired]="false"
+                    [value]="instruction?.estimatedLabourCost??''" [isReadonly]="true"></app-text-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <app-label [label]="'Finance Code'"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.financeCodes" [filterable]="true" textField="name"
+                    valueField="id" (filterChange)="handleFilter($event,'financeCodes')"
+                    [formControlName]="'financeCode'" [defaultItem]="defaultItem('Finance Code')">
+                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                      <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                    </ng-template>
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-md-3">
+                  <app-label [label]="'Cost Center'"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.costCenters" [filterable]="true" textField="code"
+                    valueField="id" (filterChange)="handleFilter($event,'costCenters')" [formControlName]="'costCenter'"
+                    [defaultItem]="defaultItem('Cost Center')">
+                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                      <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                    </ng-template>
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-md-3">
+                  <app-label [label]="'Cost Code'"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.costCodes" [filterable]="true" textField="code"
+                    valueField="id" (filterChange)="handleFilter($event,'costCodes')" [formControlName]="'costCode'"
+                    [defaultItem]="defaultItem('Cost Code')">
+                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                      <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                    </ng-template>
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-md-3">
+                  <app-label [label]="'Resource'"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.resources" [filterable]="true" textField="name"
+                    valueField="id" (filterChange)="handleFilter($event,'resources')" [formControlName]="'resource'"
+                    [defaultItem]="defaultItem('Resource')">
+                  </kendo-dropdownlist>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-md-3">
+                  <app-text-field [formControlName]="'designation'" [formGroup]="setPPMForm" [fieldName]="'designation'"
+                    [label]="'Designation'" ngDefaultControl [value]="selectedResource?.designation??''"
+                    [isRequired]="false" [isReadonly]="true">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-3">
+                  <app-label [label]="'Shift'"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.shifts" [filterable]="true" textField="name" valueField="id"
+                    (filterChange)="handleFilter($event,'shifts')" [formControlName]="'shift'"
+                    [defaultItem]="defaultItem('Shift')">
+                  </kendo-dropdownlist>
+                </div>
+                <div class="col-md-6 pt-4">
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="cc_li_c" checked=""
+                      [formControlName]="'isPermitNeeded'">
+                    <label class="custom-control-label" for="cc_li_c">Do you need permit?</label>
+                  </div>
+
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="cc_li_u"
+                      [formControlName]="'isHealthSafetyCheckNeeded'">
+                    <label class="custom-control-label" for="cc_li_u">Health and Safety
+                      <a class="pl-1">Checklist</a> </label>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header bg-transparent header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-secondary">Service Details</h6>
+            <div class="header-elements">
+            </div>
+          </div>
+
+          <div class="card-body">
+            <form [formGroup]="serviceDetailsForm">
+              <div class="row">
+                <div class="col-md-3">
+                  <app-text-field [formControlName]="'lastService'" [formGroup]="serviceDetailsForm"
+                    [fieldName]="'lastService'" [label]="'Last Service'" ngDefaultControl [isRequired]="true" [value]=""
+                    [pipe]="'date'" [isReadonly]="!isEditable">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="mb-0">Service Frequency <sup class="text-danger">*</sup></label>
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <app-text-field [formControlName]="'serviceFrequency'" [formGroup]="serviceDetailsForm"
+                          [fieldName]="'serviceFrequency'" [inputType]="'number'" [label]="'Service Frequency'"
+                          ngDefaultControl [value]="" [isRequired]="true" [showLabel]="false" [max]="60"
+                          [isReadonly]="!isEditable">
+                        </app-text-field>
+                      </div>
+
+                      <div class="col-lg-8 pl-0">
+                        <kendo-dropdownlist class="form-group" [data]="filteredData?.frequencies" [filterable]="true" textField="name"
+                          valueField="id" (filterChange)="handleFilter($event,'frequencies')"
+                          [formControlName]="'serviceFrequencyType'" [defaultItem]="defaultItem('Frequency Type')">
+                        </kendo-dropdownlist>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <app-text-field [formControlName]="'nextDue'" [formGroup]="serviceDetailsForm" [fieldName]="'nextDue'"
+                    #nextDate [label]="'Next Due'" ngDefaultControl [isRequired]="true" [value]="" [pipe]="'date'"
+                    [isReadonly]="!isEditable">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-3">
+                  <app-text-field [formControlName]="'week'" [formGroup]="serviceDetailsForm" [fieldName]="'week'"
+                    [inputType]="'number'" [label]="'Week'" ngDefaultControl [value]="" [isRequired]="false"
+                    [isReadonly]="false">
+                  </app-text-field>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #UD>
+    <img class="img-responsive" src="assets/images/under-construction.png" alt="under development"
+      style="max-width:25%" />
+  </ng-template>
+  <!-- /content area -->
+</div>

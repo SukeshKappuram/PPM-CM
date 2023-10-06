@@ -1,0 +1,105 @@
+<!-- Main sidebar -->
+<div class="sidebar sidebar-light sidebar-main sidebar-expand-lg"
+  [ngClass]="{'sidebar-main-resized':isColapsed,'sidebar-main-unfold':(isColapsed && isExpanded)}"
+  (mouseenter)="sidebarRollover(true)" (mouseleave)="sidebarRollover(false)">
+
+  <!-- Sidebar content -->
+  <div class="sidebar-content">
+
+    <!-- User menu -->
+    <div class="sidebar-section">
+      <div class="sidebar-user-material">
+        <div class="sidebar-section-body">
+          <div class="d-flex">
+            <a class="flex-1 text-center">
+              <img [src]="imageUrl" class="img-fluid shadow-sm" [alt]="selectedAccount?.shortName"
+                *ngIf="selectedAccount?.shortName">
+            </a>
+            <div class="flex-1 text-right">
+              <button type="button" (click)="sidebarToggle()"
+                class="btn btn-outline-light border-transparent btn-icon rounded-pill btn-sm sidebar-control sidebar-main-resize d-none d-lg-inline-flex">
+                <i class="bi bi-arrow-left-right"></i>
+              </button>
+
+              <button type="button"
+                class="btn btn-outline-light border-transparent btn-icon rounded-pill btn-sm sidebar-mobile-main-toggle d-lg-none">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-user-material-footer bg-blue">
+          <a class="d-flex justify-content-between align-items-center text-shadow-dark dropdown-toggle collapsed" (click)="showAccounts = accounts.length > 1? !showAccounts : showAccounts"
+          data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" data-target="#collapseExample">
+            <span>
+              {{selectedAccount?.shortName}}
+            </span>
+          </a>
+          <div [ngClass]="showAccounts ? 'show': 'collapse'" id="collapseExample" *ngIf="accounts.length > 1">
+            <a *ngFor="let account of accounts" (click)="switchAccount(account.id); showAccounts = false" class="dropdown-item">{{account.shortName}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /user menu -->
+
+    <!-- Main navigation -->
+    <div class="sidebar-section">
+      <ul class="nav nav-sidebar" data-nav-type="accordion">
+        <!-- Main -->
+        <!-- <li class="nav-item-header">
+          <div class="text-uppercase font-size-xs line-height-xs mt-1">Main</div>
+          <i class="bi bi-three-dots" title="Main"></i>
+        </li> -->
+        <li class="nav-item" *ngFor="let group of menuGroups"
+          [ngClass]="{'nav-item-submenu': !group.hideSection, 'nav-item-open': selectedGroup === group.groupName}">
+          <a class="nav-link" (click)="SelectMenuGroup(group)">
+            <i [ngClass]="group.groupImageName? group.groupImageName:'icon-home4'"></i>
+            <span>
+              {{group.groupName}}
+            </span>
+          </a>
+          <ul class="nav nav-group-sub" data-submenu-title="Layouts" *ngIf="!(group.hideSection)"
+            [ngStyle]="{'display': selectedGroup === group.groupName ? 'block' : 'none'}">
+            <ng-container *ngFor="let menu of group.groupedSections">
+              <li class="nav-item nav-item-submenu"
+                *ngIf="menu.showVertical && group.groupName !== menu.title;else horisontalMenu"
+                [ngClass]="{'nav-item-open': selectedMenu === menu.title}">
+                <a class="nav-link" [ngClass]="{'active': selectedMenu === menu.title}"
+                  (click)="SelectMenu(menu, undefined, group)" [routerLinkActive]="'active'">
+                  <i [class]="menu.iconName"></i>
+                  <span>{{menu.title}}</span>
+                </a>
+
+                <ul class="nav nav-group-sub" data-submenu-title="Layouts"
+                  [ngStyle]="{'display': selectedMenu === menu.title ? 'block' : 'none'}">
+                  <li class="nav-item" *ngFor="let item of menu.menuItems">
+                    <a (click)="SelectMenu(menu, item, group)" class="nav-link" [routerLinkActive]="'active'"
+                      [ngClass]="{'active': navState.selectedSubMenu === item.tabName}">{{item.tabName}}</a>
+                  </li>
+                </ul>
+              </li>
+              <ng-template #horisontalMenu>
+                <li class="nav-item" *ngFor="let item of menu.menuItems">
+                  <a [routerLink]="item.webUrl" class="nav-link" [routerLinkActive]="'active'"
+                    [ngClass]="{'active': selectedMenu === item.tabName}"
+                    (click)="SelectMenu(menu,item, group)">
+                    <i [class]="menu.iconName"></i>
+                    <span>
+                      {{item.tabName}}
+                    </span>
+                  </a>
+                </li>
+              </ng-template>
+            </ng-container>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!-- /main navigation -->
+
+  </div>
+  <!-- /sidebar content -->
+
+</div>
+<!-- /main sidebar -->

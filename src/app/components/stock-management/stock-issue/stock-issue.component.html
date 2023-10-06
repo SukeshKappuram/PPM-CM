@@ -1,0 +1,389 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [items]="['Stock Management','Stock Issue']" [activeItem]="'New Stock Issue'"
+    [pageTitle]="issueId > 0? 'View Stock Issue':'New Stock Issue'" [buttons]="buttons"
+    (modified)="buttonClicked($event)">
+  </app-page-header>
+  <div class="navbar navbar-expand-lg navbar-light">
+    <div class="navbar-collapse collapse" id="navbar-second">
+      <ul class="nav navbar-nav">
+        <li class="nav-item">
+          <a class="navbar-nav-link active" data-toggle="tab">
+            <i class="bi bi-list mr-2"></i>
+            General Info
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ml-lg-auto">
+        <li class="nav-item">
+          <a class="navbar-nav-link">
+            <!-- <span class="  ml-2"> </span> <span class="badge badge-secondary mt-3"></span> -->
+            Issue No - {{issueId >
+            0?'SI'+pad(issueId,4):'N/A'}}
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="navbar-nav-link">
+            <i class="bi bi-person-fill text-secondary mr-2"></i>
+            Issued By : {{currentUser}}
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="navbar-nav-link">
+            <i class="bi bi-calendar-event text-secondary mr-2"></i>
+            Issue Date : {{issuedDate | localizedDate:'dd-MMM-yyyy':issueId === 0}}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="content" *ngIf="isDataLoaded">
+    <div class="row">
+      <!-- left box -->
+      <div class="card mt-2">
+        <div class="card-header bg-transparent header-elements-inline">
+          <h6 class="card-title text-cfm-color font-weight-bold">General </h6>
+          <div class="header-elements">
+            <span class="font-weight-bold mr-2"> Issue No -</span> <span class="badge badge-secondary">{{issueId >
+              0?'SI'+pad(issueId,4):'N/A'}}</span>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <form [formGroup]="generalForm">
+            <div class="row">
+              <div class="col-sm-3 mb-2">
+                <app-label [label]="'Project'" [isRequired]="true"></app-label>
+                <kendo-dropdownlist class="form-group" [data]="filteredData?.projects" [filterable]="true" textField="name" valueField="id"
+                  [formControlName]="'project'" [defaultItem]="defaultItem('Project')" [readonly]="issueId !== 0"
+                  (filterChange)="handleFilter($event, 'projects')" (selectionChange)="projectSelected($event)">
+                </kendo-dropdownlist>
+              </div>
+
+              <div class="col-sm-3 mb-2">
+                <app-label [label]="'WO Type'" [isRequired]="true"></app-label>
+                <kendo-dropdownlist class="form-group" [data]="filteredData?.workOrderTypes" [filterable]="true" textField="name"
+                  valueField="id" [formControlName]="'workOrderType'" [defaultItem]="defaultItem('WO Type')"
+                  (selectionChange)="typeSelected($event)" [readonly]="issueId !== 0">
+                </kendo-dropdownlist>
+              </div>
+              <div class="col-sm-3 mb-2">
+                <app-label [label]="'Work Order No'" [isRequired]="true"></app-label>
+                <kendo-dropdownlist class="form-group" [data]="filteredData?.workOrders" [filterable]="true" textField="securityInfoId"
+                  valueField="taskLogId" (filterChange)="handleFilter($event,'workOrders','securityInfoId')"
+                  [formControlName]="'workOrderNo'" [defaultItem]="defaultItem('Work Order No')"
+                  (selectionChange)="jobSelected($event)" [readonly]="issueId!== 0">
+                </kendo-dropdownlist>
+              </div>
+              <div class="col-sm-3 mb-2">
+                <app-label [label]="'MR No.'"></app-label>
+                <ng-container *ngIf="isMRCodesDropDown; else mrDropDown">
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.mrCodes" [filterable]="true" textField="code"
+                    valueField="id" (filterChange)="handleFilter($event,'mrCodes')" [formControlName]="'mrNo'"
+                    [defaultItem]="defaultItem('MR No')" (selectionChange)="mrSelectedDetails($event)"
+                    [readonly]="issueId !== 0">
+                  </kendo-dropdownlist>
+                </ng-container>
+                <ng-template #mrDropDown>
+                  <kendo-autocomplete [data]="filteredData?.mrCodes" [filterable]="true" [formControlName]="'mrNo'"
+                    (valueChange)="valueChange($event)" textField="name" valueField="name" [readonly]="issueId !== 0"
+                    (filterChange)="filterChange($event)" placeholder="MR No.">
+                  </kendo-autocomplete>
+                </ng-template>
+              </div>
+              <div class="col-sm-3 mb-2">
+                <app-label [label]="'Approver Id'" [isRequired]="true"></app-label>
+                <kendo-dropdownlist class="form-group" [data]="filteredData?.approvers" [filterable]="true" textField="name"
+                  valueField="id" (filterChange)="handleFilter($event,'approvers')" [formControlName]="'approverId'"
+                  [defaultItem]="defaultItem('approverId')" [readonly]="issueId !== 0">
+                </kendo-dropdownlist>
+              </div>
+              <div class="col-sm-3 mb-2">
+                <app-text-field [formControlName]="'buildingName'" [formGroup]="generalForm"
+                  [fieldName]="'buildingName'" [label]="'Building Name'" ngDefaultControl
+                  [value]="workorderDetails?.building" [isRequired]="false" [isReadonly]="true">
+                </app-text-field>
+              </div>
+              <div class="col-sm-3 mb-2">
+                <app-text-field [formControlName]="'location'" [formGroup]="generalForm" [fieldName]="'location'"
+                  [label]="'Location'" ngDefaultControl [value]="workorderDetails?.location" [isRequired]="false"
+                  [isReadonly]="true">
+                </app-text-field>
+              </div>
+              <div class="col-sm-3 mb-2">
+                <app-text-field [formControlName]="'serviceReportNo'" [formGroup]="generalForm"
+                  [fieldName]="'serviceReportNo'" [label]="'Service Report No'" ngDefaultControl
+                  [value]="stockIssuedData?.serviceReportNo" [isReadonly]="issueId !== 0" [isRequired]="false">
+                </app-text-field>
+              </div>
+              <div class="col-sm-3 mb-2">
+                <app-label [label]="'Finance Code'"></app-label>
+                <kendo-dropdownlist class="form-group" [data]="filteredData?.financeCodes" [filterable]="true" textField="name"
+                  valueField="id" [formControlName]="'financeCode'" [readonly]="issueId !== 0"
+                  (filterChange)="handleFilter($event, 'financeCodes')" [defaultItem]="defaultItem('Finance Code')">
+                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                    <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                  </ng-template>
+                </kendo-dropdownlist>
+              </div>
+              <div class="col-sm-3 mb-2">
+                <app-label [label]="'Cost Center'"></app-label>
+                <kendo-dropdownlist class="form-group" [data]="filteredData?.costCenters" [filterable]="true" textField="name"
+                  valueField="id" [formControlName]="'costCenter'" (filterChange)="handleFilter($event, 'costCenters')"
+                  [defaultItem]="defaultItem('costCenter')" [readonly]="issueId !== 0">
+                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                    <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                  </ng-template>
+                </kendo-dropdownlist>
+              </div>
+              <div class="col-sm-3 mb-2">
+                <app-label [label]="'Cost Code'"></app-label>
+                <kendo-dropdownlist class="form-group" [data]="filteredData?.costCodes" [filterable]="true" textField="name"
+                  valueField="id" [formControlName]="'costCode'" (filterChange)="handleFilter($event, 'costCodes')"
+                  [defaultItem]="defaultItem('costCode')" [readonly]="issueId !== 0">
+                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                    <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                  </ng-template>
+                </kendo-dropdownlist>
+              </div>
+              <div class="col-sm-3 mb-2">
+                <app-text-field [formControlName]="'serviceReportDate'" [formGroup]="generalForm"
+                  [fieldName]="'serviceReportDate'" [label]="'Service Report Date'" [pipe]="'date'" ngDefaultControl
+                  [value]="stockIssuedData?.serviceReportDate" [isReadonly]="issueId !== 0" [isRequired]="false">
+                </app-text-field>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <app-textarea-field [formControlName]="'comments'" [formGroup]="generalForm" [fieldName]="'comments'"
+                [label]="'Comments'" ngDefaultControl [value]="stockIssuedData?.comments??''" [isRequired]="false"
+                [isReadonly]="issueId !== 0">
+              </app-textarea-field>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- /left box -->
+
+      <!-- left box -->
+      <div class="card mt-2">
+        <div class="card-header bg-transparent header-elements-inline">
+          <h6 class="card-title text-cfm-color font-weight-bold"> Stock Collected By </h6>
+          <div class="header-elements">
+          </div>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="stockCollectedBy">
+            <div class="row">
+              <div class="col-sm-3 ">
+                <app-label [label]="'Employee Id'" [isRequired]="true"></app-label>
+                <kendo-dropdownlist class="form-group" [data]="filteredData?.stockCollectedBy" [filterable]="true" textField="name"
+                  valueField="id" (filterChange)="handleFilter($event,'stockCollectedBy')"
+                  [formControlName]="'employeeId'" [defaultItem]="defaultItem('Employee')"
+                  (selectionChange)="employeeSelected($event)" [readonly]="issueId!== 0">
+                </kendo-dropdownlist>
+              </div>
+
+              <div class="col-sm-3 ">
+                <app-text-field [formControlName]="'name'" [formGroup]="stockCollectedBy" [fieldName]="'name'"
+                  [label]="'Name'" ngDefaultControl [value]="selectedEmployee?.name" [isRequired]="false"
+                  [isReadonly]="true">
+                </app-text-field>
+              </div>
+
+              <div class="col-sm-3 ">
+                <app-text-field [formControlName]="'mobile'" [formGroup]="stockCollectedBy" [fieldName]="'mobile'"
+                  [label]="'Mobile'" ngDefaultControl [value]="selectedEmployee?.mobile" [isReadonly]="true"
+                  [isRequired]="false">
+                </app-text-field>
+              </div>
+
+              <div class="col-sm-3 ">
+                <app-text-field [formControlName]="'email'" [formGroup]="stockCollectedBy" [fieldName]="'email'"
+                  [label]="'Email'" ngDefaultControl [value]="selectedEmployee?.email" [isRequired]="false"
+                  [isReadonly]="true">
+                </app-text-field>
+              </div>
+
+              <div class="col-sm-3 ">
+                <app-text-field [formControlName]="'designation'" [formGroup]="stockCollectedBy"
+                  [fieldName]="'designation'" [label]="'Designation'" ngDefaultControl
+                  [value]="selectedEmployee?.designation" [isRequired]="false" [isReadonly]="true">
+                </app-text-field>
+              </div>
+
+              <div class="col-sm-3 ">
+                <app-text-field [formControlName]="'dateOfCollection'" [formGroup]="stockCollectedBy"
+                  [fieldName]="'dateOfCollection'" [label]="'Date Of Collection'" [pipe]="'date'" ngDefaultControl
+                  [value]="stockIssuedData?.collectionDate" [isReadonly]="issueId !== 0">
+                </app-text-field>
+              </div>
+            </div>
+          </form>
+          <h6 class="font-weight-bold font-size-sm text-secondary">Digital Signature</h6>
+          <div class="col-md-12">
+            <img [src]="stockIssuedData?.digitalSignature" [alt]="stockIssuedData?.digitalSignature"
+              *ngIf="stockIssuedData?.digitalSignature; else upload" width="120" height="60" />
+            <ng-template #upload>
+              <form action="" method="post" class="dropzone dz-clickable" id="dropzone_single"
+                enctype="multipart/form-data">
+                <div class="dz-default dz-message">
+                  <button class="dz-button" type="button" (click)="filesig.click()" [disabled]="issueId !== 0">
+                    Drop file to upload
+                    <span>or CLICK</span>
+                  </button>
+                  <input type="file" #filesig data-multiple-caption="{count} files selected" multiple
+                    style="display:none" (change)="selectFiles($event)" />
+                </div>
+              </form>
+              <ul class="list-group pt-2" *ngIf="selectedFiles.length > 0">
+                <li class="list-group-item" *ngFor="let file of selectedFiles; let f= index">
+                  <i class="bi bi-file mr-2"></i>
+                  {{getFileName(file)}}
+                  <i class="bi bi-x-circle text-danger ml-2"></i>
+                </li>
+              </ul>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <!-- /left box -->
+
+      <div class="col-xl-12">
+        <div class="card mt-2">
+          <div class="card-header bg-transparent header-elements-inline">
+            <h6 class="card-title text-cfm-color font-weight-bold">Items</h6>
+            <div class="header-elements">
+              <button type="button" class="btn btn-sm btn-secondary" (click)="add()"
+                *ngIf="stockIssuedData?.id < 1 && !isMrItems">
+                Add</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <form [formGroup]="stockItems">
+                <table class="table table-responsive text-nowrap" style="width:120%">
+                  <thead class="bg-secondary text-white">
+                    <tr>
+                      <th style="width: 220px"> Stock Group </th>
+                      <th style="width: 150px"> Spare Part Code </th>
+                      <th style="width: 250px"> Stock Name </th>
+                      <th style="width: 100px"> Avl Qty </th>
+                      <th style="width: 120px"> Req Qty </th>
+                      <th style="width: 100px"> Prev. Issued Qty </th>
+                      <th style="width: 120px"> Issued Qty</th>
+                      <th style="width: 120px"> Total Price</th>
+                      <th style="width: 250px"> Remarks </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container formArrayName="items">
+                      <ng-container *ngFor="let itemForm of items?.controls; let i = index">
+                        <tr [formGroupName]="i">
+                          <td>
+                            <kendo-dropdownlist class="form-group" [formControlName]="'group'" [data]="filteredData?.stockGroups"
+                              textField="name" valueField="id" [filterable]="true" [disabled]="!isEditable"
+                              [defaultItem]="defaultItem('group')" (filterChange)="handleFilter($event,'stockGroups')"
+                              (selectionChange)="filterStocks(i, itemForm, $event)"
+                              [readonly]="stockIssuedItems[i]?.id >0"
+                              (filterChange)="handleFilter($event,'stockGroups')">
+                              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}
+                                </span>
+                              </ng-template>
+                            </kendo-dropdownlist>
+                          </td>
+                          <td>
+                            <kendo-dropdownlist class="form-group" [formControlName]="'sparePartCode'" [data]="filteredStocks[i]"
+                              textField="sparePartCode" valueField="id" [filterable]="true" [disabled]="!isEditable"
+                              [defaultItem]="defaultItem('Spare Part')" [readonly]="stockIssuedItems[i]?.id >0"
+                              (filterChange)="handleFilterForStocks(stocks[i], $event, 'stocks','sparePartCode', 'name',i)"
+                              (selectionChange)="updateAvailableStock(i, itemForm, $event)">
+                            </kendo-dropdownlist>
+                          </td>
+                          <td>
+                            <app-text-field [formControlName]="'stockName'" [formGroup]="getIssueDetails(itemForm)"
+                              [fieldName]="'stockName'" [label]="'Stock Name'" ngDefaultControl
+                              [class]="'form-control-slim'" [value]="stockIssuedItems[i]?.stockName??''"
+                              [showLabel]="false" [isReadonly]="true">
+                            </app-text-field>
+                          </td>
+                          <td>
+                            <app-text-field [formControlName]="'availableQty'" [formGroup]="getIssueDetails(itemForm)"
+                              [fieldName]="'availableQty'" [label]="'Available Qty'" ngDefaultControl
+                              [value]="stockIssuedItems[i]?.availableQty ?? stockIssuedItems[i]?.availableStock"
+                              [showLabel]="false" [isReadonly]="true" [class]="'form-control-slim'">
+                            </app-text-field>
+                          </td>
+                          <td>
+                            <app-text-field [formControlName]="'requestedQty'" [formGroup]="getIssueDetails(itemForm)"
+                              *ngIf="isMrItems || issueId > 0; else numeric" [fieldName]="'requestedQty'" [label]="'Requested Qty'"
+                              ngDefaultControl [value]="stockIssuedItems[i]?.requestedQty" [showLabel]="false"
+                              [isReadonly]="true">
+                            </app-text-field>
+                            <ng-template #numeric>
+                              <kendo-numerictextbox [autoCorrect]="true" [min]="0" [formControlName]="'requestedQty'"
+                                [value]="stockIssuedItems[i]?.requestedQty??0" [readonly]="isMrItems || issueId !== 0">
+                              </kendo-numerictextbox>
+                            </ng-template>
+                          </td>
+                          <td>
+                            <app-text-field [formControlName]="'previousIssuedQty'"
+                              [formGroup]="getIssueDetails(itemForm)" [fieldName]="'previousIssuedQty'"
+                              [label]="'Previous Issued Qty'" [placeholder]="'Prev. Issued Qty'" ngDefaultControl
+                              [value]="stockIssuedItems[i]?.previousIssuedQty??0" [showLabel]="false"
+                              [isReadonly]="true" [class]="'form-control-slim'">
+                            </app-text-field>
+                          </td>
+                          <td>
+                            <app-text-field [formControlName]="'issuedQty'" [formGroup]="getIssueDetails(itemForm)"
+                              *ngIf="issueId > 0; else numericQty" [fieldName]="'issuedQty'" [label]="'Issued Qty'"
+                              ngDefaultControl [value]="stockIssuedItems[i]?.issuedQty" [showLabel]="false"
+                              [isReadonly]="true">
+                            </app-text-field>
+                            <ng-template #numericQty>
+                            <kendo-numerictextbox [autoCorrect]="true" [min]="0" [formControlName]="'issuedQty'"
+                              (valueChange)="calculateTotal(i, itemForm, $event)"
+                              [max]="getMax(stockIssuedItems[i]?.availableQty ?? stockIssuedItems[i]?.availableStock, stockIssuedItems[i]?.requestedQty)"
+                              [value]="stockIssuedItems[i]?.issuedQty??0"
+                              [readonly]="stockIssuedItems[i]?.availableStock === 0 || stockIssuedItems[i]?.availableQty === 0 || stockIssuedItems[i]?.previousIssuedQty === stockIssuedItems[i]?.requestedQty || issueId !== 0">
+                            </kendo-numerictextbox>
+                          </ng-template>
+                          </td>
+                          <td>
+                            <div class="row">
+                              <div class="col-9">
+                                <app-text-field [formControlName]="'totalPrice'" [formGroup]="getIssueDetails(itemForm)"
+                                  [fieldName]="'totalPrice'" [label]="'Total Price'" ngDefaultControl
+                                  [value]="stockIssuedItems[i]?.totalPrice??'0'" [showLabel]="false"
+                                  [title]="stockIssuedItems[i]?.totalPrice??'0'" [isReadonly]="true"
+                                  [class]="'form-control-slim'">
+                                </app-text-field>
+                              </div>
+                              <div class="col-1">
+                                <i class="bi bi-info-circle cursor-pointer" [title]="''" (click)="openData(stockIssuedItems[i])"></i>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <app-text-field [formControlName]="'remarks'" [formGroup]="getIssueDetails(itemForm)"
+                              [fieldName]="'remarks'" [label]="'Remarks'" ngDefaultControl
+                              [value]="stockIssuedItems[i]?.remarks??''" [showLabel]="false" [isRequired]="false"
+                              [isReadonly]="issueId !== 0"></app-text-field>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

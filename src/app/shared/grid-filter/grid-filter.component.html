@@ -1,0 +1,336 @@
+<form [formGroup]="filterForm" [@slideInOut]="animationState">
+  <div class="navbar navbar-expand-lg shadow py-1 mb-2 mt-2">
+    <ul class="list-container">
+      <li class="ms-lg-1" *ngIf="showStartEndDates">
+        <a class="navbar-nav-link">
+          Start date <sup class="text-danger">*</sup> &nbsp;<i class="bi bi-info-circle text-black"
+            [title]="'Logged By Date'"></i>
+        </a>
+        <div>
+          <app-text-field [formControlName]="'startDate'" [formGroup]="filterForm" [fieldName]="'startDate'"
+            [label]="'Start Date'" [className]="'border-less'" [showLabel]="false" ngDefaultControl
+            [value]="startDate | localizedDate" [pipe]="'date'">
+          </app-text-field>
+        </div>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="showStartEndDates">
+        <a class="navbar-nav-link">
+          End date<sup class="text-danger">*</sup> &nbsp;<i class="bi bi-info-circle text-black"
+          [title]="endDateTitle"></i>
+        </a>
+
+        <div>
+          <app-text-field [formControlName]="'endDate'" [formGroup]="filterForm" [fieldName]="'endDate'"
+            [className]="'border-less'" ngDefaultControl [value]="endDate | localizedDate" [label]="'End Date'"
+            [showLabel]="false" [pipe]="'date'">
+          </app-text-field>
+        </div>
+      </li>
+
+      <li class="ms-lg-1">
+        <a class="navbar-nav-link">
+          Project <sup class="text-danger" *ngIf="isProjectMandatory">*</sup>
+        </a>
+
+        <div>
+          <kendo-dropdownlist class="py-1" [data]="seletableData?.projects" [filterable]="true" textField="name"
+            valueField="id" (filterChange)="handleFilter($event,'projects')" [formControlName]="'project'"
+            [defaultItem]="'Select Project'" (valueChange)="projectSelected($event)">
+          </kendo-dropdownlist>
+        </div>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="seletableData?.buildings">
+        <a class="navbar-nav-link">
+          Building
+        </a>
+        <div>
+          <kendo-dropdownlist class="py-1" [data]="seletableData?.buildings" [(value)]="selectedBuilding"
+            [filterable]="true" textField="name" valueField="id" (filterChange)="handleFilter($event,'buildings')"
+            [formControlName]="'building'" [defaultItem]="'Select Building'">
+          </kendo-dropdownlist>
+        </div>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="filterType === FilterType.MR || filterType === FilterType.Export">
+        <a class="navbar-nav-link">
+          Work Orders Types <sup class="text-danger" *ngIf="isExportable">*</sup>
+        </a>
+        <div *ngIf="!isMultiSelect; else MultiSelect ">
+          <kendo-dropdownlist class="py-1" [data]="seletableData?.workOrderTypes" [filterable]="true" textField="name"
+            valueField="id" (filterChange)="handleFilter($event, 'workOrderTypes')" [formControlName]="'workOrderType'"
+            [defaultItem]="'Select Work Order Type'">
+          </kendo-dropdownlist>
+        </div>
+        <ng-template #MultiSelect>
+          <div [className]="'border-less'">
+            <kendo-multiselect [data]="seletableData?.workOrderTypes" textField="name" valueField="id"
+              [formControlName]="'workOrderType'" [(ngModel)]="selectedWOTypes"
+              [placeholder]="'Select Work Orders Type'"></kendo-multiselect>
+          </div>
+        </ng-template>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="filterType === FilterType.Export">
+        <a class="navbar-nav-link">
+          Status <sup class="text-danger" *ngIf="isExportable">*</sup>
+        </a>
+        <div [className]="'border-less'">
+          <kendo-multiselect [data]="seletableData?.workOrderStatus" textField="name" valueField="id"
+            [formControlName]="'workOrderStatus'" [(ngModel)]="selectedWOStatus"
+            [placeholder]="'Select Work Order Status'"></kendo-multiselect>
+        </div>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="filterType === FilterType.MR">
+        <a class="navbar-nav-link">
+          MR Code
+        </a>
+        <div>
+          <app-text-field [formControlName]="'mrCode'" [formGroup]="filterForm" [fieldName]="'mrCode'"
+            [label]="'mrCode'" ngDefaultControl [value]="''" [isRequired]="false" [showLabel]="false"
+            [className]="'border-less'" [placeholder]="'MR Code'">
+          </app-text-field>
+        </div>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="seletableData?.types">
+        <a class="navbar-nav-link">
+          Type
+        </a>
+        <div>
+          <kendo-dropdownlist class="py-1" [data]="seletableData?.types" [filterable]="true" textField="name"
+            valueField="id" (filterChange)="handleFilter($event,'types')" [formControlName]="'type'"
+            (valueChange)="typeSelected($event)" [defaultItem]="'Select Type'">
+          </kendo-dropdownlist>
+        </div>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="seletableData?.subtypes">
+        <a class="navbar-nav-link">
+          SubType
+        </a>
+        <div>
+          <kendo-dropdownlist class="py-1" [data]="seletableData?.subTypes" [filterable]="true" textField="name"
+            valueField="id" (filterChange)="handleFilter($event,'subTypes')" [formControlName]="'subType'"
+            [defaultItem]="'Select SubType'">
+          </kendo-dropdownlist>
+        </div>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="seletableData?.categories">
+        <a class="navbar-nav-link">
+          Category
+        </a>
+        <div>
+          <kendo-dropdownlist class="py-1" [data]="seletableData?.categories" [filterable]="true" textField="name"
+            valueField="id" (filterChange)="handleFilter($event, 'categories')" [formControlName]="'category'"
+            [defaultItem]="'Select Category'">
+          </kendo-dropdownlist>
+        </div>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="seletableData?.taskStatuses && status !== 3 && status !== 6">
+        <a class="navbar-nav-link">
+          Status
+        </a>
+        <div class="">
+          <kendo-dropdownlist class="py-1" [data]="seletableData?.taskStatuses" [filterable]="true" textField="name"
+            valueField="id" (filterChange)="handleFilter($event,'taskStatuses')" [formControlName]="'status'"
+            [defaultItem]="'Select Status'">
+          </kendo-dropdownlist>
+        </div>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="seletableData?.locs && filterType !== FilterType.BlukClose">
+        <a class="navbar-nav-link">
+          LOC
+        </a>
+        <div class="">
+          <kendo-dropdownlist class="py-1" [data]="seletableData?.locs" [filterable]="true" textField="name"
+            valueField="id" (filterChange)="handleFilter($event,'locs')" [formControlName]="'loc'"
+            [defaultItem]="'Select LOC'">
+          </kendo-dropdownlist>
+        </div>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="seletableData?.systems">
+        <a class="navbar-nav-link">
+          System
+        </a>
+        <div class="">
+          <kendo-dropdownlist class="py-1" [data]="seletableData?.systems" [filterable]="true" textField="name"
+            valueField="id" (filterChange)="handleFilter($event,'systems')" [formControlName]="'system'"
+            [defaultItem]="'Select System'">
+          </kendo-dropdownlist>
+        </div>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="seletableData?.tags">
+        <a class="navbar-nav-link">
+          Tag
+        </a>
+        <div class="">
+          <kendo-dropdownlist class="py-1" [data]="seletableData?.tags" [filterable]="true" textField="name"
+            valueField="id" (filterChange)="handleFilter($event,'tags')" [formControlName]="'tag'"
+            [defaultItem]="'Select Tag'">
+          </kendo-dropdownlist>
+        </div>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="seletableData?.stores">
+        <a class="navbar-nav-link">
+          Store
+        </a>
+        <div class="">
+          <kendo-dropdownlist class="py-1" [data]="seletableData?.stores" [filterable]="true" textField="name"
+            valueField="id" (filterChange)="handleFilter($event,'stores')" [formControlName]="'store'"
+            [defaultItem]="'Select Store'">
+          </kendo-dropdownlist>
+        </div>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="seletableData?.disciplines">
+        <a class="navbar-nav-link">
+          Discipline
+        </a>
+        <div class="">
+          <kendo-dropdownlist class="py-1" [data]="seletableData?.disciplines" [filterable]="true" textField="name"
+            valueField="id" (filterChange)="handleFilter($event,'disciplines')" [formControlName]="'discipline'"
+            [defaultItem]="'Select Discipline'">
+          </kendo-dropdownlist>
+        </div>
+      </li>
+      <li class="ms-lg-1" *ngIf="masterData?.frequencyTypes">
+        <a class="navbar-nav-link" data-bs-target="dropdown">
+          Frequency Type <sup class="text-danger" *ngIf="isFrequencyMandatory">*</sup>
+        </a>
+        <div *ngIf="!isMultiSelect; else MultiSelect">
+          <kendo-dropdownlist class="py-1" [data]="seletableData?.frequencyTypes" [filterable]="true"
+            [(value)]="selectedFrequencyType" textField="name" valueField="id"
+            (filterChange)="handleFilter($event, 'frequencyTypes')" [formControlName]="'frequencyType'"
+            [defaultItem]="'Select Frequency Type'" (valueChange)="frequencyTypeSelection($event)">
+          </kendo-dropdownlist>
+        </div>
+        <ng-template #MultiSelect>
+          <div [className]="'border-less'">
+            <kendo-multiselect [data]="seletableData?.frequencyTypes" textField="name" valueField="id"
+              [formControlName]="'frequencyType'" [(ngModel)]="selectedFrequencyType"
+              [placeholder]="'Select Frequency Type'"></kendo-multiselect>
+          </div>
+        </ng-template>
+      </li>
+      <li class="ms-lg-1" *ngIf="seletableData?.shifts">
+        <a class="navbar-nav-link">
+          Shift
+        </a>
+        <div class="">
+          <kendo-dropdownlist class="py-1" [data]="seletableData?.shifts" [filterable]="true" textField="name"
+            valueField="id" (filterChange)="handleFilter($event,'shifts')" [formControlName]="'shift'"
+            [defaultItem]="'Select Shift'">
+          </kendo-dropdownlist>
+        </div>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="isFrequencyCalculated && (selectedFrequencyType !== '' || isFrequencySelected)">
+        <a class="navbar-nav-link">
+          {{frequencyLabel}} Ahead <sup class="text-danger">*</sup>
+        </a>
+
+        <div>
+          <div class="input-container autocomplete-container">
+            <app-text-field [formControlName]="'weeksAhead'" [formGroup]="filterForm" [fieldName]="'weeksAhead'"
+              [inputType]="'number'" [label]="'Weeks Ahead'" [className]="'border-less'" [showLabel]="false"
+              ngDefaultControl [value]="frequencyAhead" [isRequired]="true" [placeholder]="frequencyLabel"
+              (inputChange)="calculateWeeks($event.target.value)">
+            </app-text-field>
+          </div>
+        </div>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="isFrequencyProjected">
+        <a class="navbar-nav-link">
+          Present Week
+        </a>
+
+        <div>
+          <div class="input-container autocomplete-container">
+            <app-text-field [formControlName]="'presentWeek'" [formGroup]="filterForm" [fieldName]="'presentWeek'"
+              [inputType]="'text'" [label]="'Present Week'" [className]="'border-less'" [showLabel]="false"
+              ngDefaultControl [value]="presentWeek" [isRequired]="false" [isReadonly]="true">
+            </app-text-field>
+          </div>
+        </div>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="isFrequencyProjected">
+        <a class="navbar-nav-link">
+          Projected
+        </a>
+        <div>
+          <div class="input-container autocomplete-container">
+            <app-text-field [formControlName]="'projected'" [formGroup]="filterForm" [fieldName]="'projected'"
+              [inputType]="'text'" [label]="'Projected'" [className]="'border-less'" [showLabel]="false"
+              ngDefaultControl [value]="projected" [isRequired]="false" [isReadonly]="true">
+            </app-text-field>
+          </div>
+        </div>
+      </li>
+
+      <li class="ms-lg-1" *ngIf="isFrequencyCalculated">
+        <a class="navbar-nav-link">
+          Ending Date
+        </a>
+        <div>
+          <div class="input-container autocomplete-container">
+            <app-text-field [formControlName]="'ending'" [formGroup]="filterForm" [fieldName]="'ending'"
+              [label]="'Ending Date'" [className]="'border-less'" [showLabel]="false" ngDefaultControl
+              [value]="ending | localizedDate" [pipe]="'date'" [isRequired]="false" [isReadonly]="true">
+            </app-text-field>
+          </div>
+        </div>
+      </li>
+      <li class="ms-lg-1" *ngIf="masterData?.resources">
+        <a class="navbar-nav-link" data-bs-target="dropdown">
+          Resource
+        </a>
+        <div class="">
+          <kendo-dropdownlist class="py-1" [data]="seletableData?.resources" [filterable]="true"
+            [(value)]="selectedResource" textField="name" valueField="id"
+            (filterChange)="handleFilter($event, 'resources')" [formControlName]="'resource'"
+            [defaultItem]="'Select Resource'">
+          </kendo-dropdownlist>
+        </div>
+      </li>
+      <li class="ms-lg-1" *ngIf="isMonthlyReport || isYearRequired">
+        <a class="navbar-nav-link" data-bs-target="dropdown">
+          Year
+        </a>
+        <div class="">
+          <kendo-dropdownlist class="py-1" [data]="seletableData?.years" [filterable]="true" [textField]="'name'"
+            [valueField]="'id'" [formControlName]="'year'" [defaultItem]="'Select Year'"
+            (filterChange)="handleFilter($event,'years')">
+          </kendo-dropdownlist>
+        </div>
+      </li>
+      <li class="ms-lg-1" *ngIf="isMonthlyReport">
+        <a class="navbar-nav-link" data-bs-target="dropdown">
+          Month
+        </a>
+        <div class="">
+          <kendo-dropdownlist class="py-1" [data]="seletableData?.months" [filterable]="true" [textField]="'name'"
+            [valueField]="'id'" [formControlName]="'month'" [defaultItem]="'Select Month'"
+            (filterChange)="handleFilter($event,'months')">
+          </kendo-dropdownlist>
+        </div>
+      </li>
+      <li *ngIf="useSearchButton">
+        <button class="btn btn-secondary mt-4 ml-1" (click)="setFilter()">Go</button>
+      </li>
+      <li *ngIf="isExportable">
+        <button class="btn btn-secondary mt-4 ml-1" (click)="exportXL()">Export</button>
+      </li>
+    </ul>
+  </div>
+</form>

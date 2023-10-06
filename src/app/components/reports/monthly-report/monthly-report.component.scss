@@ -1,0 +1,75 @@
+.table-fixed {
+  width: 100%;
+}
+
+.table-fixed thead {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+}
+
+.table-fixed thead th {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  background: #fff !important;
+}
+
+.table-responsive {
+  scrollbar-width: thin;
+  scrollbar-color: #999999 auto;
+  background: #f4fcff !important;
+}
+
+/* Works on Chrome, Edge, and Safari */
+.table-responsive::-webkit-scrollbar {
+  width: 8px;
+  /* width of the entire scrollbar */
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: transparent;
+  /* color of the tracking area */
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background-color: #999999;
+  /* color of the scroll thumb */
+  border-radius: 20px;
+  /* roundness of the scroll thumb */
+  border: 2px solid transparent;
+  /* creates padding around scroll thumb */
+}
+
+.page-template {
+  font-family: "DejaVu Sans", "Arial", sans-serif;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.page-template .header {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  border-bottom: 1px solid #888;
+  color: #888;
+}
+
+.page-template .footer {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  border-top: 1px solid #888;
+  text-align: center;
+  color: #888;
+}
+
+.export{
+  margin-top: -45px;
+  margin-right: 6px;
+}

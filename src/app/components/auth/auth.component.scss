@@ -1,0 +1,18 @@
+.page-content {
+  max-height: 90vh !important;
+}
+.sidebar-padding {
+  margin-left: 3.5rem;
+}
+.btn-to-top {
+  position: absolute;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  -ms-flex-item-align: end;
+  align-self: flex-end;
+  opacity: 1;
+  visibility: visible;
+  z-index: 999;
+  transition: all 0.15s ease-in-out;
+  display: none;
+}

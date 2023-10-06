@@ -1,0 +1,176 @@
+<div class="card">
+  <div class="card-header bg-transparent header-elements-inline">
+    <h6 class="card-title font-weight-semibold text-secondary">Cost Allocation</h6>
+    <button class="btn btn-sm btn-secondary float-right" *ngIf="userAccess?.canUpdate" (click)="save()"
+      [disabled]="!financeForm.valid">save</button>
+  </div>
+
+  <div class="card-body">
+    <form [formGroup]="financeForm">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="col-form-label col-md-9"> Finance Code <sup class="text-danger">*</sup></label>
+            <kendo-dropdownlist class="form-group" [formControlName]="'financeCode'" [data]="filteredData.financeCodes" [filterable]="true"
+              textField="name" valueField="id" (filterChange)="handleFilter($event,'financeCodes')"
+              [defaultItem]="'Select financeCode'" [readonly]="!isEditable">
+            </kendo-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="col-form-label col-md-9"> Cost Center <sup class="text-danger">*</sup></label>
+            <kendo-dropdownlist class="form-group" #costCenterList [formControlName]="'costCenter'" [data]="masterData.costCenters"
+              ngDefaultControl [filterable]="true" textField="name" valueField="id" [defaultItem]="'Select costCenter'"
+              [readonly]="!isEditable">
+            </kendo-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="col-form-label col-md-9"> Cost Code <sup class="text-danger">*</sup></label>
+            <kendo-dropdownlist class="form-group" #costCodeList [formControlName]="'costCode'" [data]="filteredData?.costCodes"
+              ngDefaultControl [filterable]="true" (filterChange)="handleFilter($event, 'costCodes')" textField="name"
+              valueField="id" [defaultItem]="'Select CostCode'" [readonly]="!isEditable">
+            </kendo-dropdownlist>
+          </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h6 class="card-title font-weight-semibold text-secondary">
+            Purchase Details</h6>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <label> Supplier <sup class="text-danger">*</sup></label>
+            <kendo-dropdownlist class="form-group" [formControlName]="'supplier'" [data]="filteredData?.suppliers" ngDefaultControl
+              [filterable]="true" textField="name" valueField="id" (filterChange)="handleFilter($event, 'suppliers')"
+              [defaultItem]="'Select Supplier'" [readonly]="!isEditable">
+            </kendo-dropdownlist>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <app-text-field [formControlName]="'purchaseDate'" [formGroup]="financeForm" [fieldName]="'purchaseDate'"
+              [label]="'Purchase Date'" ngDefaultControl [isRequired]="false"
+              [value]="financials?.purchaseDate??'' | localizedDate" [pipe]="'date'"
+              (inputChange)="calculateDepreciation(null,null,null)" [isReadonly]="!isEditable">
+            </app-text-field>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <app-text-field [inputType]="'number'" [formControlName]="'assetLifeTerm'" [formGroup]="financeForm"
+              [fieldName]="'assetLifeTerm'" [label]="'Asset LifeTerm'" [placeholder]="'Assert LifeTerm'"
+              [tooltip]="'in Months'" ngDefaultControl [value]="financials?.assetLifeTerm"
+              (inputChange)="calculateDepreciation(null,$event.target.value,null)" [isReadonly]="!isEditable">
+            </app-text-field>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <app-text-field [formControlName]="'purchaseCost'" [formGroup]="financeForm" [fieldName]="'purchaseCost'"
+              [label]="'Purchase Cost'" ngDefaultControl [value]="financials?.purchaseCostValue | number:'1.2-2'"
+              [pipe]="'number'" [isRequired]="false"
+              (inputChange)="calculateDepreciation($event.target.value,null,null)" [isReadonly]="!isEditable">
+            </app-text-field>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <app-text-field [formControlName]="'acquiredDate'" [formGroup]="financeForm" [fieldName]="'acquiredDate'"
+              [label]="'Acquired Date'" ngDefaultControl [isRequired]="false"
+              [value]="financials?.acquiredDate??'' | localizedDate" [pipe]="'date'" [isReadonly]="!isEditable">
+            </app-text-field>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <app-text-field [formControlName]="'warrantyDate'" [formGroup]="financeForm" [fieldName]="'warrantyDate'"
+              [label]="'Warranty Date'" ngDefaultControl [isRequired]="false"
+              [value]="financials?.warrantyDate??'' | localizedDate" [pipe]="'date'" [isReadonly]="!isEditable">
+            </app-text-field>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h6 class="card-title font-weight-semibold text-secondary">
+            Depreciation</h6>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <label> Depreciation Method <sup class="text-danger">*</sup></label>
+            <kendo-dropdownlist class="form-group" [formControlName]="'depreciationMethod'" [data]="filteredData?.depreciationMethods"
+              ngDefaultControl [filterable]="true" textField="name" valueField="id"
+              [defaultItem]="'Select Depreciation Method'" (filterChange)="handleFilter($event, 'depreciationMethods')"
+              (selectionChange)="calculateDepreciation(null,null,null)" [readonly]="!isEditable">
+            </kendo-dropdownlist>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <app-text-field [inputType]="'number'" [formControlName]="'reduceDepreciation'" [formGroup]="financeForm"
+              [fieldName]="'reduceDepreciation'" [label]="'Reduce Depreciation %'" ngDefaultControl [isRequired]="false"
+              [value]="financials?.reduceDepreciation | number:'1.2-2'" [pipe]="'number'" [max]="100"
+              [isReadonly]="isReducingDepreciation" (inputChange)="calculateDepreciation(null,null,$event.target.value)"
+              [isReadonly]="!isEditable">
+            </app-text-field>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <app-text-field [formControlName]="'depreciationValue'" [formGroup]="financeForm" [isReadonly]="true"
+              [fieldName]="'depreciationValue'" [label]="'Depreciation Value'" ngDefaultControl [isRequired]="false"
+              [value]="financials?.depreciationValue | number:'1.2-2'" [pipe]="'number'">
+            </app-text-field>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <app-text-field [formControlName]="'currentValue'" [formGroup]="financeForm" [fieldName]="'currentValue'"
+              [isReadonly]="true" [label]="'Current Value'" ngDefaultControl
+              [value]="financials?.currentValue | number:'1.2-2'" [pipe]="'number'" [isRequired]="false">
+            </app-text-field>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h6 class="card-title font-weight-semibold text-secondary">
+            Write Off</h6>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <app-text-field [formControlName]="'writeOffDate'" [formGroup]="financeForm" [fieldName]="'writeOffDate'"
+              [label]="'Write Off Date'" ngDefaultControl [isRequired]="false"
+              [value]="financials?.writeOffDate??'' | localizedDate" [pipe]="'date'" [isReadonly]="!isEditable">
+            </app-text-field>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <app-text-field [inputType]="'number'" [formControlName]="'writeOffValue'" [formGroup]="financeForm"
+              [fieldName]="'writeOffValue'" [label]="'Write Off Value'" ngDefaultControl
+              [value]="financials?.writeOffValue | number:'1.2-2'" [pipe]="'number'" [isRequired]="false"
+              [isReadonly]="!isEditable">
+            </app-text-field>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

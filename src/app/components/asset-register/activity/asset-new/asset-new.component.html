@@ -1,0 +1,136 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-header-panel #header [currentTab]="currentTab" (tabChanged)="onTabChange($event)" (edited)="onEdit($event)"
+    (saved)="onSave($event)" [assetData]="navState.assetData?.generals" [userAccess]="userAccess"></app-header-panel>
+  <!-- Content area -->
+  <div class="content">
+    <div class="row">
+      <div [ngClass]="currentTab > 2 && currentTab !== 4? 'col-md-12': 'col-md-9'">
+        <div class="notification-area">
+          <app-alert id="alert-asset"></app-alert>
+        </div>
+        <div class="tab-content flex-1" *ngIf="isDataLoaded">
+          <div class="tab-pane fade" id="activity" [ngClass]="currentTab === 1? 'active show': ''">
+            <!-- Sales stats -->
+            <app-general #generalForm [masterData]="masterData" [saveAt]="saveAt" (assetCreated)="updateAsset($event)"
+              [isEditable]="isEditable" (formValidated)="updateFormValidity($event)" [userAccess]="userAccess">
+            </app-general>
+            <!-- /sales stats -->
+          </div>
+          <div class="tab-pane fade" id="finance" [ngClass]="currentTab === 2? 'active show': ''">
+            <!-- Profile info -->
+            <app-finance #financialForm [masterData]="masterData" [saveAt]="saveAt" [isEditable]="isEditable" [userAccess]="userAccess">
+            </app-finance>
+            <!-- /profile info -->
+          </div>
+          <div class="tab-pane fade" id="parameter" [ngClass]="currentTab === 3? 'active show': ''">
+            <!-- Schedule -->
+            <app-parameter #parameterForm [masterData]="masterData" [selectedSubSystem]="subSystemId"
+              [isEditable]="isEditable" [userAccess]="userAccess"></app-parameter>
+            <!-- /schedule -->
+          </div>
+          <div class="tab-pane fade" id="identification" [ngClass]="currentTab === 4? 'active show': ''">
+            <app-identification #identificationForm (assetDefaultImageChanged)="setDefaultAssetImage($event)"
+              (qrChanged)="updateQr($event)" [isEditable]="isEditable" [userAccess]="userAccess"></app-identification>
+          </div>
+          <div class="tab-pane fade" id="conditional" [ngClass]="currentTab === 5? 'active show': ''">
+            <ng-container *ngIf="currentTab === 5 && conditionalAuditData?.configuration?.columns?.length">
+              <app-kendo-grid [headerTitle]="'Condition Records'" [gridDetails]="conditionalAuditData" [isViewable]="true" [fileName]="'Asset_New'">
+              </app-kendo-grid>
+            </ng-container>
+          </div>
+          <div class="tab-pane fade" id="uploads" [ngClass]="currentTab === 6? 'active show': ''">
+            <div class="card">
+              <div class="card-header bg-transparent header-elements-inline">
+                <h6 class="card-title font-weight-semibold text-secondary">Uploads</h6>
+                <button class="btn btn-sm btn-secondary float-right" (click)="uploadFiles()">save</button>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="table-responsive">
+                      <table class="table table-bordered text-nowrap">
+                        <thead>
+                          <tr class="bg-purple-100  font-weight-semibold">
+                            <td>File Name</td>
+                            <td>Type</td>
+                            <td>Actions</td>
+                          </tr>
+                        </thead>
+                        <tbody *ngIf="documents.length > 0; else NoDocs">
+                          <tr *ngFor="let doc of documents">
+                            <td>{{doc.fileName}}</td>
+                            <td>{{doc.attachmentType}}</td>
+                            <td>
+                              <i class="bi bi-trash px-3" (click)="delete(doc)"></i>
+                              <a href="{{doc.resourceUrl}}" target="_blank">
+                                <i class="bi bi-download px-3"></i>
+                              </a>
+                            </td>
+                          </tr>
+                        </tbody>
+                        <ng-template #NoDocs>
+                          <tbody>
+                            <td colspan="3" class="text-center">No Documents Uploaded</td>
+                          </tbody>
+                        </ng-template>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="col-md-12 mt-2">
+                    <form action="" method="post" class="dropzone dz-clickable" id="dropzone_single"
+                      enctype="multipart/form-data">
+                      <div class="dz-default dz-message">
+                        <button class="dz-button" type="button" (click)="file.click()" [disabled]="!isEditable">
+                          Drop file to upload
+                          <span>or CLICK</span>
+                        </button>
+                        <input type="file" #file data-multiple-caption="{count} files selected" multiple
+                          style="display:none" (change)="selectFiles($event)" [disabled]="!isEditable" />
+                      </div>
+                    </form>
+                    <ul class="list-group pt-2" *ngIf="selectedFiles.length > 0 && progressInfos.length === 0">
+                      <li class="list-group-item" *ngFor="let file of selectedFiles; let f= index">
+                        <i class="bi bi-file mr-2"></i>
+                        {{getFileName(file)}}
+                        <i class="bi bi-x-circle text-danger ml-2"></i>
+                      </li>
+                    </ul>
+                    <div *ngFor="let progressInfo of progressInfos" class="mb-2 pt-2">
+                      <span>{{ progressInfo.fileName }}</span>
+                      <div class="progress">
+                        <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                          attr.aria-valuenow="{{ progressInfo.value }}" aria-valuemin="0" aria-valuemax="100"
+                          [ngStyle]="{ width: progressInfo.value + '%' }">
+                          {{ progressInfo.value }}%
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="ppmView" [ngClass]="currentTab === 7? 'active show': ''">
+            <!-- PPM view -->
+            <ng-container *ngIf="ppmData?.configuration?.columns?.length > 0">
+                <app-kendo-grid [headerTitle]="'PPM View'" [gridDetails]="ppmData" [isViewable]="true" (edited)="viewScheduler($event)" [fileName]="'Asset_New'"></app-kendo-grid>
+            </ng-container>
+            <!-- /PPM view -->
+          </div>
+          <div class="tab-pane fade" id="serviceHistory" [ngClass]="currentTab === 8? 'active show': ''">
+            <!-- Service History -->
+            <ng-container *ngIf="serviceHistoryData?.configuration?.columns?.length">
+              <app-kendo-grid [headerTitle]="'Service History'" [gridDetails]="serviceHistoryData" [isViewable]="true" [fileName]="'Asset_New'">
+              </app-kendo-grid>
+            </ng-container>
+            <!-- /Service History -->
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3" *ngIf="currentTab <= 2 || currentTab === 4">
+        <app-side-panel #sidepanel [tabId]="currentTab" [isNew]="navState.currentAssertId === 0" [widgetData]="widgetData"></app-side-panel>
+      </div>
+    </div>
+  </div>
+  <!-- /content area -->
+</div>

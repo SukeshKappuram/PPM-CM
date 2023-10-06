@@ -1,0 +1,52 @@
+.k-table-thead,
+.k-table-header,
+.k-table-group-sticky-header,
+.k-table-tfoot,
+.k-table-footer,
+.k-table-group-row {
+  border-color: var(--themecolor);
+  color: #ffffff;
+  background-color: var(--themecolor);
+}
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+::ng-deep .k-grid-header .k-sort-icon,
+.k-grid-header .k-sort-order {
+  color: #fff !important;
+}
+
+::ng-deep .k-grid,
+.k-grid .k-button {
+  font-size: 12px !important;
+}
+
+::ng-deep .k-grid td,
+k-grid th {
+  padding: 0;
+}
+
+
+.search{
+  width: 200px;
+  font-size: 12px;
+}
+
+
+::ng-deep .k-grid .k-grid-header .k-table-th {
+  background-color: var(--themecolor) !important;
+}
+
+.full-width-grid{
+  height: calc(100vh - 100px) !important;
+}
+
+.custom-width-grid{
+  height: max-content !important;
+}
+
+.custom-height-grid{
+  height: 300px !important;
+}

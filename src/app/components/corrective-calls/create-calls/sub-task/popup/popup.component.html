@@ -1,0 +1,66 @@
+<div class="modal-content">
+  <div class="modal-header bg-secondary text-white">
+    <h6 class="modal-title">Add Task</h6>
+    <button type="button" class="btn-close btn-close-white" mat-button mat-dialog-close aria-label="Close"
+      (click)="close()"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="taskForm" *ngIf="data?.type?.replace(' ','').toLowerCase() === 'subtask'; else escalation">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 ">
+          <app-text-field [formControlName]="'name'" [formGroup]="taskForm" [fieldName]="'name'" [label]="'Name'"
+            ngDefaultControl [value]="subTask?.name??''" [isRequired]="false">
+          </app-text-field>
+        </div>
+        <div class="col-lg-6 col-md-6 ">
+          <app-label [label]="'sub Task Type'" [isRequired]="true"></app-label>
+          <kendo-dropdownlist class="form-group" [formControlName]="'subTaskType'" [data]="filteredData?.subTaskTypes"
+            textField="name" valueField="id" [filterable]="true" [defaultItem]="'Select subTaskType'"
+            (filterChange)="handleFilter($event, 'subTaskTypes')">
+          </kendo-dropdownlist>
+        </div>
+        <div class="col-lg-6 col-md-6 ">
+          <app-text-field [formControlName]="'plannedDate'" [formGroup]="taskForm" [fieldName]="'plannedDate'"
+            [label]="'Planned Date'" ngDefaultControl [isRequired]="false" [min]="minDate"
+            [value]="subTask?.plannedDate | localizedDate" [pipe]="'date'">
+          </app-text-field>
+        </div>
+        <div class="col-lg-6 col-md-6 ">
+          <app-label [label]="'Status'" [isRequired]="true"></app-label>
+          <kendo-dropdownlist class="form-group" [formControlName]="'status'" [data]="filteredData?.subTaskStatuses"
+            textField="name" valueField="id" [filterable]="true" [defaultItem]="'Select Status'"
+            (filterChange)="handleFilter($event, 'subTaskStatuses')">
+          </kendo-dropdownlist>
+
+        </div>
+        <div class="col-lg-12 col-md-12 ">
+          <app-text-field [formControlName]="'notes'" [formGroup]="taskForm" [fieldName]="'notes'" [label]="'Notes'"
+            ngDefaultControl [value]="subTask?.notes??''" [isRequired]="false">
+          </app-text-field>
+        </div>
+      </div>
+    </form>
+    <ng-template #escalation>
+      <form [formGroup]="taskForm">
+        <div class="row">
+          <div class="col-lg-12 col-md-12">
+            <app-textarea-field [formControlName]="'description'" [formGroup]="taskForm" [fieldName]="'description'" [label]="'Description'"
+              ngDefaultControl [value]="subTask?.description??''">
+            </app-textarea-field>
+          </div>
+          <div class="col-lg-6 col-md-6 ">
+            <app-text-field [formControlName]="'escalationDate'" [formGroup]="taskForm" [fieldName]="'escalationDate'"
+              [label]="'Escalation Date'" ngDefaultControl [isRequired]="false" [min]="minDate" [isReadonly]="true"
+              [value]="subTask?.escalationDate ?? minDate | localizedDate" [pipe]="'date'">
+            </app-text-field>
+          </div>
+        </div>
+      </form>
+    </ng-template>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" mat-button mat-dialog-close (click)="close()">Close</button>
+      <button type="button" class="btn btn-secondary" (click)="saveSubTask()">Save changes</button>
+    </div>
+  </div>
+</div>

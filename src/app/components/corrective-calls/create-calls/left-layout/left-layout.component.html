@@ -1,0 +1,248 @@
+<div class="card">
+  <div class="card-header bg-transparent  header-elements-inline pl-2">
+    <h6 class="card-title text-secondary font-weight-semibold">Account</h6>
+    <div class="header-elements">
+      <span class="badge badge-secondary custom-text" [title]="selectedClient?.name">
+        {{selectedClient?.shortName}}
+      </span>
+    </div>
+  </div>
+
+  <div class="card-body" *ngIf="masterData?.projects">
+    <form [formGroup]="locationForm">
+      <div class="row mb-1">
+        <app-label class="col-form-label col-md-3 px-0" [label]="'Project'" [isRequired]="true"></app-label>
+        <div class="col-md-9">
+          <kendo-dropdownlist class="form-group" [data]="filteredData?.projects" [filterable]="true" textField="name" valueField="id"
+            (filterChange)="handleFilter($event,'projects')" [formControlName]="'project'"
+            [defaultItem]="defaultItem('Project')" [readonly]="mode !== LogMode.CREATE"
+            (selectionChange)="projectSelected($event, true)">
+            <ng-template kendoDropDownListItemTemplate let-dataItem>
+              <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+            </ng-template>
+          </kendo-dropdownlist>
+        </div>
+      </div>
+
+      <div class="row mb-1">
+        <app-label class="col-form-label col-md-3 px-0" [label]="'Building'" [isRequired]="true">Building </app-label>
+        <div class="col-md-9 ">
+          <kendo-dropdownlist class="form-group" #building [data]="filteredData?.buildings" [filterable]="true" textField="name"
+            valueField="id" (filterChange)="handleFilter($event,'buildings')" [formControlName]="'building'"
+            [defaultItem]="defaultItem('Building')" [readonly]="mode === LogMode.LOCKED"
+            (selectionChange)="buildingChanged($event, true)">
+            <ng-template kendoDropDownListItemTemplate let-dataItem>
+              <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+            </ng-template>
+          </kendo-dropdownlist>
+        </div>
+      </div>
+
+      <div class="row mb-1">
+        <app-label class="col-form-label col-md-3 px-0" [label]="'Floor'" [isRequired]="true"></app-label>
+        <div class="col-md-9">
+          <kendo-dropdownlist class="form-group" #floor [data]="filteredData?.floors" [filterable]="true" textField="name" valueField="id"
+            (filterChange)="handleFilter($event, 'floors')" [formControlName]="'floor'" [defaultItem]="defaultItem('Floor')"
+            [readonly]="mode === LogMode.LOCKED" (selectionChange)="floorChanged(true)">
+            <ng-template kendoDropDownListItemTemplate let-dataItem>
+              <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+            </ng-template>
+          </kendo-dropdownlist>
+        </div>
+      </div>
+
+      <div class="row mb-1">
+        <app-label class="col-form-label col-md-3 px-0" [label]="'Unit'" [isRequired]="true"></app-label>
+        <div class="col-md-9">
+          <kendo-dropdownlist class="form-group" #unit [data]="filteredData?.units" [filterable]="true" textField="name" valueField="id"
+            (filterChange)="handleFilterByDataSet(units,$event,'units')" [formControlName]="'unit'"
+            [defaultItem]="defaultItem('Unit')" (selectionChange)="unitChanged($event, true)" [readonly]="mode === LogMode.LOCKED">
+            <ng-template kendoDropDownListItemTemplate let-dataItem>
+              <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+            </ng-template>
+          </kendo-dropdownlist>
+        </div>
+      </div>
+
+      <div class="row mb-1  ">
+        <app-label class="col-form-label col-md-3 px-0" [label]="'Room'" [isRequired]="true"></app-label>
+        <div class="col-md-9">
+          <kendo-dropdownlist class="form-group" #room [data]="filteredData?.rooms" [filterable]="true" textField="name" valueField="id"
+            (filterChange)="handleFilterByDataSet(rooms,$event,'rooms')" [formControlName]="'room'"
+            [defaultItem]="defaultItem('Room')" [readonly]="mode === LogMode.LOCKED"
+            (selectionChange)="selectLocationChange()">
+            <ng-template kendoDropDownListItemTemplate let-dataItem>
+              <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+            </ng-template>
+          </kendo-dropdownlist>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header bg-transparent header-elements-inline pl-2">
+    <h6 class="card-title text-secondary font-weight-semibold">Reported by</h6>
+    <div class="header-elements">
+      <a class=" "><i style="font-size: 23px;" class="bi bi-person-check text-secondary"></i></a>
+    </div>
+  </div>
+
+  <div class="card-body" *ngIf="masterData?.reporterTypes">
+    <div class="col-md-12 p-0 mb-3">
+      <ul class="types-list m-0 report-type-top-src">
+        <li *ngFor="let userType of masterData?.reporterTypes" class="mr-1">
+          <label class="types-list__label">
+            <input type="radio" value="12" [checked]="userType.id === selectedUserType?.id && !currentLog?.isAutoIssued" class="cust-type"
+              id="case-customer" name="reporter" (click)="userTypeSelected(userType)"
+              [disabled]="mode !== LogMode.CREATE || currentLog?.isAutoIssued">
+            <span class="types-list__text build-facilities">{{userType.name}}</span>
+          </label>
+        </li>
+      </ul>
+
+      <ul class="subtypes-list report-type-src m-0">
+        <li *ngFor="let userSubType of reporterSubTypes" class="mr-1">
+          <label class="types-list__label">
+            <input type="radio" data-rtype="12" value="1" [checked]="userSubType.id === selectedUserSubType?.id && !currentLog?.isAutoIssued"
+              name="resource-checkbox" class="checkboxbtn" (click)="resourceTypeChanged(userSubType)"
+              [disabled]="mode !== LogMode.CREATE || currentLog?.isAutoIssued">
+            <span class="types-list__text">{{userSubType.name}}</span>
+          </label>
+        </li>
+      </ul>
+    </div>
+
+    <form [formGroup]="reportedbyForm">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row mb-2 form-group form-group-feedback form-group-feedback-right"
+            [hidden]="!selectedUserSubType?.isSelectable">
+            <label class="col-form-label col-md-3 px-0">Reporter <sup class="text-danger" *ngIf="!currentLog?.isAutoIssued">*</sup></label>
+            <div class="col-md-9">
+              <kendo-dropdownlist class="form-group" [data]="filteredData?.resources" [filterable]="true" textField="name" valueField="id"
+                (filterChange)="handleFilter($event, 'resources', 'name', 'name')" [formControlName]="'reporter'"
+                [defaultItem]="'Select Resource'"
+                [readonly]="mode !== LogMode.CREATE || !selectedUserSubType?.isSelectable || currentLog?.isAutoIssued"
+                (selectionChange)="selectResource($event)">
+              </kendo-dropdownlist>
+            </div>
+          </div>
+
+          <div class="row mb-2 form-group form-group-feedback form-group-feedback-right"
+            [hidden]="selectedUserSubType?.isSelectable && (!selectedResource?.name || mode === LogMode.CREATE)">
+            <label class="col-form-label col-md-3 px-0">Name <sup class="text-danger" *ngIf="!currentLog?.isAutoIssued">*</sup></label>
+            <div class="col-md-9">
+              <app-text-field [formControlName]="'name'" [formGroup]="reportedbyForm" [fieldName]="'name'"
+                [label]="'Name'" [showLabel]="false" ngDefaultControl [value]="selectedResource?.name"
+                [isReadonly]="mode !== LogMode.CREATE || selectedUserSubType?.isSelectable || currentLog?.isAutoIssued" [isRequired]="!currentLog?.isAutoIssued">
+              </app-text-field>
+              <div class="form-control-feedback form-control-feedback-sm text-muted mr-1">
+                <i class="bi bi-person-fill"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-2 form-group form-group-feedback form-group-feedback-right"
+            *ngIf="selectedResource?.email || mode === LogMode.CREATE || currentLog?.isAutoIssued">
+            <label class="col-form-label col-md-3 px-0">Email </label>
+            <div class="col-md-9">
+              <app-text-field [formControlName]="'email'" [formGroup]="reportedbyForm" [fieldName]="'email'"
+                [label]="'Email'" [showLabel]="false" ngDefaultControl [value]="selectedResource?.email"
+                [isReadonly]="mode === LogMode.LOCKED || currentLog?.isAutoIssued" [isRequired]="!currentLog?.isAutoIssued">
+              </app-text-field>
+              <div class="form-control-feedback form-control-feedback-sm text-muted mr-1">
+                <i class="bi bi-envelope-fill"></i>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-2 form-group form-group-feedback form-group-feedback-right"
+            *ngIf="selectedResource?.mobileNo || mode === LogMode.CREATE || currentLog?.isAutoIssued">
+            <label class="col-form-label col-md-3 px-0"> Mobile
+            </label>
+            <div class="col-md-3">
+              <div class="dropdown">
+                <a class="badge badge-secondary dropdown-toggle" data-bs-toggle="dropdown" style="padding: 12px 8px;">
+                  {{selectedCountry?.mobileCode}}
+                </a>
+                <div class="dropdown-menu border-purple dropdown-menu-right" *ngIf="!currentLog?.isAutoIssued"
+                  style="max-height: 200px !important; overflow-y: auto !important;">
+                  <a class="dropdown-item text-secondary font-size-sm" *ngFor="let item of masterData?.countryCodes"
+                    (click)="countrySelected(item)"> {{item.name}} </a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <app-text-field [formControlName]="'mobile'" [formGroup]="reportedbyForm" [fieldName]="'mobile'"
+                [label]="'Mobile'" [showLabel]="false" ngDefaultControl
+                [value]="selectedResource?.mobileNo??selectedResource?.mobile" [isReadonly]="mode === LogMode.LOCKED || currentLog?.isAutoIssued"
+                (keypress)="validateNumericInput($event,6,15)">
+              </app-text-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header bg-transparent header-elements-inline pl-2">
+    <h6 class="card-title text-secondary font-weight-semibold">Logged by</h6>
+    <div class="header-elements">
+      <span *ngIf="loggedDate">{{loggedDate | localizedDate:'dd-MMM-yyyy HH:mm':navState.currentLogId === 0}}</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="media">
+      <div class="mr-3">
+        <a>
+          <img src="assets/images/empty-profile.png" class="rounded-circle" width="42" height="42" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h6 class="mb-0" style="font-size: 12px;">{{loggedByUser?.email?loggedByUser?.email:getLoggedInUser().name}}
+        </h6>
+        <span
+          class="font-weight-bold">{{loggedByUser?.designation?loggedByUser?.designation:getLoggedInUser().designation}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer pt-2 pb-2"></div>
+</div>
+<div class="card">
+  <div class="card-header bg-transparent header-elements-inline pl-2">
+    <h6 class="card-title text-secondary font-weight-semibold">Dates</h6>
+  </div>
+  <div class="card-body">
+    <div class="col-lg-12">
+      <div class="row mb-1">
+        <label class="col-form-label col-lg-6"> Scheduled Date :
+        </label>
+        <div class="col-lg-6 pt-2">
+          <span>{{ currentLog?.reportedDate |
+            localizedDate:
+            'dd-MMM-yyyy HH:mm'}}</span>
+        </div>
+      </div>
+      <div class="row mb-1">
+        <label class="col-form-label col-lg-6"> Due Date :
+        </label>
+        <div class="col-lg-6 pt-2">
+          <span>{{ currentLog?.dueDate |
+            localizedDate:
+            'dd-MMM-yyyy HH:mm'}}</span>
+        </div>
+      </div>
+      <div class="row mb-1">
+        <label class="col-form-label col-lg-6"> Completed Date :
+        </label>
+        <div class="col-lg-6 pt-1">
+          <span>{{ currentLog?.completionDate |
+            localizedDate:
+            'dd-MMM-yyyy HH:mm'}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

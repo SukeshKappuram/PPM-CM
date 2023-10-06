@@ -1,0 +1,5 @@
+<app-label [label]="label" [isRequired]="false" [show]="showLabel"></app-label>
+<tag-input [(ngModel)]="items" [disable]="isReadonly" [placeholder]="placeholder" [secondaryPlaceholder]="placeholder"
+  (onAdd)="elementsAdded($event)" (onRemove)="elementsRemoved($event)" [separatorKeyCodes]="[9]" [allowDupes]="false"
+  [separatorKeys]="[',']" [blinkIfDupe]="true" [editable]="editable"></tag-input>
+

@@ -1,0 +1,7 @@
+<label class="m-0" *ngIf="show">
+  <span *ngIf="label?.startsWith('#');else TitleCase">{{label.substring(1)| uppercase}}</span>
+  <ng-template #TitleCase>{{label.replace('$','')| titlecase}}</ng-template>
+  <sup class="text-danger" *ngIf="isRequired">*</sup>
+  <i class="bi bi-info-circle-fill pl-2" aria-hidden="true" placement="top" [title]="tooltip" *ngIf="tooltip!==''"></i>
+  <span class="badge badge-secondary ml-1" *ngIf="badgeLabel"> {{badgeLabel}}</span>
+</label>

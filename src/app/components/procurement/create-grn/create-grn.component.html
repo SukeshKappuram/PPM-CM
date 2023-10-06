@@ -1,0 +1,264 @@
+<!-- Inner content -->
+<div class="content-inner" (scroll)="scrollHandler($event)">
+
+  <!-- Page header -->
+  <app-page-header [items]="['Procurement','GRN']" [activeItem]="grnId === 0?'New GRN': 'Edit GRN'"
+    [pageTitle]="'New GRN'" [pageDescription]="'Create GRN'" [ignoreCase]="true" [buttons]="buttons"
+    (modified)="buttonClicked($event)">
+  </app-page-header>
+  <!-- /page header -->
+
+  <!-- Content area -->
+  <div class="content" *ngIf="isDataLoaded">
+    <div class="navbar navbar-expand-lg navbar-light border rounded mb-3">
+      <div class="navbar-collapse collapse" id="navbar-filter">
+        <ul class="navbar-nav flex-wrap">
+          <li class="nav-item  ">
+            <a class="navbar-nav-link  font-weight-semibold">
+              GRN No : {{'GRN'+pad(grnId,4)}}
+            </a>
+          </li>
+          <li class="nav-item  ">
+            <a class="navbar-nav-link  font-weight-semibold ">
+              Received By : {{receivedBy}}
+            </a>
+          </li>
+          <li class="nav-item  ">
+            <a class="navbar-nav-link  font-weight-semibold">
+              GRN Date : {{grnDate | localizedDate: 'dd-MMM-yyyy HH:mm': true}}
+            </a>
+          </li>
+        </ul>
+        <span class="navbar-text font-weight-semibold mr-3 ml-lg-auto">
+          <!-- Invoice Cost: -->
+        </span>
+        <div class="mb-3 mb-lg-0">
+          <ul class="navbar-nav flex-wrap">
+            <li class="nav-item dropdown">
+              <a class="navbar-nav-link  text-black">
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header bg-transparent header-elements-inline">
+            <h6 class="card-title">GRN Details</h6>
+            <div class="header-elements">
+            </div>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="grnDetailsForm">
+              <div class="row">
+                <div class="col-md-4">
+                  <app-text-field [formControlName]="'purchaseOrderNumber'" [formGroup]="grnDetailsForm"
+                    [fieldName]="'purchaseOrderNumber'" [label]="'Purchase Order Number'"
+                    [placeholder]="'Purchase Order No.'" ngDefaultControl [value]="grnDetails?.purchaseOrder??''"
+                    [isReadonly]="!isEditable">
+                  </app-text-field>
+                </div>
+                <div class="col-md-4">
+                  <app-text-field [formControlName]="'doNumber'" [formGroup]="grnDetailsForm" [fieldName]="'doNumber'"
+                    [label]="'Do Number'" [placeholder]="'Delivery Order No.'" ngDefaultControl
+                    [value]="grnDetails?.doNumber??''" [isReadonly]="!isEditable"></app-text-field>
+                </div>
+                <div class="col-md-4">
+                  <app-text-field [formControlName]="'invoiceNumber'" [formGroup]="grnDetailsForm"
+                    [fieldName]="'invoiceNumber'" [label]="'Invoice Number'" [placeholder]="'Invoice No.'"
+                    ngDefaultControl [value]="grnDetails?.invoiceNumber??''" [isReadonly]="!isEditable">
+                  </app-text-field>
+                </div>
+                <div class="col-md-4">
+                  <app-text-field [formControlName]="'contactName'" [formGroup]="grnDetailsForm"
+                    [fieldName]="'contactName'" [label]="'Contact Name'" ngDefaultControl
+                    [value]="grnDetails?.contactName??''" [isReadonly]="!isEditable"></app-text-field>
+                </div>
+                <div class="col-sm-1 mb-2">
+                  <div class="dropdown mt-3">
+                    <a class="badge badge-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                      style="padding: 11px 8px;">
+                      {{mobileCode?.dialCode}}
+                    </a>
+                    <div class="dropdown-menu border-purple dropdown-menu-right"
+                      style="max-height: 200px !important; overflow-y: auto !important;">
+                      <a class="dropdown-item text-secondary font-size-sm" *ngFor="let item of filteredData?.countries"
+                        (click)="countryCodeSelected(item)">
+                        {{item.code + ' ' +item.dialCode}} </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <app-text-field [formControlName]="'contactNumber'" [formGroup]="grnDetailsForm"
+                    [fieldName]="'contactNumber'" [label]="'Contact Number'" [placeholder]="'Contact Number'"
+                    ngDefaultControl [value]="grnDetails?.contactNumber??''" [isReadonly]="!isEditable"
+                    (keypress)="validateNumericInput($event,6,15)"></app-text-field>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header bg-transparent header-elements-inline">
+            <h6 class="card-title">GRN Item Details</h6>
+            <div class="header-elements">
+              <button type="button" class="btn btn-sm btn-secondary" (click)="add()"
+                [disabled]="grnId === 0 || !isAddAllowed" [hidden]="!isEditable">
+                Add</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <form [formGroup]="grnItemDetailsForm">
+                <table class="table table-responsive text-nowrap" style="width:125%">
+                  <thead class="bg-secondary text-white">
+                    <tr>
+                      <th *ngIf="isEditable"> Actions </th>
+                      <th style="width: 250px"> Stock Group </th>
+                      <th style="width: 150px"> SparePart Code </th>
+                      <th style="width: 250px"> Stock Name </th>
+                      <th style="width: 50px"> Received Qty </th>
+                      <th style="width: 50px"> Unit Price </th>
+                      <th style="width: 100px"> Total </th>
+                      <th style="width: 50px"> Product Code </th>
+                      <th style="width: 150px"> Date Of Delivery </th>
+                      <th style="width: 150px"> Remarks </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container formArrayName="items">
+                      <ng-container *ngFor="let itemForm of items.controls; let i = index">
+                        <tr [formGroupName]="i">
+                          <td class="text-center" *ngIf="isEditable">
+                            <div class="list-icons">
+                              <div class="dropdown position-static">
+                                <a class="btn btn-sm btn-outline-secondary border-2 btn-icon btn-icon-action rounded-pill dropdown-toggle"
+                                  role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  <i class="bi bi-three-dots font-size-sm" style="transform: rotate(90deg);"
+                                    title="Actions"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-left">
+                                  <a class="dropdown-item" (click)="saveItem(i, itemForm)" title="delete">
+                                    <i class="bi bi-check-circle p-2" title="save" aria-hidden="true"></i>
+                                    Save</a>
+                                  <a class="dropdown-item" (click)="delete(i)" title="delete">
+                                    <i class="bi bi-trash text-danger p-2" aria-hidden="true"></i>
+                                    Delete</a>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <kendo-dropdownlist class="form-group" [formControlName]="'stockGroup'" [data]="filteredData?.groups"
+                              textField="name" valueField="id" [filterable]="true" [disabled]="!isEditable"
+                              (filterChange)="handleFilter($event, 'groups')" [defaultItem]="defaultItem('stockGroup')"
+                              (selectionChange)="filterStocks(i, $event)">
+                              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}
+                                </span>
+                              </ng-template>
+                            </kendo-dropdownlist>
+                          </td>
+                          <td>
+                            <kendo-dropdownlist class="form-group" [formControlName]="'sparePartCode'"
+                              [data]="filteredData?.stockDetails[i]" textField="sparePartCode" valueField="id"
+                              [filterable]="true" [disabled]="!isEditable" [defaultItem]="'Select sparePartCode'"
+                              (filterChange)="handleFilterByDataSet(stocks[i], $event, 'stockDetails','sparePartCode','name',i)"
+                              (selectionChange)="updateStockCode(i, itemForm, $event)">
+                            </kendo-dropdownlist>
+                          </td>
+                          <td>
+                            <kendo-dropdownlist class="form-group" [formControlName]="'stockName'" [data]="filteredData?.stockDetails[i]"
+                              textField="name" valueField="id" [filterable]="true" [disabled]="!isEditable"
+                              (filterChange)="handleFilterByDataSet(stocks[i], $event, 'stockDetails','name','code', i)"
+                              [defaultItem]="'Select Stock'" [readonly]="!isEditable"
+                              (selectionChange)="updateStockCode(i, itemForm, $event)">
+                            </kendo-dropdownlist>
+                          </td>
+                          <td>
+                            <app-text-field [formControlName]="'receivedQty'" [formGroup]="getGrnDetails(itemForm)"
+                              [fieldName]="'receivedQty'" [label]="'Received Qty'" ngDefaultControl
+                              [value]="grnItemDetails[i]?.receivedQty??''" [isReadonly]="!isEditable"
+                              [showLabel]="false" (onblur)="calculateTotal(i, itemForm, 1, $event, itemForm.value)">
+                            </app-text-field>
+                          </td>
+                          <td>
+                            <app-text-field [formControlName]="'unitPrice'" [formGroup]="getGrnDetails(itemForm)"
+                              [fieldName]="'unitPrice'" [label]="'Unit Price'" ngDefaultControl
+                              [value]="grnItemDetails[i]?.unitPrice??''" [isReadonly]="!isEditable" [showLabel]="false"
+                              (onblur)="calculateTotal(i, itemForm, 2, $event, itemForm.value)"></app-text-field>
+                          </td>
+                          <td>
+                            <app-text-field [formControlName]="'total'" [formGroup]="getGrnDetails(itemForm)"
+                              [fieldName]="'total'" [label]="'Total'" ngDefaultControl
+                              [value]="grnItemDetails[i]?.total??''" [isReadonly]="!isEditable" [showLabel]="false"
+                              [isReadonly]="true"></app-text-field>
+                          </td>
+                          <td>
+                            <app-text-field [formControlName]="'productCode'" [formGroup]="getGrnDetails(itemForm)"
+                              [fieldName]="'productCode'" [label]="'Product Code'" ngDefaultControl
+                              [value]="grnItemDetails[i]?.productCode??''" [isReadonly]="!isEditable"
+                              [showLabel]="false" [isRequired]="false"></app-text-field>
+                          </td>
+                          <td>
+                            <app-text-field [formControlName]="'dateOfDelivery'" [formGroup]="getGrnDetails(itemForm)"
+                              [fieldName]="'dateOfDelivery'" [label]="'Date Of Delivery'" ngDefaultControl
+                              [value]="grnItemDetails[i]?.dateOfDelivery??''" [isReadonly]="!isEditable"
+                              [showLabel]="false" [pipe]="'date'"></app-text-field>
+                          </td>
+                          <td>
+                            <app-text-field [formControlName]="'remarks'" [formGroup]="getGrnDetails(itemForm)"
+                              [fieldName]="'remarks'" [label]="'Remarks'" ngDefaultControl
+                              [value]="grnItemDetails[i]?.remarks??''" [isReadonly]="!isEditable" [showLabel]="false"
+                              [isRequired]="false"></app-text-field>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </ng-container>
+                    <tr *ngIf="items.length > 0">
+                      <td class="text-center" *ngIf="isEditable">
+                      </td>
+                      <td>
+                      </td>
+                      <td>
+                      </td>
+                      <td>
+                      </td>
+                      <td>
+                      </td>
+                      <td>
+                        <b>Grand Total</b>
+                      </td>
+                      <td>
+                        <app-text-field [formControlName]="'grandTotal'" [formGroup]="grnItemDetailsForm"
+                          [fieldName]="'grandTotal'" [label]="'Grand Total'" [placeholder]="'Grand Total'"
+                          ngDefaultControl [value]="grandTotal" [showLabel]="false" [isReadonly]="true">
+                        </app-text-field>
+                      </td>
+                      <td>
+                      </td>
+                      <td>
+                      </td>
+                      <td>
+                      </td>
+                      <td>
+                      </td>
+                      <td>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

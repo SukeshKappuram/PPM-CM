@@ -1,0 +1,76 @@
+[
+  {
+    "name": "Countries",
+    "type": "countries",
+    "referenceId": "CN",
+    "listUrl": "GetCountries",
+    "addUpdateUrl": "AddOrUpdateCountry",
+    "icon": "bi bi-geo-alt-fill"
+  },
+  {
+    "name": "States / Emirates",
+    "type": "states",
+    "referenceId": "ST",
+    "listUrl": "GetStates",
+    "addUpdateUrl": "AddOrUpdateState"
+  },
+  {
+    "name": "Cities",
+    "type": "cities",
+    "referenceId": "CTY",
+    "listUrl": "GetCities",
+    "addUpdateUrl": "AddOrUpdateCity",
+    "hasCustomComponent": true
+  },
+  {
+    "name": "Master Developments",
+    "type": "masterDevelopments",
+    "referenceId": "MD",
+    "listUrl": "GetMasterDevelopments",
+    "addUpdateUrl": "AddOrUpdateMasterDevelopment",
+    "routeEnabled": true,
+    "masterType": "MasterDevelopment"
+  },
+  {
+    "name": "Zones",
+    "type": "zones",
+    "referenceId": "SZ",
+    "listUrl": "GetZones",
+    "addUpdateUrl": "AddOrUpdateZone",
+    "routeEnabled": true,
+    "masterType": "Zones"
+  },
+  {
+    "name": "Buildings",
+    "type": "buildings",
+    "referenceId": "BLD",
+    "listUrl": "GetBuildings",
+    "addUpdateUrl": "AddOrUpdateBuilding",
+    "routeEnabled": true,
+    "masterType": "Buildings"
+  },
+  {
+    "name": "Floors",
+    "type": "data",
+    "referenceId": "FL",
+    "listUrl": "GetFloors",
+    "addUpdateUrl": "AddOrUpdateFloor"
+  },
+  {
+    "name": "Units",
+    "type": "units",
+    "referenceId": "UN",
+    "listUrl": "GetUnits",
+    "addUpdateUrl": "AddOrUpdateUnit",
+    "routeEnabled": true,
+    "masterType": "Units"
+  },
+  {
+    "name": "Rooms",
+    "type": "rooms",
+    "referenceId": "RM",
+    "listUrl": "GetRooms",
+    "addUpdateUrl": "AddOrUpdateRoom",
+    "hasCustomComponent": true
+  }
+]

@@ -1,0 +1,68 @@
+<div class="modal-content">
+    <div class="modal-header bg-secondary text-white">
+        <h6 class="modal-title">New Mail</h6>
+        <button type="button" class="btn-close btn-close-white" mat-button mat-dialog-close aria-label="Close" (click)="close()" ></button>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group"><label class="m-0" for="EmailDistributeTo">Send To
+                                    (Comma seperated list)</label><input
+                                    class="approver_excludes form-control form-control-sm border-purple shadow-none valid"
+                                    id="EmailDistributeTo" name="EmailDistributeTo"
+                                    placeholder="Send To (Comma seperated list)" type="text" value=""
+                                    aria-invalid="false">
+                                <div class="validation-invalid-label field-validation-valid"
+                                    data-valmsg-for="EmailDistributeTo" data-valmsg-replace="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3">
+                            <div class="float-right" style="min-width:250px;">
+                                <div class="form-group"><label class="m-0" for="EmailReplyFromId">Reply
+                                        From</label><select
+                                        class="form-control form-control-sm border-purple shadow-none valid"
+                                        id="EmailReplyFromId" name="EmailReplyFromId" aria-invalid="false">
+                                        <option value="2677">wecare@propezy.com</option>
+                                        <option value="2713">wecare@propezy.com</option>
+                                        <option value="2695">wecare@propezy.com</option>
+                                        <option value="2659">wecare@propezy.com</option>
+                                        <option value="2731">wecare@propezy.com</option>
+                                        <option value="2749">wecare@propezy.com</option>
+                                        <option value="200">wecare@propezy.com</option>
+                                        <option value="175">wecare@propezy.com</option>
+                                        <option selected="selected" value="2713">admin@cep.com</option>
+                                    </select>
+                                    <div class="validation-invalid-label field-validation-valid"
+                                        data-valmsg-for="EmailReplyFromId" data-valmsg-replace="true">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <textarea rows="5" cols="2" class="form-control" placeholder="Default textarea"></textarea>
+                </div>
+
+                <div class="col-md-12 mt-3">
+                    <label> Upload Docs</label>
+                    <input type="file" class="form-control ">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" mat-button mat-dialog-close (click)="close()" >Close</button>
+        <button type="button" class="btn btn-secondary">Send Email</button>
+    </div>
+</div>

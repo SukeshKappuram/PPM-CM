@@ -1,0 +1,154 @@
+<h6 class="d-flex font-weight-semibold flex-nowrap mb-3">
+  <button class="btn-sm btn btn-outline-secondary  ml-auto font-size-sm" data-toggle="modal"
+    data-target="#modal_theme_resource" (click)="openPopup(1)"
+    *ngIf="(statusId === ServiceStatus.OPEN || statusId === ServiceStatus.ASSIGNED) && !isLocked" [disabled]="currentResourceId >= 0">Add New</button>
+  <!-- <a class="btn-sm btn btn-outline-secondary  ml-2 font-size-sm" data-toggle="modal"
+    data-target="#modal_theme_resource" (click)="openPopup(1)" *ngIf="statusId === ServiceStatus.OPEN || statusId === ServiceStatus.ASSIGNED">Re Assign</a> -->
+</h6>
+
+<div class="row">
+  <div class="col-md-3 my-2" *ngFor="let resource of resources; let i = index">
+    <div class="media resource-box">
+      <div class="media-body">
+        <div class="d-flex justify-content-between">
+          <div class="d-flex flex-start">
+            <img src="assets/images/empty-profile.png" class="rounded-circle mr-2" width="36" height="36" alt="">
+            <div class="media-title">
+              <p class="m-0 p-0">{{resource.resourceName}}</p>
+              <p class="m-0 p-0">{{resource.designation}}</p>
+            </div>
+          </div>
+          <div class="position-relative" *ngIf="statusId === ServiceStatus.OPEN || statusId === ServiceStatus.ASSIGNED">
+            <a class="btn btn-icon btn-sm border-secondary rounded-pill position-absolute top-0" style="right: 30px"
+              *ngIf="resources[i].workStatusId > WorkStatus.ASSIGNED && currentResourceId !== i && !isLocked; else saveBtn"
+              [ngClass]="statusId !== ServiceStatus.CLOSED?'cursor-pointer':'cursor-default'" (click)="edit(i)">
+              <i class="bi bi-pencil text-secondary" aria-hidden="true"></i> </a>
+            <ng-template #saveBtn>
+              <a class="btn btn-icon btn-sm border-success rounded-pill position-absolute top-0" style="right: 30px"
+                *ngIf="currentResourceId === i"
+                [ngClass]="statusId !== ServiceStatus.CLOSED?'cursor-pointer':'cursor-default'" (click)="save(i)">
+                <i class="bi bi-check-circle text-secondary" aria-hidden="true"></i> </a>
+            </ng-template>
+            <a class="btn btn-icon btn-sm border-danger rounded-pill" *ngIf="userAccess?.canDelete"
+              [ngClass]="statusId !== ServiceStatus.CLOSED?'cursor-pointer':'cursor-default'" (click)="remove(i)">
+              <i class="bi bi-trash text-danger" aria-hidden="true"></i> </a>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between mt-2 ml-2">
+          <div>
+            <a class="btn btn-icon btn-sm border-dark rounded-pill mr-1"
+              [ngClass]="statusId !== ServiceStatus.CLOSED?'cursor-pointer':'cursor-default'">
+              <i class="bi bi-person-fill" aria-hidden="true"></i>
+            </a>
+            <span
+              [ngClass]="{'font-weight-600':resource?.assignedDate, 'font-weight-400':!resource?.assignedDate}">Assigned</span>
+          </div>
+          <p class="m-0 p-0"
+            [ngClass]="{'font-weight-600':resource?.assignedDate, 'font-weight-400':!resource?.assignedDate}">
+            {{resource?.assignedDate? (resource?.assignedDate | localizedDate:'dd-MMM-yyyy HH:mm'): 'Not Applicable'}}
+          </p>
+        </div>
+        <div class="d-flex justify-content-between mt-2 ml-2">
+          <div>
+            <a class="btn btn-icon btn-sm border-dark rounded-pill mr-1"
+              [ngClass]="resource?.workStatusId === WorkStatus.ASSIGNED && statusId !== ServiceStatus.CLOSED?'cursor-pointer':'cursor-default'"
+              (click)="accept(i)">
+              <i class="bi bi-check fa-1x" aria-hidden="true"></i>
+            </a>
+            <span
+              [ngClass]="{'font-weight-600':resource?.acceptedDate, 'font-weight-400':!resource?.acceptedDate}">Accepted</span>
+          </div>
+          <div *ngIf="showAcceptedDate && currentResourceId === i; else Accepted">
+            <input type="datetime-local" class="input-datetime font-size-11" [(ngModel)]="resource.acceptedDate" />
+          </div>
+          <ng-template #Accepted>
+            <p class="m-0 p-0"
+              [ngClass]="{'font-weight-600':resource?.acceptedDate, 'font-weight-400':!resource?.acceptedDate}">
+              {{resource?.acceptedDate? (resource?.acceptedDate | localizedDate:'dd-MMM-yyyy HH:mm'): 'Not Applicable'}}
+            </p>
+          </ng-template>
+        </div>
+        <div class="d-flex justify-content-between mt-2 ml-2">
+          <div>
+            <a class="btn btn-icon btn-sm border-dark rounded-pill mr-1"
+              [ngClass]="statusId !== ServiceStatus.CLOSED?'cursor-pointer':'cursor-default'" (click)="reject(i)">
+              <i class="bi bi-x fa-1x" aria-hidden="true"></i>
+            </a>
+            <span
+              [ngClass]="{'font-weight-600':resource?.rejectedDate, 'font-weight-400':!resource?.rejectedDate}">Rejected</span>
+          </div>
+          <div *ngIf="showRejectedDate && currentResourceId === i; else Rejected">
+            <input type="datetime-local" class="input-datetime font-size-11" [(ngModel)]="resource.rejectedDate" />
+          </div>
+          <ng-template #Rejected>
+            <p class="m-0 p-0"
+              [ngClass]="{'font-weight-600':resource?.rejectedDate, 'font-weight-400':!resource?.rejectedDate}">
+              {{resource?.rejectedDate? (resource?.rejectedDate | localizedDate:'dd-MMM-yyyy HH:mm'): 'Not Applicable'}}
+            </p>
+          </ng-template>
+        </div>
+        <div class="d-flex justify-content-between mt-2 ml-2">
+          <div>
+            <a class="btn btn-icon btn-sm border-dark rounded-pill mr-1"
+              [ngClass]="resource?.workStatusId === WorkStatus.ACCEPTED && statusId !== ServiceStatus.CLOSED?'cursor-pointer':'cursor-default'"
+              (click)="start(i)">
+              <i class="bi" [ngClass]="resource?.workStatusId === WorkStatus.ACCEPTED ?'bi-play-fill':'bi-pause-fill'"
+                aria-hidden="true"></i>
+            </a>
+            <span
+              [ngClass]="{'font-weight-600':resource?.startedDate, 'font-weight-400':!resource?.startedDate}">Started</span>
+          </div>
+          <div *ngIf="showStartDate && currentResourceId === i; else Started">
+            <input type="datetime-local" class="input-datetime font-size-11" [(ngModel)]="resource.startedDate" />
+          </div>
+          <ng-template #Started>
+            <p class="m-0 p-0"
+              [ngClass]="{'font-weight-600':resource?.startedDate, 'font-weight-400':!resource?.startedDate}">
+              {{resource?.startedDate? (resource?.startedDate | localizedDate:'dd-MMM-yyyy HH:mm'): 'Not Applicable'}}
+            </p>
+          </ng-template>
+        </div>
+        <div class="d-flex justify-content-between mt-2 ml-2">
+          <div>
+            <a class="btn btn-icon btn-sm border-dark rounded-pill mr-1"
+              [ngClass]="resource?.workStatusId === WorkStatus.STARTED && statusId !== ServiceStatus.CLOSED?'cursor-pointer':'cursor-default'"
+              (click)="contained(i)">
+              <i class="bi bi-stop-fill" aria-hidden="true"></i>
+            </a>
+            <span
+              [ngClass]="{'font-weight-600':resource?.containDate, 'font-weight-400':!resource?.containDate}">Contained</span>
+          </div>
+          <div *ngIf="showContainDate && currentResourceId === i; else Contained">
+            <input type="datetime-local" class="input-datetime font-size-11" [(ngModel)]="resource.containDate" />
+          </div>
+          <ng-template #Contained>
+            <p class="m-0 p-0"
+              [ngClass]="{'font-weight-600':resource?.containDate, 'font-weight-400':!resource?.containDate}">
+              {{resource?.containDate? (resource?.containDate | localizedDate:'dd-MMM-yyyy HH:mm'): 'Not Applicable'}}
+            </p>
+          </ng-template>
+        </div>
+        <div class="d-flex justify-content-between mt-2 ml-2">
+          <div>
+            <a class="btn btn-icon btn-sm border-dark rounded-pill mr-1"
+              [ngClass]="resource?.workStatusId === WorkStatus.STARTED && statusId !== ServiceStatus.CLOSED?'cursor-pointer':'cursor-default'"
+              (click)="end(i)">
+              <i class="bi bi-stop-fill" aria-hidden="true"></i>
+            </a>
+            <span
+              [ngClass]="{'font-weight-600':resource?.finishedDate, 'font-weight-400':!resource?.finishedDate}">Finished</span>
+          </div>
+          <div *ngIf="showFinishDate && currentResourceId === i; else Finished">
+            <input type="datetime-local" class="input-datetime font-size-11" [(ngModel)]="resource.finishedDate" />
+          </div>
+          <ng-template #Finished>
+            <p class="m-0 p-0"
+              [ngClass]="{'font-weight-600':resource?.finishedDate, 'font-weight-400':!resource?.finishedDate}">
+              {{resource?.finishedDate? (resource?.finishedDate | localizedDate:'dd-MMM-yyyy HH:mm'): 'Not Applicable'}}
+            </p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

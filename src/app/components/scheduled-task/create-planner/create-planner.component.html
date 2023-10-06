@@ -1,0 +1,33 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [items]="config.items" [activeItem]="config.title" [pageTitle]="config.title" [isFilterable]="true"
+    (toggleFilter)="gridFilter.toggleShow()">
+  </app-page-header>
+  <app-grid-filter #gridFilter (filterChanged)="getData($event)" [filterType]="config?.filter"
+    [api]="config?.apiEndpoint" [isProjectMandatory]="true" [isMultiSelect]="true"></app-grid-filter>
+  <ng-container *ngIf="events.length">
+    <kendo-scheduler [kendoSchedulerBinding]="events" [selectedDate]="selectedDate" [resources]="resources"
+      startTime="08:00" endTime="21:00" style="height: 75vh;">
+      <ng-template kendoSchedulerToolbarTemplate *ngIf="userAccess?.canExport">
+        <button kendoSchedulerPDFCommand>Export PDF</button>
+        <div kendoSchedulerToolbarNavigation></div>
+        <span class="k-spacer"></span>
+        <div kendoSchedulerToolbarViewSelector></div>
+      </ng-template>
+      <ng-template kendoSchedulerEventTemplate let-event="event" let-resources="resources">
+        {{ event.title }}
+        <div class="k-font-size-sm">
+          {{ event.description }}
+        </div>
+        <div class="k-font-size-xs">
+          {{event.attendees}}
+        </div>
+      </ng-template>
+      <kendo-scheduler-day-view> </kendo-scheduler-day-view>
+      <kendo-scheduler-week-view> </kendo-scheduler-week-view>
+      <kendo-scheduler-month-view> </kendo-scheduler-month-view>
+      <kendo-scheduler-timeline-view> </kendo-scheduler-timeline-view>
+      <kendo-scheduler-agenda-view> </kendo-scheduler-agenda-view>
+      <kendo-scheduler-pdf fileName="scheduler.pdf" *ngIf="userAccess?.canExport"></kendo-scheduler-pdf>
+    </kendo-scheduler>
+  </ng-container>
+</div>

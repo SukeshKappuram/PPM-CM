@@ -1,0 +1,153 @@
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card mt-2">
+      <div class="card-header bg-transparent header-elements-inline">
+        <h6 class="card-title text-cfm-color font-weight-bold"></h6>
+        <div class="header-elements" *ngIf="hasEditAccess">
+          <button type="button" class="btn btn-sm btn-secondary mr-2" (click)="add()" [disabled]="statusId === ServiceStatus.CLOSED">
+            Add</button>
+          <button type="button" class="btn btn-sm btn-secondary" (click)="save()" [disabled]="statusId === ServiceStatus.CLOSED">
+            Save</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <form [formGroup]="mrItemsForm">
+            <table class="table table-responsive text-nowrap" style="width:100%">
+              <thead class="bg-secondary text-white">
+                <tr>
+                  <th style="width: 100px"> Type </th>
+                  <th style="width: 120px"> Spare Part Code </th>
+                  <th style="width: 120px"> Stock Name </th>
+                  <th style="width: 30px"> Avl. Qty </th>
+                  <th style="width: 100px"> Req. Qty </th>
+                  <th style="width: 50px"> Unit Price <i class="bi bi-info-circle"
+                      [title]="'Unit price is displayed as N/A in case the stock is being issued from multiple batches'"></i>
+                  </th>
+                  <th style="width: 80px"> Total Price</th>
+                  <th style="width: 120px"> Remarks </th>
+                  <th style="width: 150px"> MR# </th>
+                  <th style="width: 150px"> MR Date </th>
+                  <th style="width: 30px"> Delete </th>
+                </tr>
+              </thead>
+              <tbody *ngIf="isDataLoaded">
+                <ng-container formArrayName="items">
+                  <ng-container *ngFor="let itemForm of items?.controls; let i = index">
+                    <tr [formGroupName]="i">
+                      <td>
+                        <kendo-dropdownlist class="form-group" [data]="filteredData?.mrTypes" [filterable]="true" textField="name"
+                          style="max-width: 120px;" valueField="id" (filterChange)="handleFilter($event,'mrTypes')"
+                          [formControlName]="'mrTypeId'" [defaultItem]="'Select Type'"
+                          (selectionChange)="filterTypes(i, itemForm, $event)" [readonly]="mrItemDetails[i]?.isSaved">
+                        </kendo-dropdownlist>
+                      </td>
+                      <td>
+                        <kendo-dropdownlist class="form-group" [data]="filteredData?.stocks" [filterable]="true" textField="sparePartCode"
+                          valueField="id" (filterChange)="handleFilterByDataSet(masterData?.stocks, $event, 'stocks','sparePartCode','name')"
+                          [readonly]="mrItemDetails[i]?.isSaved" [formControlName]="'sparePartCode'"
+                          [defaultItem]="'Select Spare Part'" (selectionChange)="sparePartChange(i, itemForm, $event)"
+                          *ngIf="mrItemDetails[i]?.mrTypeId === 1">
+                        </kendo-dropdownlist>
+                      </td>
+                      <td>
+                        <kendo-dropdownlist class="form-group" [data]="filteredData?.stocks" [filterable]="true" textField="name"
+                          style="max-width: 200px;" valueField="id" (filterChange)="handleFilter($event,'stocks')"
+                          [formControlName]="'stockId'" [defaultItem]="defaultItem('Stock')"
+                          (selectionChange)="sparePartChange(i, itemForm, $event)"
+                          [readonly]="mrItemDetails[i]?.isSaved" *ngIf="mrItemDetails[i]?.mrTypeId === 1; else textBox">
+                          <ng-template kendoDropDownListItemTemplate let-dataItem>
+                            <span *ngIf="dataItem.name" [title]="dataItem.name">{{ dataItem.name }}</span>
+                          </ng-template>
+                        </kendo-dropdownlist>
+                        <ng-template #textBox>
+                          <app-text-field [formControlName]="'stockName'" [formGroup]="getIssueDetails(itemForm)"
+                            [fieldName]="'stockName'" [label]="'stockName'" ngDefaultControl
+                            [value]="mrItemDetails[i]?.stockName" [showLabel]="false"
+                            [isReadonly]="mrItemDetails[i]?.isSaved">
+                          </app-text-field>
+                        </ng-template>
+                      </td>
+                      <td>
+                        <app-text-field [formControlName]="'availableQty'" [formGroup]="getIssueDetails(itemForm)"
+                          [fieldName]="'availableQty'" [label]="'Avl Qty'" ngDefaultControl
+                          *ngIf="mrItemDetails[i]?.mrTypeId === 1" [value]="mrItemDetails[i]?.availableQty??0"
+                          [showLabel]="false" [isReadonly]="true">
+                        </app-text-field>
+                      </td>
+                      <td>
+                        <app-text-field [formControlName]="'requiredQty'" [formGroup]="getIssueDetails(itemForm)"
+                          [fieldName]="'requiredQty'" [label]="'requiredQty'" ngDefaultControl
+                          [value]="mrItemDetails[i]?.requiredQty" [showLabel]="false"
+                          (onblur)="calculateTotal(i, itemForm, 1, $event)" [isReadonly]="true"
+                          (keypress)="validateNumericInput($event,1,5)"
+                          *ngIf="mrItemDetails[i]?.isSaved; else editable">
+                        </app-text-field>
+                        <ng-template #editable>
+                          <kendo-numerictextbox [autoCorrect]="true" [min]="0" [formControlName]="'requiredQty'"
+                            [value]="mrItemDetails[i]?.requiredQty"
+                            (valueChange)="calculateTotal(i, itemForm,1, $event)"
+                            [max]="mrItemDetails[i]?.availableQty > 0 ? mrItemDetails[i]?.availableQty : 99999"
+                            [readonly]="mrItemDetails[i]?.isSaved">
+                          </kendo-numerictextbox>
+                        </ng-template>
+                      </td>
+                      <td>
+                        <app-text-field [formControlName]="'unitPrice'" [formGroup]="getIssueDetails(itemForm)"
+                          [fieldName]="'unitPrice'" [label]="'Unit Price'" ngDefaultControl
+                          (onblur)="calculateTotal(i, itemForm, 2, $event)" [value]="mrItemDetails[i]?.unitPrice??0"
+                          [showLabel]="false"
+                          *ngIf="mrItemDetails[i]?.mrTypeId === 1 || mrItemDetails[i]?.isSaved; else numeric"
+                          [isReadonly]="true">
+                        </app-text-field>
+                        <ng-template #numeric>
+                          <kendo-numerictextbox [autoCorrect]="true" [min]="0" [formControlName]="'unitPrice'"
+                            [value]="mrItemDetails[i]?.unitPrice??0" [readonly]="mrItemDetails[i]?.isSaved"
+                            (valueChange)="calculateTotal(i, itemForm,2, $event)">
+                          </kendo-numerictextbox>
+                        </ng-template>
+                      </td>
+                      <td>
+                        <div class="row">
+                          <div class="col-9">
+                            <app-text-field [formControlName]="'totalPrice'" [formGroup]="getIssueDetails(itemForm)"
+                              [fieldName]="'totalPrice'" [label]="'Total Price'" ngDefaultControl
+                              [value]="mrItemDetails[i]?.totalPrice" [showLabel]="false" [isReadonly]="true">
+                            </app-text-field>
+                          </div>
+                          <div class="col-1" *ngIf="mrItemDetails[i]?.id > 0 && mrItemDetails[i]?.mrTypeId === 1">
+                            <i class="bi bi-info-circle cursor-pointer" (click)="openData(mrItemDetails[i])"></i>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <app-text-field [formControlName]="'remarks'" [formGroup]="getIssueDetails(itemForm)"
+                          [fieldName]="'remarks'" [label]="'Remarks'" ngDefaultControl
+                          [isReadonly]="mrItemDetails[i]?.isSaved" [value]="mrItemDetails[i]?.remarks"
+                          [showLabel]="false" [isRequired]="false"></app-text-field>
+                      </td>
+                      <td>
+                        <app-text-field [formControlName]="'mrCode'" [formGroup]="getIssueDetails(itemForm)"
+                          [fieldName]="'mrCode'" [label]="'mrCode'" ngDefaultControl [value]="mrItemDetails[i]?.mrCode"
+                          [showLabel]="false" [isRequired]="false" [isReadonly]="true"></app-text-field>
+                      </td>
+                      <td>
+                        <app-text-field [formControlName]="'mrDate'" [formGroup]="getIssueDetails(itemForm)"
+                          [fieldName]="'mrDate'" [label]="'mrDate'" ngDefaultControl [value]="mrItemDetails[i]?.mrDate"
+                          [showLabel]="false" [isRequired]="false" [isReadonly]="true"></app-text-field>
+                      </td>
+                      <td>
+                        <i class="bi bi-trash-fill text-danger p-3 cursor-pointer" (click)="delete(i)"
+                          *ngIf="!mrItemDetails[i]?.isSaved"></i>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </ng-container>
+              </tbody>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

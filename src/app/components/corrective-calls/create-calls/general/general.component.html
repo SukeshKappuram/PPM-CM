@@ -1,0 +1,349 @@
+<div class="card">
+  <div class="card-header bg-transparent header-elements-inline">
+    <h6 class="card-title font-weight-semibold text-secondary">General</h6>
+    <div class="header-elements">
+    </div>
+  </div>
+
+  <div class="card-body" *ngIf="isFormLoaded">
+    <form [formGroup]="generalForm">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="row mb-0 form-group form-group-feedback form-group-feedback-right ">
+            <div class="col-lg-1">
+              <label class="col-form-label title-width">
+                Title <sup class="text-danger">*</sup>
+              </label>
+            </div>
+
+            <div class="col-lg-11 mb-1_25 pl-5">
+              <app-text-field [formControlName]="'title'" [label]="'Title'" [formGroup]="generalForm"
+                [isReadonly]="mode === LogMode.LOCKED" [fieldName]="'title'" ngDefaultControl [isRequired]="false"
+                [value]="taskLogInfo?.title??''" [showLabel]="false">
+              </app-text-field>
+              <div class="form-control-feedback form-control-feedback-sm text-muted mr-1">
+                <i class="bi bi-card-text" (click)="openPopup(2)"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="row mb-1  ">
+            <label class="col-form-label col-lg-3 pl-2">Type <sup class="text-danger">*</sup>
+            </label>
+            <div class="col-lg-9">
+              <kendo-dropdownlist class="form-group" [data]="filteredData?.types" ngDefaultControl [filterable]="true"
+                textField="name" valueField="id" [formControlName]="'type'" [defaultItem]="defaultItem('Type')"
+                [readonly]="mode === LogMode.LOCKED" (selectionChange)="typeChanged($event)"
+                (filterChange)="handleFilter($event, 'types')">
+                <ng-template kendoDropDownListItemTemplate let-dataItem>
+                  <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                </ng-template>
+              </kendo-dropdownlist>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="row mb-1  ">
+            <label class="col-form-label col-lg-3"> SubType<sup class="text-danger">*</sup>
+            </label>
+            <div class="col-lg-9">
+              <kendo-dropdownlist class="form-group" [data]="filteredData?.subTypes" ngDefaultControl
+                [filterable]="true" textField="name" valueField="id" [formControlName]="'subType'"
+                [defaultItem]="defaultItem('Sub Type')" [readonly]="mode === LogMode.LOCKED"
+                (filterChange)="handleFilter($event, 'subTypes')">
+                <ng-template kendoDropDownListItemTemplate let-dataItem>
+                  <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                </ng-template>
+              </kendo-dropdownlist>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="row mb-1  ">
+            <label class="col-form-label col-lg-3"> Category <sup class="text-danger">*</sup>
+            </label>
+            <div class="col-lg-9">
+              <kendo-dropdownlist class="form-group" [data]="filteredData?.categories" [filterable]="true"
+                textField="name" valueField="id" [formControlName]="'category'" [defaultItem]="defaultItem('Category')"
+                [readonly]="mode === LogMode.LOCKED" (filterChange)="handleFilter($event, 'categories')">
+                <ng-template kendoDropDownListItemTemplate let-dataItem>
+                  <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                </ng-template>
+              </kendo-dropdownlist>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 ">
+          <div class="row mb-1">
+            <label class="col-form-label col-lg-3"> Channel <sup class="text-danger">*</sup></label>
+            <div class="col-lg-9">
+              <kendo-dropdownlist class="form-group" [data]="filteredData?.channels" ngDefaultControl
+                [filterable]="true" textField="name" valueField="id" [formControlName]="'channel'"
+                [defaultItem]="defaultItem('Channel')" [readonly]="!isEditable"
+                (filterChange)="handleFilter($event, 'channels')">
+                <ng-template kendoDropDownListItemTemplate let-dataItem>
+                  <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                </ng-template>
+              </kendo-dropdownlist>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="row mb-1">
+            <label class="col-form-label col-lg-3  ">
+              LOC <sup class="text-danger">*</sup></label>
+            <div class="col-lg-9">
+              <kendo-dropdownlist class="form-group" [data]="filteredData?.locs" ngDefaultControl [filterable]="true"
+                textField="name" valueField="id" [formControlName]="'loc'" [defaultItem]="defaultItem('LOC')"
+                (filterChange)="handleFilter($event, 'locs')" [readonly]="mode === LogMode.LOCKED"
+                (selectionChange)="setLoc()">
+                <ng-template kendoDropDownListItemTemplate let-dataItem>
+                  <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                </ng-template>
+              </kendo-dropdownlist>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="row mb-1">
+            <label class="col-form-label col-lg-3  ">
+              LOC Date </label>
+            <div class="col-lg-9">
+              <div class="form-group">
+                <input type="text" class="form-control" formControlName="locDate" [value]="taskLogInfo?.locDate"
+                  [placeholder]="'LOC Date'" readonly />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6 ">
+          <div class="row mb-2">
+            <label class="col-from-lable col-lg-3">PPM Id
+            </label>
+            <div class="col-lg-9">
+              <div class="form-group">
+                <app-text-field [formControlName]="'ppmId'" [formGroup]="generalForm" [fieldName]="'ppmId'"
+                  [label]="'ppm Id'" ngDefaultControl [value]="taskLogInfo?.ppmCode??''" [isRequired]="false"
+                  [isReadonly]="true" [showLabel]="false">
+                </app-text-field>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 ">
+          <div class="row mb-2">
+            <label class="col-from-lable col-lg-3">Parent WO
+            </label>
+            <div class="col-lg-9">
+              <div class="form-group">
+                <app-text-field [formControlName]="'parentWo'" [formGroup]="generalForm" [fieldName]="'parentWo'"
+                  [label]="'parent Wo'" ngDefaultControl [value]="taskLogInfo?.parentWorkOrder??''" [isRequired]="false"
+                  [isReadonly]="true" [showLabel]="false">
+                </app-text-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <label>Summary</label>
+          <app-textarea-field [formControlName]="'summary'" [formGroup]="generalForm" [isRequired]="false" [rows]="3"
+            [fieldName]="'summary'" [label]="'Summary'" [showLabel]="false" ngDefaultControl [value]="currentSummary"
+            [isReadonly]="mode === LogMode.LOCKED">
+          </app-textarea-field>
+          <a class="btn btn-secondary btn-icon border-transparent rounded-pill btn-sharerep" title="Share to reporter"
+            (click)="updateSummary()" *ngIf="mode !== LogMode.LOCKED">
+            <i class="bi bi-send-fill"></i>
+          </a>
+        </div>
+
+        <div class="col-md-12">
+          <label>Update Summary</label>
+          <app-textarea-field [formControlName]="'updateSummary'" [formGroup]="generalForm" [isRequired]="false"
+            [fieldName]="'updateSummary'" [label]="'Update Summary'" [showLabel]="false" ngDefaultControl [rows]="3"
+            [value]="taskLogInfo?.summary??''" [isReadonly]="true">
+          </app-textarea-field>
+        </div>
+
+        <div class="col-md-12" *ngIf="taskLogInfo?.onHoldReason">
+          <label class="font-weight-semibold">Onhold Summary Details</label>
+          <app-textarea-field [formControlName]="'updateHoldSummary'" [formGroup]="generalForm" [isRequired]="false"
+            [fieldName]="'updateHoldSummary'" [label]="'Update Summary'" [showLabel]="false" ngDefaultControl [rows]="2"
+            [value]="taskLogInfo?.onHoldReason" [isReadonly]="true">
+          </app-textarea-field>
+        </div>
+
+        <div class="col-md-12" *ngIf="taskLogInfo?.rejectedReason">
+          <label class="font-weight-semibold">Rejected Summary Details</label>
+          <app-textarea-field [formControlName]="'rejectedSummary'" [formGroup]="generalForm" [isRequired]="false"
+            [fieldName]="'rejectedSummary'" [label]="'Rejected Summary'" [showLabel]="false" ngDefaultControl [rows]="2"
+            [value]="taskLogInfo?.rejectedReason" [isReadonly]="true">
+          </app-textarea-field>
+        </div>
+      </div>
+
+      <div class="row mt-1">
+        <div class="col-lg-6">
+          <div class="row mb-1 form-group form-group-feedback form-group-feedback-right ">
+            <label class="col-form-label col-lg-3">
+              Priority <sup class="text-danger">*</sup></label>
+            <div class="col-lg-9">
+              <kendo-dropdownlist class="form-group" [data]="filteredData?.priorities" ngDefaultControl
+                [filterable]="true" textField="name" valueField="id" [formControlName]="'priority'"
+                [defaultItem]="defaultItem('Priority')" [readonly]="mode === LogMode.LOCKED"
+                (filterChange)="handleFilter($event, 'priorities')">
+                <ng-template kendoDropDownListItemTemplate let-dataItem>
+                  <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                </ng-template>
+              </kendo-dropdownlist>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="row mb-1 ">
+            <label class="col-form-label col-lg-3">Fault Code
+            </label>
+            <div class="col-lg-9">
+              <kendo-dropdownlist class="form-group" [data]="filteredData?.faultCodes" ngDefaultControl
+                [filterable]="true" textField="name" valueField="id" [formControlName]="'faultCode'"
+                [defaultItem]="defaultItem('Fault Code')" [readonly]="!isEditable"
+                (filterChange)="handleFilter($event, 'faultCodes')">
+                <ng-template kendoDropDownListItemTemplate let-dataItem>
+                  <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                </ng-template>
+              </kendo-dropdownlist>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="row mb-1 form-group  ">
+            <label class="col-form-label col-lg-3"> Est. Stock
+              Cost</label>
+            <div class="col-lg-9">
+              <app-text-field [formControlName]="'estStockCost'" [formGroup]="generalForm" [fieldName]="'estStockCost'"
+                [label]="'Est. Stock Cost'" ngDefaultControl [value]="taskLogInfo?.estimatedStockCost??''"
+                [isRequired]="false" [isReadonly]="mode === LogMode.LOCKED" [pipe]="'currency'" [showLabel]="false">
+              </app-text-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="row mb-1 ">
+            <label class="col-form-label col-lg-3">Est. Labour
+              Cost </label>
+            <div class="col-lg-9">
+              <app-text-field [formControlName]="'estLabourCost'" [formGroup]="generalForm"
+                [fieldName]="'estLabourCost'" [label]="'Est Labour Cost'" ngDefaultControl
+                [value]="taskLogInfo?.estimatedLabourCost??''" [isRequired]="false"
+                [isReadonly]="mode === LogMode.LOCKED" [pipe]="'currency'" [showLabel]="false">
+              </app-text-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="row mb-1">
+            <label class="col-form-label col-lg-3"> Est.
+              Time</label>
+            <div class="col-lg-9">
+              <app-text-field [formControlName]="'estTime'" [formGroup]="generalForm" [fieldName]="'estTime'"
+                [label]="'Est Time'" ngDefaultControl [value]="taskLogInfo?.estimatedTime??''" [isRequired]="false"
+                [isReadonly]="mode === LogMode.LOCKED" class="mb-0" [tooltip]="'in Minutes'" [showLabel]="false">
+              </app-text-field>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="row mb-1">
+            <label class="col-form-label col-lg-3"> Ref. Number</label>
+            <div class="col-lg-9">
+              <app-text-field [formControlName]="'refNumber'" [formGroup]="generalForm" [fieldName]="'refNumber'"
+                [label]="'Ref Number'" [showLabel]="false" ngDefaultControl [value]="taskLogInfo?.refNumber"
+                class="mb-0">
+              </app-text-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header  bg-transparent   header-elements-inline">
+    <h6 class="card-title text-secondary">Asset</h6>
+    <div class="header-elements">
+      <span class="col-12">
+        <div class="custom-control custom-control-right custom-switch custom-control-inline">
+          <input type="checkbox" class="custom-control-input" id="sc_ri_c" [(ngModel)]="hasAsset"
+            (change)="resetAsset(hasAsset)" [disabled]="mode === LogMode.LOCKED">
+          <label class="custom-control-label" for="sc_ri_c">Do You have any
+            assets?</label>
+        </div>
+      </span>
+    </div>
+  </div>
+
+  <div class="card-body pb-1" *ngIf="filteredData?.types && hasAsset">
+    <div class="col-lg-12" id="assetID" style="display: block;">
+      <form [formGroup]="assetForm">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="row mb-1 ">
+              <label class="col-form-label col-lg-3"> Code <sup class="text-danger">*</sup>
+              </label>
+              <div class="col-lg-7 pr-0 pl-1">
+                <app-text-field [formControlName]="'code'" [formGroup]="assetForm" [fieldName]="'code'" [label]="'Code'"
+                  [showLabel]="false" ngDefaultControl [value]="taskLogInfo?.assetCode??''" [isRequired]="hasAsset"
+                  [isReadonly]="true" [class]="'custom-search-border'">
+                </app-text-field>
+              </div>
+              <div class="col-lg-2 pl-0">
+                <button class="btn custom-search" [ngClass]="hasAsset && mode !== LogMode.LOCKED ?'btn-secondary':'btn-light'"
+                  type="button" data-toggle="modal" data-target="#modal_theme_asset" (click)="getAssets()"
+                  [disabled]="!hasAsset || mode === LogMode.LOCKED">
+                  <i class="bi bi-zoom-in"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="row mb-1  ">
+              <label class="col-form-label col-lg-3 pl-0">
+                Description <sup class="text-danger">*</sup></label>
+              <div class="col-lg-9 pl-0">
+                <app-textarea-field [formControlName]="'description'" [formGroup]="assetForm" [isRequired]="hasAsset"
+                  [fieldName]="'description'" [label]="'Description'" [showLabel]="false" ngDefaultControl
+                  [value]="taskLogInfo?.assetDescription??''" [isReadonly]="true">
+                </app-textarea-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

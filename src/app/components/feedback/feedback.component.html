@@ -1,0 +1,60 @@
+<div class="container mt-3" *ngIf="isUserValid; else InvlaidUser">
+  <div class="row" *ngIf="!savedFeedback">
+    <div class="col-md-12 text-center">
+      <h1>All done!</h1>
+      <h1>How was your experience?</h1>
+    </div>
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col-md-4 text-center text-success">
+              <i class="bi fa-3x" (click)="feedbackChanged(1)"
+                [ngClass]="feedbackSelected === 1? 'bi-emoji-smile-fill': 'bi-emoji-smile'"></i>
+              <p>Good</p>
+            </div>
+            <div class="col-md-4 text-center text-warning">
+              <i class="bi fa-3x" (click)="feedbackChanged(2)"
+                [ngClass]="feedbackSelected === 2? 'bi-emoji-neutral-fill': 'bi-emoji-neutral'">
+              </i>
+              <p>Medium</p>
+            </div>
+            <div class="col-md-4 text-center text-danger">
+              <i class="bi fa-3x" (click)="feedbackChanged(3)"
+                [ngClass]="feedbackSelected === 3? 'bi-emoji-frown-fill': 'bi-emoji-frown'"></i>
+              <p>Poor</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="!savedFeedback; else Saved">
+    <div class="col-md-12 p-5">
+      <form class="form-horizontal">
+        <p>We value your feedback, and use it to imporve how we serve your community</p>
+        <textarea class="w-100" rows="3" [(ngModel)]="comment"></textarea><br />
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <button class="btn btn-secondary" (click)="save()">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <ng-template #Saved>
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <h2>Thank You For Your Feedback!</h2>
+      </div>
+    </div>
+  </ng-template>
+</div>
+<ng-template #InvlaidUser>
+  <div class="alert alert-danger" role="alert">
+    {{message}}
+  </div>
+</ng-template>

@@ -1,0 +1,22 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [pageTitle]="'Asset Details'" [items]="['Asset Register','Activity']" [activeItem]="'Asset Details'"
+    [isFilterable]="true" (toggleFilter)="gridFilter.toggleShow()">
+  </app-page-header>
+
+  <div class="notification-area">
+    <app-alert id="alert-assetDetails"></app-alert>
+  </div>
+
+  <app-grid-filter #gridFilter (filterChanged)="getAssets($event)" [filterType]="FilterType.Assets"
+    [showStartEndDates]="false" [api]="ApiEndpoints.AMAPI" [isProjectMandatory]="true">
+  </app-grid-filter>
+
+  <!-- Content area -->
+  <div class="content p-0">
+    <ng-container *ngIf="gridData?.configuration?.columns?.length">
+      <app-kendo-grid #assetGrid [gridDetails]="gridData" (edited)="modifyAsset($event)" [isViewable]="true"
+        (deleted)="deleteAsset($event)" [fileName]="'Asset_Details'"></app-kendo-grid>
+    </ng-container>
+  </div>
+  <!-- /content area -->
+</div>

@@ -1,0 +1,123 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+
+  <app-page-header [items]="['PPM', 'HSEQ']" [activeItem]="'Create'" [pageTitle]="'HSEQ'" [buttons]="buttons"
+    (modified)="buttonClicked($event)">
+  </app-page-header>
+
+  <div class="content">
+    <app-alert id="hesq-questions"></app-alert>
+    <div class="row">
+      <div class=" col-xl-12 col-md-12">
+        <div class="card">
+          <div class="card-header  bg-transparent   header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-secondary">General</h6>
+            <div class="header-elements">
+            </div>
+          </div>
+          <div class="card-body" *ngIf="masterData?.types">
+            <form [formGroup]="generalForm">
+              <div class="row">
+                <div class="col-3">
+                  <app-text-field [formControlName]="'code'" [fieldName]="'code'" [label]="'Code'"
+                    [formGroup]="generalForm" ngDefaultControl [value]="'ASC:'+pad(qId,3)" [isReadonly]="true">
+                  </app-text-field>
+                </div>
+
+                <div class="col-3">
+                  <app-label [label]="'Instruction Set'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [formControlName]="'type'" [data]="filteredData?.types" textField="name"
+                    valueField="id" [filterable]="true" [disabled]="!isEditable" [defaultItem]="'Select type'" (filterChange)="handleFilter($event,'types')">
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-4">
+                  <app-text-field [formControlName]="'name'" [fieldName]="'name'" [label]="'Name'"
+                    [isReadonly]="!isEditable" [formGroup]="generalForm" ngDefaultControl
+                    [value]="questionGroup?.name??''"></app-text-field>
+                </div>
+
+                <div class="col-2">
+                  <div class="custom-control custom-checkbox custom-control-inline mt-3">
+                    <input type="checkbox" class="custom-control-input" id="default-qust"
+                      [formControlName]="'isDefault'" />
+                    <label class="custom-control-label" for="default-qust">Is Default</label>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="masterData?.answers">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header  bg-transparent   header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-secondary">HSEQ Questions</h6>
+            <div class="header-elements">
+              <button (click)="addQuestion()" class="btn btn-secondary" [disabled]="!canAdd || !isEditable">
+                add
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive" [formGroup]="questionsForm">
+              <table class="table text-nowrap" style="width: 100%;">
+                <thead class="bg-secondary text-white">
+                  <tr>
+                    <th><img src="assets/images/logo-sm-light.png" width="20px" loading="lazy"></th>
+                    <th>#</th>
+                    <th>Question</th>
+                    <th>Answer</th>
+                  </tr>
+                </thead>
+                <tbody formArrayName="questions">
+                  <ng-container *ngFor="let itemform of questions.controls; let i = index">
+                    <tr [formGroupName]="i">
+                      <td>
+                        <div class="list-icons">
+                          <div class="dropdown position-static">
+                            <a class="btn btn-sm btn-outline-secondary border-2 btn-icon btn-icon-action rounded-pill dropdown-toggle"
+                              role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="bi bi-three-dots font-size-sm" style="transform: rotate(90deg);"
+                                title="Actions"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-left">
+                              <a class="dropdown-item" (click)="saveOrUpdate(i,itemform)">
+                                <i class="bi bi-check-circle p-2" title="save" aria-hidden="true"></i>
+                                Save</a>
+                              <a class="dropdown-item" (click)="delete(i, itemform)" title="delete">
+                                <i class="bi bi-trash text-danger p-2" aria-hidden="true"></i>
+                                Delete</a>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        {{i + 1}}
+                      </td>
+                      <td>
+                        <app-text-field [formControlName]="'question'" [fieldName]="'question'" [label]="'question'"
+                          [showLabel]="false" [formGroup]="getItemForm(itemform)" ngDefaultControl
+                          [value]="questionDetails[i].question" [isReadonly]="!isEditable">
+                        </app-text-field>
+                      </td>
+                      <td>
+                        <app-tag-dropdown [formControlName]="'answer'" [label]="'answer'"
+                          [items]="questionDetails[i].answer" ngDefaultControl [isReadonly]="!isEditable"
+                          [placeholder]="''" [showLabel]="false" [autocompleteItems]="questionDetails[i].answer"
+                          (inputChange)="updateAnswer($event,i)">
+                        </app-tag-dropdown>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

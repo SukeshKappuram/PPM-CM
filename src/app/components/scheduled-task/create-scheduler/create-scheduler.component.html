@@ -1,0 +1,605 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [items]="['Scheduled Task']" [activeItem]="pageTitle" [pageTitle]="pageTitle" [buttons]="buttons"
+    (modified)="buttonClicked($event)">
+  </app-page-header>
+  <!-- Select Location -->
+  <div class="content" *ngIf="isDataLoaded">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header  bg-transparent  header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-blue">
+              Scheduled Task
+            </h6>
+          </div>
+
+          <div class="card-body">
+            <form [formGroup]="setScheduledTaskForm">
+              <div class="row">
+                <div class="col-sm-3 mb-2">
+                  <app-text-field [formControlName]="'scheduledTaskCode'" [formGroup]="setScheduledTaskForm"
+                    [fieldName]="'scheduledTaskCode'" [label]="'Scheduled Task Code'" ngDefaultControl
+                    [value]="scheduledTasks?.code" [isRequired]="false"  [isReadonly]="true">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-3">
+                  <app-label [label]="'Project'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.projects" [filterable]="true" textField="name"
+                    valueField="id" [formControlName]="'project'" (filterChange)="handleFilter($event,'projects')"
+                    [defaultItem]="defaultItem('Project')" (selectionChange)="projectSelected($event, true)"
+                    [readonly]="!isEditable">
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-sm-3 mb-2">
+                  <app-label [label]="'Building'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.buildings" [filterable]="true" textField="name"
+                    valueField="id" [formControlName]="'building'" [defaultItem]="defaultItem('Building')"
+                    (selectionChange)="buildingSelected($event)" (filterChange)="handleFilter($event,'buildings')"
+                    [readonly]="!isEditable">
+                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                      <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                    </ng-template>
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-md-3">
+                  <app-label [label]="'Instruction Set'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.taskInstructions" [filterable]="true" textField="name"
+                    valueField="id" [formControlName]="'instructionSet'"
+                    (filterChange)="handleFilter($event,'taskInstructions')" [defaultItem]="'Select Instruction Set'"
+                    (selectionChange)="instructionSelected($event)" [readonly]="!isEditable">
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-md-3">
+                  <app-label [label]="'Priority'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.priorities" [filterable]="true" textField="name"
+                    valueField="id" [formControlName]="'priority'" [defaultItem]="defaultItem('Priority')"
+                    (filterChange)="handleFilter($event,'priorities')" [readonly]="!isEditable">
+                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                      <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                    </ng-template>
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-sm-3 mb-2">
+                  <app-text-field [formControlName]="'estimationTime'" [formGroup]="setScheduledTaskForm"
+                    [fieldName]="'estimationTime'" [label]="'Estimation Time'" ngDefaultControl
+                    [value]="selectedInstruction?.estimatedTimeInMins" [isRequired]="false" [isReadonly]="true">
+                  </app-text-field>
+                </div>
+
+                <div class="col-sm-3 mb-2">
+                  <app-text-field [formControlName]="'estimationMen'" [formGroup]="setScheduledTaskForm"
+                    [fieldName]="'estimationMen'" [label]="'Estimation Men'" ngDefaultControl
+                    [value]="selectedInstruction?.estimationMen" [isRequired]="false" [isReadonly]="true">
+                  </app-text-field>
+                </div>
+
+                <div class="col-sm-3 mb-2">
+                  <app-text-field [formControlName]="'stocklabCost'" [formGroup]="setScheduledTaskForm"
+                    [fieldName]="'stocklabCost'" [label]="'Stocklab Cost'" ngDefaultControl
+                    [value]="selectedInstruction?.estimatedLabourCost" [isRequired]="false" [isReadonly]="true">
+                  </app-text-field>
+                </div>
+
+                <div class="col-sm-3 mb-2">
+                  <app-text-field [formControlName]="'totalCost'" [formGroup]="setScheduledTaskForm"
+                    [fieldName]="'totalCost'" [label]="'Total Cost'" ngDefaultControl
+                    [value]="selectedInstruction?.estimatedStockCost" [isRequired]="false" [isReadonly]="true">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-3">
+                  <app-label [label]="'Finance Code'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.financeCodes" [filterable]="true" textField="name"
+                    valueField="id" [formControlName]="'financeCode'" [defaultItem]="defaultItem('Finance Code')"
+                    (filterChange)="handleFilter($event,'financeCodes')" [readonly]="!isEditable">
+                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                      <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                    </ng-template>
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-md-3">
+                  <app-label [label]="'Cost Center'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.costCenters" [filterable]="true" textField="name"
+                    valueField="id" [formControlName]="'costCenter'" [defaultItem]="defaultItem('Cost Center')"
+                    (filterChange)="handleFilter($event,'costCenters')" [readonly]="!isEditable">
+                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                      <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                    </ng-template>
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-md-3">
+                  <app-label [label]="'Cost Code'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.costCodes" [filterable]="true" textField="name"
+                    valueField="id" [formControlName]="'costCode'" [defaultItem]="defaultItem('costCode')"
+                    (filterChange)="handleFilter($event,'costCodes')" [readonly]="!isEditable">
+                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                      <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                    </ng-template>
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-md-3">
+                  <app-label [label]="'Resource'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.resources" [filterable]="true" textField="name"
+                    valueField="id" [formControlName]="'resource'" (filterChange)="handleFilter($event,'resources')"
+                    [defaultItem]="defaultItem('Resource')" (selectionChange)="resourceSelected($event)"
+                    [readonly]="!isEditable">
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-sm-3 mb-2">
+                  <app-text-field [formControlName]="'designation'" [formGroup]="setScheduledTaskForm"
+                    [fieldName]="'designation'" [label]="'Designation'" ngDefaultControl
+                    [value]="selectedResource?.designation" [isRequired]="false" [isReadonly]="true">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-3">
+                  <app-label [label]="'Shift'"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.shifts" [filterable]="true" textField="name" valueField="id"
+                    [formControlName]="'shift'" [defaultItem]="'Select Shift'"
+                    (filterChange)="handleFilter($event,'shifts')" [readonly]="!isEditable">
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-md-3 mt-2">
+                  <label class="pr-1">QR Code</label>
+                  <img _ngcontent-cur-c363="" width="50px" loading="lazy" class="border-img"
+                    src="assets/images/noqrimage-SM.png">
+                </div>
+
+                <div class="col-md-6 mt-2">
+                  <div class="">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" class="custom-control-input" id="cc_li_c" checked=""
+                        [formControlName]="'isPermitNeeded'">
+                      <label class="custom-control-label" for="cc_li_c">Do you need
+                        permit?</label>
+                    </div>
+
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                      <input type="checkbox" class="custom-control-input" id="cc_li_u" [formControlName]="'hasHSC'">
+                      <label class="custom-control-label" for="cc_li_u">Health and Safety
+                        <a class="pl-1">Checklist</a> </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Select Details -->
+        <div class="card">
+          <div class="card-header  bg-transparent  header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-blue">
+              Service Details
+            </h6>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="serviceDetailsForm">
+              <div class="row">
+                <div class="col-md-6">
+                  <h6 class="card-title font-weight-semibold text-blue">
+                    Recurrence pattern
+                  </h6>
+                  <div class="row">
+                    <div class="col-md-3 mb-2">
+                      <div class="form-check">
+                        <input class="form-check-input" [value]="FrequencyType.Minutely" type="radio" id="st_minutes"
+                          name="frequency" formControlName="frequency"
+                          (click)="selectedFrequencyType = FrequencyType.Minutely; updateForm()">
+                        <label class="form-check-label" for="st_minutes">
+                          Minutes
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <span>Every</span>
+                    </div>
+                    <div class="col-md-2 mb-2">
+                      <app-text-field [formControlName]="'inMinutes'" [formGroup]="serviceDetailsForm"
+                        [fieldName]="'inMinutes'" [label]="'In Minutes'" [placeholder]="''" [showLabel]="false"
+                        ngDefaultControl [value]="frequency?.inMinutes"
+                        [isReadonly]="selectedFrequencyType !== FrequencyType.Minutely || !isEditable"
+                        [inputType]="'number'" [min]="10" [max]="59">
+                      </app-text-field>
+                    </div>
+                    <div class="col-md-1">
+                      <span></span>
+                    </div>
+
+                    <div class="col-md-2">
+                      <span>Minutes</span>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3 mb-2">
+                    </div>
+                    <div class="col-md-2">
+                      <span>Between</span>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                      <app-text-field [formControlName]="'startTimeInMin'" [formGroup]="serviceDetailsForm"
+                        [fieldName]="'startTimeInMin'" [label]="'Start Time In Min'" ngDefaultControl
+                        [value]="timeRangeInMin.start" [showLabel]="false" [isRequired]="false" [inputType]="'time'"
+                        [max]="timeRangeInMin.end"
+                        [isReadonly]="selectedFrequencyType !== FrequencyType.Minutely || !isEditable">
+                      </app-text-field>
+                    </div>
+                    <div class="col-md-1">
+                      <span> and </span>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                      <app-text-field [formControlName]="'endTimeInMin'" [formGroup]="serviceDetailsForm"
+                        [fieldName]="'endTimeInMin'" [label]="'End Time In Min'" ngDefaultControl
+                        [value]="timeRangeInMin.end" [showLabel]="false" [isRequired]="false" [inputType]="'time'"
+                        [min]="timeRangeInMin.start"
+                        [isReadonly]="selectedFrequencyType !== FrequencyType.Minutely || !isEditable">
+                      </app-text-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3 mb-2">
+                      <div class="form-check">
+                        <input class="form-check-input" [value]="FrequencyType.Hourly" type="radio" id="st_hours"
+                          name="frequency" formControlName="frequency"
+                          (click)="selectedFrequencyType = FrequencyType.Hourly; updateForm()">
+                        <label class="form-check-label" for="st_hours">
+                          Hours
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <span>Every</span>
+                    </div>
+                    <div class="col-md-2 mb-2">
+                      <app-text-field [formControlName]="'inHours'" [formGroup]="serviceDetailsForm"
+                        [fieldName]="'inHours'" [label]="'In Hours'" [placeholder]="''" [showLabel]="false"
+                        ngDefaultControl [value]="frequency?.inHours" [isRequired]="false"
+                        [isReadonly]="selectedFrequencyType !== FrequencyType.Hourly || !isEditable"
+                        [inputType]="'number'" [min]="1" [max]="10">
+                      </app-text-field>
+                    </div>
+                    <div class="col-md-1">
+                      <span></span>
+                    </div>
+                    <div class="col-md-2">
+                      <span>hours</span>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3 mb-2">
+                    </div>
+                    <div class="col-md-2">
+                      <span>Between</span>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                      <app-text-field [formControlName]="'startTimeInHr'" [formGroup]="serviceDetailsForm"
+                        [fieldName]="'startTimeInHr'" [label]="'start Time In Hr'" ngDefaultControl
+                        [value]="timeRangeInHrs.start" [showLabel]="false" [isRequired]="false" [inputType]="'time'"
+                        [max]="timeRangeInHrs.end"
+                        [isReadonly]="selectedFrequencyType !== FrequencyType.Hourly || !isEditable">
+                      </app-text-field>
+                    </div>
+                    <div class="col-md-1">
+                      <span> and </span>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                      <app-text-field [formControlName]="'endTimeInHr'" [formGroup]="serviceDetailsForm"
+                        [fieldName]="'endTimeInHr'" [label]="'endTime In Hrs'" ngDefaultControl
+                        [value]="timeRangeInHrs.end" [showLabel]="false" [isRequired]="false" [inputType]="'time'"
+                        [min]="timeRangeInHrs.start"
+                        [isReadonly]="selectedFrequencyType !== FrequencyType.Hourly || !isEditable">
+                      </app-text-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3 mb-2">
+                      <div class="form-check">
+                        <input class="form-check-input" [value]="FrequencyType.Daily" type="radio" id="st_days"
+                          name="frequency" formControlName="frequency"
+                          (click)="selectedFrequencyType = FrequencyType.Daily">
+                        <label class="form-check-label" for="st_days">
+                          Days
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <span>Every</span>
+                    </div>
+                    <div class="col-md-2 mb-2">
+                      <app-text-field [formControlName]="'inDays'" [formGroup]="serviceDetailsForm"
+                        [fieldName]="'inDays'" [label]="'In Days'" [placeholder]="''" [showLabel]="false"
+                        ngDefaultControl [value]="frequency?.inDays" [isRequired]="false"
+                        [isReadonly]="selectedFrequencyType !== FrequencyType.Daily || !isEditable"
+                        [inputType]="'number'" [min]="1" [max]="28">
+                      </app-text-field>
+                    </div>
+                    <div class="col-md-2">
+                      <span>day(s) at </span>
+                    </div>
+                    <div class="col-md-2">
+                      <app-text-field [formControlName]="'startTimeInD'" [formGroup]="serviceDetailsForm"
+                        [fieldName]="'startTimeInD'" ngDefaultControl [value]="timeRangeInDys.start" [showLabel]="false"
+                        [isRequired]="false" [inputType]="'time'" [max]="timeRangeInDys.end"
+                        [isReadonly]="selectedFrequencyType !== FrequencyType.Daily || !isEditable">
+                      </app-text-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3 mb-2">
+                      <div class="form-check">
+                        <input class="form-check-input" [value]="FrequencyType.Weekly" type="radio" id="st_weeks"
+                          name="frequency" formControlName="frequency"
+                          (click)="selectedFrequencyType = FrequencyType.Weekly">
+                        <label class="form-check-label" for="st_weeks">
+                          Weeks
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <span>Every</span>
+                    </div>
+                    <div class="col-md-2 mb-2">
+                      <app-text-field [formControlName]="'inWeeks'" [formGroup]="serviceDetailsForm"
+                        [fieldName]="'inWeeks'" [label]="'In Weeks'" [placeholder]="''" [showLabel]="false"
+                        ngDefaultControl [value]="frequency?.inWeeks" [isRequired]="false"
+                        [isReadonly]="selectedFrequencyType !== FrequencyType.Weekly || !isEditable"
+                        [inputType]="'number'" [min]="1" [max]="52">
+                      </app-text-field>
+                    </div>
+                    <div class="col-md-2">
+                      <span>week(s) at </span>
+                    </div>
+                    <div class="col-md-2">
+                      <app-text-field [formControlName]="'startTimeInW'" [formGroup]="serviceDetailsForm"
+                        [fieldName]="'startTimeInW'" ngDefaultControl [value]="timeRangeInWks.start" [showLabel]="false"
+                        [isRequired]="false" [inputType]="'time'" [max]="timeRangeInWks.end"
+                        [isReadonly]="selectedFrequencyType !== FrequencyType.Weekly || !isEditable">
+                      </app-text-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <span></span>
+                    </div>
+                    <div class="col-md-9 mb-2">
+                      <ul class="types-list mt-2">
+                        <li *ngFor="let day of masterData?.days; let i = index" class="mr-1"
+                          (click)="onDaySelected(day)">
+                          <label class="types-list__label">
+                            <input type="checkbox" class="cust-type" [id]="'day-'+i" [name]="'Day'+i"
+                              [value]="day.value" [checked]="selectedDays.has(day.value)"
+                              [attr.disabled]="selectedFrequencyType !== FrequencyType.Weekly || !isEditable">
+                            <span class="types-list__text  build-facilities">{{day.name}}</span>
+                          </label>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-check">
+                        <input class="form-check-input" [value]="FrequencyType.Monthly" type="radio" id="st_months"
+                          name="frequency" formControlName="frequency"
+                          (click)="selectedFrequencyType = FrequencyType.Monthly">
+                        <label class="form-check-label" for="st_months">
+                          Months
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-9 border-2 border-info">
+                      <div class="row pt-1">
+                        <div class="col-md-2">
+                          <div class="form-check">
+                            <input class="form-check-input" [value]="MonthType.On" type="radio" id="st_InMonth"
+                              name="frequencyByMonth" formControlName="monthType"
+                              (click)="selectedMonthType = MonthType.On"
+                              [readonly]="selectedFrequencyType !== FrequencyType.Monthly || !isEditable">
+                            <label class="form-check-label" for="st_InMonth">
+                              On
+                            </label>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <app-text-field [formControlName]="'inMonths'" [formGroup]="serviceDetailsForm"
+                            [fieldName]="'inMonths'" [label]="'In Months'" [placeholder]="''" [showLabel]="false"
+                            ngDefaultControl [value]="selectedMonthType === MonthType.On ? frequency?.inMonths: ''"
+                            [isRequired]="false" [isReadonly]="selectedMonthType !== MonthType.On || !isEditable"
+                            [inputType]="'number'" [min]="1" [max]="28">
+                          </app-text-field>
+                        </div>
+                        <div class="col-md-4">
+                          <span>day of the month at </span>
+                        </div>
+                        <div class="col-md-3">
+                          <app-text-field [formControlName]="'startTimeInM'" [formGroup]="serviceDetailsForm"
+                            [fieldName]="'startTimeInM'" ngDefaultControl [value]="timeRangeInMon.start"
+                            [showLabel]="false" [isRequired]="false" [inputType]="'time'" [max]="timeRangeInMon.end"
+                            [isReadonly]="selectedMonthType !== MonthType.On || !isEditable">
+                          </app-text-field>
+                        </div>
+                        <div class="col-md-12">
+                          <ul class="types-list mt-2">
+                            <li *ngFor="let month of masterData?.months; let i = index" class="mr-1"
+                              (click)="onMonthSelected(month)">
+                              <label class="types-list__label">
+                                <input type="checkbox" class="cust-type" [id]="'month-'+i" [name]="'Month'+i"
+                                  [value]="month.value" [checked]="selectedMonths.has(month.value)"
+                                  [attr.disabled]="selectedMonthType !== MonthType.On || !isEditable">
+                                <span class="types-list__text  build-facilities">{{month.name}}</span>
+                              </label>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-md-3">
+                      <span></span>
+                    </div>
+                    <div class="col-md-9 border-2 border-info">
+                      <div class="row pt-1">
+                        <div class="col-md-2">
+                          <div class="form-check">
+                            <input class="form-check-input" [value]="MonthType.Every" type="radio" id="st_InMonth"
+                              name="frequencyByMonth" formControlName="monthType"
+                              (click)="selectedMonthType = MonthType.Every"
+                              [readonly]="selectedFrequencyType !== FrequencyType.Monthly || !isEditable">
+                            <label class="form-check-label" for="st_InMonth">
+                              Every
+                            </label>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <app-text-field [formControlName]="'inMonthsByFrequency'" [formGroup]="serviceDetailsForm"
+                            [fieldName]="'inMonthsByFrequency'" [label]="'In Months By Frequency'" [placeholder]="''"
+                            [showLabel]="false" ngDefaultControl
+                            [value]="selectedMonthType === MonthType.Every ? frequency?.inMonths: ''"
+                            [isRequired]="false" [isReadonly]="selectedMonthType !== MonthType.Every || !isEditable"
+                            [inputType]="'number'" [min]="1" [max]="12">
+                          </app-text-field>
+                        </div>
+                        <div class="col-md-4">
+                          <span>month(s) at </span>
+                        </div>
+                        <div class="col-md-3">
+                          <app-text-field [formControlName]="'startTimeInE'" [formGroup]="serviceDetailsForm"
+                            [fieldName]="'startTimeInE'" ngDefaultControl [value]="timeRangeInEM.start"
+                            [showLabel]="false" [isRequired]="false" [inputType]="'time'" [max]="timeRangeInEM.end"
+                            [isReadonly]="selectedMonthType !== MonthType.Every || !isEditable">
+                          </app-text-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-5">
+                  <h6 class="card-title font-weight-semibold text-blue">
+                    Range of recurrence
+                  </h6>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <span>Start Date <sup class="text-danger">*</sup></span>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                      <app-text-field [formControlName]="'startDate'" [formGroup]="serviceDetailsForm"
+                        [fieldName]="'startDate'" [label]="'Start Date'" ngDefaultControl
+                        [value]="scheduledTasks?.startDate | localizedDate" [showLabel]="false" [pipe]="'date'"
+                        [min]="minDate" [isReadonly]="!isEditable">
+                      </app-text-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <span>End Date</span>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                      <app-text-field [formControlName]="'endDate'" [formGroup]="serviceDetailsForm"
+                        [fieldName]="'endDate'" [label]="'End Date'" ngDefaultControl
+                        [value]="scheduledTasks?.endDate | localizedDate" [showLabel]="false" [pipe]="'date'"
+                        [min]="minDate" [showLabel]="false" [isRequired]="false" [isReadonly]="!isEditable">
+                      </app-text-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Select Location -->
+        <div class="card">
+          <div class="card-header  bg-transparent  header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-blue">
+              Locations
+            </h6>
+            <button class="card-header text-right" (click)="addScheduledLocation()" type="button"
+              class="btn btn-sm btn-secondary" *ngIf="isEditable">
+              Add </button>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <form [formGroup]="selectLocationForm">
+                <table class="table text-nowrap">
+                  <thead>
+                    <th *ngIf="isEditable">Actions</th>
+                    <th>Floor</th>
+                    <th>Unit</th>
+                    <th>Room</th>
+                  </thead>
+                  <tbody formArrayName="scheduledDetails">
+                    <ng-container *ngFor="let details of scheduledDetails.controls; let i = index">
+                      <tr [formGroupName]="i">
+                        <td *ngIf="isEditable">
+                          <div class="list-icons">
+                            <div class="dropdown position-static">
+                              <a class="btn btn-sm btn-outline-secondary border-2 btn-icon btn-icon-action rounded-pill dropdown-toggle"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots font-size-sm" style="transform: rotate(90deg);"
+                                  title="Actions"></i>
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-left">
+                                <a class="dropdown-item" (click)="deleteTaskDetails(i,details)" title="delete">
+                                  <i class="bi bi-trash text-danger p-2" aria-hidden="true"></i>
+                                  Delete</a>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <kendo-dropdownlist class="form-group" [data]="filteredData?.floors" [filterable]="true" textField="name"
+                            valueField="id" [formControlName]="'floorId'" [defaultItem]="defaultItem('floors')"
+                            (filterChange)="handleFilter($event,'floors')">
+                            <ng-template kendoDropDownListItemTemplate let-dataItem>
+                              <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                            </ng-template>
+                          </kendo-dropdownlist>
+                        </td>
+                        <td>
+                          <kendo-dropdownlist class="form-group" [data]="filteredData?.units" [filterable]="true" textField="name"
+                            valueField="id" [formControlName]="'unitId'" [defaultItem]="defaultItem('unit')"
+                            (selectionChange)="unitChanged($event,i)"
+                            (filterChange)="handleFilterForUnits($event,'units')">
+                            <ng-template kendoDropDownListItemTemplate let-dataItem>
+                              <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                            </ng-template>
+                          </kendo-dropdownlist>
+                        </td>
+                        <td>
+                          <kendo-dropdownlist class="form-group" [data]="filteredData?.rooms[i]" [filterable]="true" textField="name"
+                            valueField="id" [formControlName]="'roomId'" [defaultItem]="defaultItem('room')"
+                            (filterChange)="handleFilterForRooms($event,'rooms',i)">
+                            <ng-template kendoDropDownListItemTemplate let-dataItem>
+                              <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                            </ng-template>
+                          </kendo-dropdownlist>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

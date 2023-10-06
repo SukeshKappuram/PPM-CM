@@ -1,0 +1,77 @@
+<!-- Inner content -->
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [items]="['Asset Register', 'Reports']" [activeItem]="'Assets Records'" [pageTitle]="'Reports'"
+    [buttons]="buttons">
+  </app-page-header>
+  <!-- Content area -->
+  <div class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header bg-transparent header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-secondary">Assets Reports</h6>
+
+            <div class="header-elements">
+
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>From Date</label>
+                  <input type="date" class="form-control form-control-sm" placeholder="ASC:013">
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>To Date</label>
+                  <input type="date" class="form-control form-control-sm" placeholder="ASC:013">
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Building</label>
+                  <select class="form-control form-control-sm">
+                    <option value="225">7274-A - Khalidiya Tower - A</option>
+                    <option value="226">7274-B - Khalidiya Tower - B</option>
+                    <option value="224">7275 - Al Neem Tower</option>
+                    <option value="219">7276-A - Zadco Tower A</option>
+                    <option value="220">7276-B - Zadco Tower B</option>
+                    <option value="221">7276-C - Zadco Tower C</option>
+                    <option value="222">7276-D - Zadco Tower D</option>
+                    <option value="223">7277 - Al Sheleila Tower</option>
+                    <option value="118">AAM - Al Ain Mall</option>
+                    <option value="163">AASA - Al Ain - Standalone</option>
+                    <option value="57">AASVAA - Abdullah Al Shamsi 4 Villas Al Ain</option>
+                    <option value="134">ACC - Ajman City Centre</option>
+                    <option value="135">ACS - Ajman Corniche - Standalone</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header bg-transparent header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-secondary">Assets</h6>
+            <div class="header-elements">
+
+            </div>
+          </div>
+          <div class="card-body">
+            <!-- <app-kendo-grid></app-kendo-grid> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /content area -->
+</div>
+<!-- /inner content -->

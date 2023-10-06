@@ -1,0 +1,2221 @@
+<!-- Inner content -->
+<div class="content-inner" (scroll)="scrollHandler($event)">
+
+  <app-page-header [items]="['PPM', 'Reports']" [activeItem]="'SLA Reports'" [pageTitle]="'PPM SLA Reports'"
+    [buttons]="buttons">
+  </app-page-header>
+
+  <!-- Content area -->
+  <div class="content">
+    <!-- <app-alert id="alert-scheduler"></app-alert> -->
+    <div class="card">
+      <div class="card-header bg-transparent header-elements-inline">
+        <h6 class="card-title font-weight-semibold text-secondary">HelpDesk SLA Report</h6>
+        <div class="header-elements">
+        </div>
+      </div>
+      <div class="card-body">
+
+        <form [formGroup]="slaForm">
+          <div class="form-row">
+            <div class="col-3">
+              <app-text-field [formControlName]="'fromDt'" [formGroup]="slaForm" [fieldName]="'fromDt'"
+                [label]="'From Dt.'" ngDefaultControl [isRequired]="false" [value]="'' | localizedDate" [pipe]="'date'">
+              </app-text-field>
+            </div>
+            <div class="col-3">
+              <app-text-field [formControlName]="'toDt'" [formGroup]="slaForm" [fieldName]="'toDt'" [label]="'To Dt.'"
+                ngDefaultControl [isRequired]="false" [value]="'' | localizedDate" [pipe]="'date'">
+              </app-text-field>
+            </div>
+            <div class="col-3">
+              <app-label [label]="'Time'" [isRequired]="true"></app-label>
+              <kendo-dropdownlist class="form-group" [formControlName]="'time'" [data]="" textField="name" valueField="id"
+                [filterable]="true"  [defaultItem]="'Select time'">
+              </kendo-dropdownlist>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-transparent header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-secondary">Contract</h6>
+            <div class="header-elements">
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div style="height: 300px; overflow-x: hidden; overflow-y: scroll;">
+              <table id="tbodyContractsInfo" tabindex="7" class="table table-striped table-bordered table-hover ">
+                <tbody>
+                  <tr id="Emprow1">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox1" id="chkid1"
+                        onclick="javascript:funcheckempids(1);">
+                    </td>
+                    <td id="td246"><span>111004001-Capital
+                        Plaza - Facility
+                        Management</span><input type="hidden" name="txtEmpId1" value="246" id="txtEmpId1"></td>
+                  </tr>
+                  <tr id="Emprow2">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox2" id="chkid2"
+                        onclick="javascript:funcheckempids(2);">
+                    </td>
+                    <td id="td245"><span>116037001-Soft FM
+                        services for all Masdar
+                        City Buildings
+                        &amp;
+                        Infrastructure</span><input type="hidden" name="txtEmpId2" value="245" id="txtEmpId2"></td>
+                  </tr>
+                  <tr id="Emprow3">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox3" id="chkid3"
+                        onclick="javascript:funcheckempids(3);">
+                    </td>
+                    <td id="td250"><span>121052001-Tajmeel
+                        Medical Center Karama
+                        Abudhabi</span><input type="hidden" name="txtEmpId3" value="250" id="txtEmpId3"></td>
+                  </tr>
+                  <tr id="Emprow4">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox4" id="chkid4"
+                        onclick="javascript:funcheckempids(4);">
+                    </td>
+                    <td id="td261"><span>302000260-Al Wahda
+                        Sports Club - GT
+                      </span><input type="hidden" name="txtEmpId4" value="261" id="txtEmpId4"></td>
+                  </tr>
+                  <tr id="Emprow5">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox5" id="chkid5"
+                        onclick="javascript:funcheckempids(5);">
+                    </td>
+                    <td id="td260"><span>302000264-NRL
+                        Central Lab and HQ -
+                        GT</span><input type="hidden" name="txtEmpId5" value="260" id="txtEmpId5"></td>
+                  </tr>
+                  <tr id="Emprow6">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox6" id="chkid6"
+                        onclick="javascript:funcheckempids(6);">
+                    </td>
+                    <td id="td1"><span>4PI-CLNG-4Power
+                        Infocom
+                        FZ-LLC</span><input type="hidden" name="txtEmpId6" value="1" id="txtEmpId6"></td>
+                  </tr>
+                  <tr id="Emprow7">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox7" id="chkid7"
+                        onclick="javascript:funcheckempids(7);">
+                    </td>
+                    <td id="td2"><span>A1C-CLNG-Access 1
+                        Control</span><input type="hidden" name="txtEmpId7" value="2" id="txtEmpId7"></td>
+                  </tr>
+                  <tr id="Emprow8">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox8" id="chkid8"
+                        onclick="javascript:funcheckempids(8);">
+                    </td>
+                    <td id="td83"><span>AAS-TECH-Abdullah Al
+                        Shamsi 4 Villas Al
+                        Ain</span><input type="hidden" name="txtEmpId8" value="83" id="txtEmpId8"></td>
+                  </tr>
+                  <tr id="Emprow9">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox9" id="chkid9"
+                        onclick="javascript:funcheckempids(9);">
+                    </td>
+                    <td id="td188"><span>ABR-CLNG-Al Badia
+                        Residences</span><input type="hidden" name="txtEmpId9" value="188" id="txtEmpId9"></td>
+                  </tr>
+                  <tr id="Emprow10">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox10" id="chkid10"
+                        onclick="javascript:funcheckempids(10);">
+                    </td>
+                    <td id="td114"><span>ABZ-TECH-HH Sheik
+                        Abdulla Bin Zayed Al
+                        Nahyan</span><input type="hidden" name="txtEmpId10" value="114" id="txtEmpId10"></td>
+                  </tr>
+                  <tr id="Emprow11">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox11" id="chkid11"
+                        onclick="javascript:funcheckempids(11);">
+                    </td>
+                    <td id="td87"><span>ADH-CLNG-Al Dar
+                        Headquarters Abu
+                        Dhabi</span><input type="hidden" name="txtEmpId11" value="87" id="txtEmpId11"></td>
+                  </tr>
+                  <tr id="Emprow12">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox12" id="chkid12"
+                        onclick="javascript:funcheckempids(12);">
+                    </td>
+                    <td id="td86"><span>AHH-CLNG-Ahalia
+                        Hospital
+                        Hamdan</span><input type="hidden" name="txtEmpId12" value="86" id="txtEmpId12"></td>
+                  </tr>
+                  <tr id="Emprow13">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox13" id="chkid13"
+                        onclick="javascript:funcheckempids(13);">
+                    </td>
+                    <td id="td259"><span>AHRED-Al Hamra Real
+                        Estate Development
+                        LLC</span><input type="hidden" name="txtEmpId13" value="259" id="txtEmpId13"></td>
+                  </tr>
+                  <tr id="Emprow14">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox14" id="chkid14"
+                        onclick="javascript:funcheckempids(14);">
+                    </td>
+                    <td id="td6"><span>AIL-CLNG-Allra
+                        International
+                        Limited</span><input type="hidden" name="txtEmpId14" value="6" id="txtEmpId14"></td>
+                  </tr>
+                  <tr id="Emprow15">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox15" id="chkid15"
+                        onclick="javascript:funcheckempids(15);">
+                    </td>
+                    <td id="td89"><span>AJT-CLNG-Amwaj
+                        Tower</span><input type="hidden" name="txtEmpId15" value="89" id="txtEmpId15"></td>
+                  </tr>
+                  <tr id="Emprow16">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox16" id="chkid16"
+                        onclick="javascript:funcheckempids(16);">
+                    </td>
+                    <td id="td78"><span>AKQ-TECH-3 Villas of
+                        Ali Kalil Al
+                        Qubaisi</span><input type="hidden" name="txtEmpId16" value="78" id="txtEmpId16"></td>
+                  </tr>
+                  <tr id="Emprow17">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox17" id="chkid17"
+                        onclick="javascript:funcheckempids(17);">
+                    </td>
+                    <td id="td3"><span>AL-CLNG-Agility
+                        Logistics Cleaning
+                        Services</span><input type="hidden" name="txtEmpId17" value="3" id="txtEmpId17"></td>
+                  </tr>
+                  <tr id="Emprow18">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox18" id="chkid18"
+                        onclick="javascript:funcheckempids(18);">
+                    </td>
+                    <td id="td166">
+                      <span>ALGN-CLNG-Allergan</span><input type="hidden" name="txtEmpId18" value="166" id="txtEmpId18">
+                    </td>
+                  </tr>
+                  <tr id="Emprow19">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox19" id="chkid19"
+                        onclick="javascript:funcheckempids(19);">
+                    </td>
+                    <td id="td136"><span>ALHAS-Real Estate
+                        Department of Sheikh
+                        Faisal-AL
+                        HASSAN</span><input type="hidden" name="txtEmpId19" value="136" id="txtEmpId19"></td>
+                  </tr>
+                  <tr id="Emprow20">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox20" id="chkid20"
+                        onclick="javascript:funcheckempids(20);">
+                    </td>
+                    <td id="td5"><span>AMC-CLNG-Al Mal
+                        Capital</span><input type="hidden" name="txtEmpId20" value="5" id="txtEmpId20"></td>
+                  </tr>
+                  <tr id="Emprow21">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox21" id="chkid21"
+                        onclick="javascript:funcheckempids(21);">
+                    </td>
+                    <td id="td229"><span>AMH-Al Markaz
+                        Hameem</span><input type="hidden" name="txtEmpId21" value="229" id="txtEmpId21"></td>
+                  </tr>
+                  <tr id="Emprow22">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox22" id="chkid22"
+                        onclick="javascript:funcheckempids(22);">
+                    </td>
+                    <td id="td88"><span>AMS-CLNG-Al Mamoura
+                        School</span><input type="hidden" name="txtEmpId22" value="88" id="txtEmpId22"></td>
+                  </tr>
+                  <tr id="Emprow23">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox23" id="chkid23"
+                        onclick="javascript:funcheckempids(23);">
+                    </td>
+                    <td id="td222"><span>ANP-TECH-Al Nasser
+                        Properties</span><input type="hidden" name="txtEmpId23" value="222" id="txtEmpId23"></td>
+                  </tr>
+                  <tr id="Emprow24">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox24" id="chkid24"
+                        onclick="javascript:funcheckempids(24);">
+                    </td>
+                    <td id="td184"><span>ANT-CLNG-Al Neam
+                        Tower</span><input type="hidden" name="txtEmpId24" value="184" id="txtEmpId24"></td>
+                  </tr>
+                  <tr id="Emprow25">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox25" id="chkid25"
+                        onclick="javascript:funcheckempids(25);">
+                    </td>
+                    <td id="td183"><span>ANT-TECH-Al Neam
+                        Tower</span><input type="hidden" name="txtEmpId25" value="183" id="txtEmpId25"></td>
+                  </tr>
+                  <tr id="Emprow26">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox26" id="chkid26"
+                        onclick="javascript:funcheckempids(26);">
+                    </td>
+                    <td id="td190"><span>AO-CLNG-Accuracy
+                        Office</span><input type="hidden" name="txtEmpId26" value="190" id="txtEmpId26"></td>
+                  </tr>
+                  <tr id="Emprow27">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox27" id="chkid27"
+                        onclick="javascript:funcheckempids(27);">
+                    </td>
+                    <td id="td85"><span>AP-CLNG-Abniya
+                        Properties
+                        LLC</span><input type="hidden" name="txtEmpId27" value="85" id="txtEmpId27"></td>
+                  </tr>
+                  <tr id="Emprow28">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox28" id="chkid28"
+                        onclick="javascript:funcheckempids(28);">
+                    </td>
+                    <td id="td7"><span>APJA-CLNG-APJ
+                        Atelier</span><input type="hidden" name="txtEmpId28" value="7" id="txtEmpId28"></td>
+                  </tr>
+                  <tr id="Emprow29">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox29" id="chkid29"
+                        onclick="javascript:funcheckempids(29);">
+                    </td>
+                    <td id="td79"><span>ASH-TECH-3 Villas of
+                        Ali Salem Al Hammadi
+                        (NHL-97)</span><input type="hidden" name="txtEmpId29" value="79" id="txtEmpId29"></td>
+                  </tr>
+                  <tr id="Emprow30">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox30" id="chkid30"
+                        onclick="javascript:funcheckempids(30);">
+                    </td>
+                    <td id="td113"><span>ASV-TECH-Hamad
+                        Saeed Al Ameri Villa
+                        (NHL-7)</span><input type="hidden" name="txtEmpId30" value="113" id="txtEmpId30"></td>
+                  </tr>
+                  <tr id="Emprow31">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox31" id="chkid31"
+                        onclick="javascript:funcheckempids(31);">
+                    </td>
+                    <td id="td178"><span>AVWP-CLNG-Facade
+                        Cleaning - Automated
+                        Vacuum Waste
+                        Plant</span><input type="hidden" name="txtEmpId31" value="178" id="txtEmpId31"></td>
+                  </tr>
+                  <tr id="Emprow32">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox32" id="chkid32"
+                        onclick="javascript:funcheckempids(32);">
+                    </td>
+                    <td id="td84"><span>AYM-TECH-Abdullah
+                        Yousef Mubarek Al
+                        Junaibi
+                        (NHL-3)</span><input type="hidden" name="txtEmpId32" value="84" id="txtEmpId32"></td>
+                  </tr>
+                  <tr id="Emprow33">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox33" id="chkid33"
+                        onclick="javascript:funcheckempids(33);">
+                    </td>
+                    <td id="td10"><span>B48G-CLNG-Burj 48
+                        Gate</span><input type="hidden" name="txtEmpId33" value="10" id="txtEmpId33"></td>
+                  </tr>
+                  <tr id="Emprow34">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox34" id="chkid34"
+                        onclick="javascript:funcheckempids(34);">
+                    </td>
+                    <td id="td93"><span>BASMA-CLNG-BAS Mall
+                        &amp;
+                        Accomodation</span><input type="hidden" name="txtEmpId34" value="93" id="txtEmpId34"></td>
+                  </tr>
+                  <tr id="Emprow35">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox35" id="chkid35"
+                        onclick="javascript:funcheckempids(35);">
+                    </td>
+                    <td id="td96"><span>BAT-TECH-C1 &amp; C2
+                        Towers Bateen - Abu
+                        Dhabi</span><input type="hidden" name="txtEmpId35" value="96" id="txtEmpId35"></td>
+                  </tr>
+                  <tr id="Emprow36">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox36" id="chkid36"
+                        onclick="javascript:funcheckempids(36);">
+                    </td>
+                    <td id="td95"><span>BAT2-CLNG-C1 &amp;
+                        C2 Towers Bateen - Abu
+                        Dhabi</span><input type="hidden" name="txtEmpId36" value="95" id="txtEmpId36"></td>
+                  </tr>
+                  <tr id="Emprow37">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox37" id="chkid37"
+                        onclick="javascript:funcheckempids(37);">
+                    </td>
+                    <td id="td90"><span>BAY1-TECH-Baniyas
+                        B/702</span><input type="hidden" name="txtEmpId37" value="90" id="txtEmpId37"></td>
+                  </tr>
+                  <tr id="Emprow38">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox38" id="chkid38"
+                        onclick="javascript:funcheckempids(38);">
+                    </td>
+                    <td id="td91"><span>BAY2-CLNG-Baniyas
+                        B/702</span><input type="hidden" name="txtEmpId38" value="91" id="txtEmpId38"></td>
+                  </tr>
+                  <tr id="Emprow39">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox39" id="chkid39"
+                        onclick="javascript:funcheckempids(39);">
+                    </td>
+                    <td id="td92"><span>BAY3-SEC-Baniyas
+                        B/702</span><input type="hidden" name="txtEmpId39" value="92" id="txtEmpId39"></td>
+                  </tr>
+                  <tr id="Emprow40">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox40" id="chkid40"
+                        onclick="javascript:funcheckempids(40);">
+                    </td>
+                    <td id="td9"><span>BB-CLNG-Bird &amp;
+                        Bird</span><input type="hidden" name="txtEmpId40" value="9" id="txtEmpId40"></td>
+                  </tr>
+                  <tr id="Emprow41">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox41" id="chkid41"
+                        onclick="javascript:funcheckempids(41);">
+                    </td>
+                    <td id="td8"><span>BC-CLNG-Beale &amp;
+                        Company</span><input type="hidden" name="txtEmpId41" value="8" id="txtEmpId41"></td>
+                  </tr>
+                  <tr id="Emprow42">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox42" id="chkid42"
+                        onclick="javascript:funcheckempids(42);">
+                    </td>
+                    <td id="td252"><span>BHAS-Burjeel
+                        hospital for advance
+                        surgery
+                        Dubai</span><input type="hidden" name="txtEmpId42" value="252" id="txtEmpId42"></td>
+                  </tr>
+                  <tr id="Emprow43">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox43" id="chkid43"
+                        onclick="javascript:funcheckempids(43);">
+                    </td>
+                    <td id="td94"><span>BIDCR-CLNG-BIDC
+                        Restaurant </span><input type="hidden" name="txtEmpId43" value="94" id="txtEmpId43"></td>
+                  </tr>
+                  <tr id="Emprow44">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox44" id="chkid44"
+                        onclick="javascript:funcheckempids(44);">
+                    </td>
+                    <td id="td236"><span>BONE-BonelliErede
+                        Middle East
+                        LLP</span><input type="hidden" name="txtEmpId44" value="236" id="txtEmpId44"></td>
+                  </tr>
+                  <tr id="Emprow45">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox45" id="chkid45"
+                        onclick="javascript:funcheckempids(45);">
+                    </td>
+                    <td id="td232"><span>BOVC-Blue Oasis
+                        Veterinary
+                        Clinic</span><input type="hidden" name="txtEmpId45" value="232" id="txtEmpId45"></td>
+                  </tr>
+                  <tr id="Emprow46">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox46" id="chkid46"
+                        onclick="javascript:funcheckempids(46);">
+                    </td>
+                    <td id="td224"><span>CCAGC-C&amp;C Alpha
+                        Group Investments
+                        Ltd</span><input type="hidden" name="txtEmpId46" value="224" id="txtEmpId46"></td>
+                  </tr>
+                  <tr id="Emprow47">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox47" id="chkid47"
+                        onclick="javascript:funcheckempids(47);">
+                    </td>
+                    <td id="td239"><span>CCO-TECH-Coca Cola
+                        Office - GT</span><input type="hidden" name="txtEmpId47" value="239" id="txtEmpId47"></td>
+                  </tr>
+                  <tr id="Emprow48">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox48" id="chkid48"
+                        onclick="javascript:funcheckempids(48);">
+                    </td>
+                    <td id="td97"><span>CE-CLNG-Canadian
+                        Embassy</span><input type="hidden" name="txtEmpId48" value="97" id="txtEmpId48"></td>
+                  </tr>
+                  <tr id="Emprow49">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox49" id="chkid49"
+                        onclick="javascript:funcheckempids(49);">
+                    </td>
+                    <td id="td231"><span>CGP:0231-Floor
+                        17-20@IPIC
+                        Square</span><input type="hidden" name="txtEmpId49" value="231" id="txtEmpId49"></td>
+                  </tr>
+                  <tr id="Emprow50">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox50" id="chkid50"
+                        onclick="javascript:funcheckempids(50);">
+                    </td>
+                    <td id="td98"><span>CNE-CLNG-Canon
+                        Emirates</span><input type="hidden" name="txtEmpId50" value="98" id="txtEmpId50"></td>
+                  </tr>
+                  <tr id="Emprow51">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox51" id="chkid51"
+                        onclick="javascript:funcheckempids(51);">
+                    </td>
+                    <td id="td221"><span>COR-TECH-Corys
+                        Warehouse -
+                        GT</span><input type="hidden" name="txtEmpId51" value="221" id="txtEmpId51"></td>
+                  </tr>
+                  <tr id="Emprow52">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox52" id="chkid52"
+                        onclick="javascript:funcheckempids(52);">
+                    </td>
+                    <td id="td102"><span>CPMM-CLNG-Center
+                        Point Marina Mall, Abu
+                        Dhabi</span><input type="hidden" name="txtEmpId52" value="102" id="txtEmpId52"></td>
+                  </tr>
+                  <tr id="Emprow53">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox53" id="chkid53"
+                        onclick="javascript:funcheckempids(53);">
+                    </td>
+                    <td id="td11"><span>CPS1-TECH-Caparol
+                        Paints </span><input type="hidden" name="txtEmpId53" value="11" id="txtEmpId53"></td>
+                  </tr>
+                  <tr id="Emprow54">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox54" id="chkid54"
+                        onclick="javascript:funcheckempids(54);">
+                    </td>
+                    <td id="td12"><span>CPS2-CLNG-Caparol
+                        Paints </span><input type="hidden" name="txtEmpId54" value="12" id="txtEmpId54"></td>
+                  </tr>
+                  <tr id="Emprow55">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox55" id="chkid55"
+                        onclick="javascript:funcheckempids(55);">
+                    </td>
+                    <td id="td13"><span>CPS3-SEC-Caparol
+                        Paints </span><input type="hidden" name="txtEmpId55" value="13" id="txtEmpId55"></td>
+                  </tr>
+                  <tr id="Emprow56">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox56" id="chkid56"
+                        onclick="javascript:funcheckempids(56);">
+                    </td>
+                    <td id="td100"><span>CPT1-TECH-Capital
+                        Plaza
+                        Towers</span><input type="hidden" name="txtEmpId56" value="100" id="txtEmpId56"></td>
+                  </tr>
+                  <tr id="Emprow57">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox57" id="chkid57"
+                        onclick="javascript:funcheckempids(57);">
+                    </td>
+                    <td id="td101"><span>CPT2-CLNG-Capital
+                        Plaza Towers
+                        GR</span><input type="hidden" name="txtEmpId57" value="101" id="txtEmpId57"></td>
+                  </tr>
+                  <tr id="Emprow58">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox58" id="chkid58"
+                        onclick="javascript:funcheckempids(58);">
+                    </td>
+                    <td id="td99"><span>CPT3-SEC-Capital
+                        Plaza
+                        Security</span><input type="hidden" name="txtEmpId58" value="99" id="txtEmpId58"></td>
+                  </tr>
+                  <tr id="Emprow59">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox59" id="chkid59"
+                        onclick="javascript:funcheckempids(59);">
+                    </td>
+                    <td id="td237"><span>CRS-CLNG-Charles
+                        Russell Speechlys
+                        LLP</span><input type="hidden" name="txtEmpId59" value="237" id="txtEmpId59"></td>
+                  </tr>
+                  <tr id="Emprow60">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox60" id="chkid60"
+                        onclick="javascript:funcheckempids(60);">
+                    </td>
+                    <td id="td223"><span>CTRR-Cayan Tower
+                        Residencies by
+                        Rotana</span><input type="hidden" name="txtEmpId60" value="223" id="txtEmpId60"></td>
+                  </tr>
+                  <tr id="Emprow61">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox61" id="chkid61"
+                        onclick="javascript:funcheckempids(61);">
+                    </td>
+                    <td id="td103"><span>CTS-CLNG-Cognizant
+                        Technology
+                        Solutions</span><input type="hidden" name="txtEmpId61" value="103" id="txtEmpId61"></td>
+                  </tr>
+                  <tr id="Emprow62">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox62" id="chkid62"
+                        onclick="javascript:funcheckempids(62);">
+                    </td>
+                    <td id="td248"><span>DD-SS-Dubai
+                        Developments</span><input type="hidden" name="txtEmpId62" value="248" id="txtEmpId62"></td>
+                  </tr>
+                  <tr id="Emprow63">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox63" id="chkid63"
+                        onclick="javascript:funcheckempids(63);">
+                    </td>
+                    <td id="td104"><span>DFSME-CLNG-DFS
+                        Middle East
+                        LLC</span><input type="hidden" name="txtEmpId63" value="104" id="txtEmpId63"></td>
+                  </tr>
+                  <tr id="Emprow64">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox64" id="chkid64"
+                        onclick="javascript:funcheckempids(64);">
+                    </td>
+                    <td id="td160"><span>DGP-CLNG-Discovery
+                        Gardens
+                        Pavilion</span><input type="hidden" name="txtEmpId64" value="160" id="txtEmpId64"></td>
+                  </tr>
+                  <tr id="Emprow65">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox65" id="chkid65"
+                        onclick="javascript:funcheckempids(65);">
+                    </td>
+                    <td id="td165"><span>DIPHQ-Dubai
+                        Investments - Head
+                        Quarter
+                        Building</span><input type="hidden" name="txtEmpId65" value="165" id="txtEmpId65"></td>
+                  </tr>
+                  <tr id="Emprow66">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox66" id="chkid66"
+                        onclick="javascript:funcheckempids(66);">
+                    </td>
+                    <td id="td257"><span>DIRE-Dubai
+                        International Real
+                        Estate</span><input type="hidden" name="txtEmpId66" value="257" id="txtEmpId66"></td>
+                  </tr>
+                  <tr id="Emprow67">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox67" id="chkid67"
+                        onclick="javascript:funcheckempids(67);">
+                    </td>
+                    <td id="td152"><span>DUSS-GRP-Dussmann
+                        Group</span><input type="hidden" name="txtEmpId67" value="152" id="txtEmpId67"></td>
+                  </tr>
+                  <tr id="Emprow68">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox68" id="chkid68"
+                        onclick="javascript:funcheckempids(68);">
+                    </td>
+                    <td id="td17"><span>EBC1-TECH-European
+                        Business
+                        Center</span><input type="hidden" name="txtEmpId68" value="17" id="txtEmpId68"></td>
+                  </tr>
+                  <tr id="Emprow69">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox69" id="chkid69"
+                        onclick="javascript:funcheckempids(69);">
+                    </td>
+                    <td id="td18"><span>EBC2-CLNG-European
+                        Business
+                        Center</span><input type="hidden" name="txtEmpId69" value="18" id="txtEmpId69"></td>
+                  </tr>
+                  <tr id="Emprow70">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox70" id="chkid70"
+                        onclick="javascript:funcheckempids(70);">
+                    </td>
+                    <td id="td19"><span>EBC3-SEC-European
+                        Business
+                        Center</span><input type="hidden" name="txtEmpId70" value="19" id="txtEmpId70"></td>
+                  </tr>
+                  <tr id="Emprow71">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox71" id="chkid71"
+                        onclick="javascript:funcheckempids(71);">
+                    </td>
+                    <td id="td170"><span>EBM-CLNG-Exceed
+                        Building
+                        Materials</span><input type="hidden" name="txtEmpId71" value="170" id="txtEmpId71"></td>
+                  </tr>
+                  <tr id="Emprow72">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox72" id="chkid72"
+                        onclick="javascript:funcheckempids(72);">
+                    </td>
+                    <td id="td253"><span>ECA-Abudhabi Early
+                        Childhood Authority
+                      </span><input type="hidden" name="txtEmpId72" value="253" id="txtEmpId72"></td>
+                  </tr>
+                  <tr id="Emprow73">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox73" id="chkid73"
+                        onclick="javascript:funcheckempids(73);">
+                    </td>
+                    <td id="td16"><span>EGGT-CLNG-Eurochef
+                        Gulf General Trading
+                        LLC</span><input type="hidden" name="txtEmpId73" value="16" id="txtEmpId73"></td>
+                  </tr>
+                  <tr id="Emprow74">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox74" id="chkid74"
+                        onclick="javascript:funcheckempids(74);">
+                    </td>
+                    <td id="td108"><span>EKN-CLNG-Embassy of
+                        Kingdom of
+                        Netherlands</span><input type="hidden" name="txtEmpId74" value="108" id="txtEmpId74"></td>
+                  </tr>
+                  <tr id="Emprow75">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox75" id="chkid75"
+                        onclick="javascript:funcheckempids(75);">
+                    </td>
+                    <td id="td244"><span>EMAAR-GR-IFM
+                        Services at Old Town
+                        Island &amp; OTA &amp; B
+                        - GR</span><input type="hidden" name="txtEmpId75" value="244" id="txtEmpId75"></td>
+                  </tr>
+                  <tr id="Emprow76">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox76" id="chkid76"
+                        onclick="javascript:funcheckempids(76);">
+                    </td>
+                    <td id="td243"><span>EMAAR-GT-IFM
+                        Services at Old Town
+                        Island &amp; OTA &amp; B
+                        - GT</span><input type="hidden" name="txtEmpId76" value="243" id="txtEmpId76"></td>
+                  </tr>
+                  <tr id="Emprow77">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox77" id="chkid77"
+                        onclick="javascript:funcheckempids(77);">
+                    </td>
+                    <td id="td242"><span>EMAAR-SD-IFM
+                        Services at Old Town
+                        Island &amp; OTA &amp; B
+                        - SD</span><input type="hidden" name="txtEmpId77" value="242" id="txtEmpId77"></td>
+                  </tr>
+                  <tr id="Emprow78">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox78" id="chkid78"
+                        onclick="javascript:funcheckempids(78);">
+                    </td>
+                    <td id="td194"><span>ENT-FM-Entegra FM
+                        Building Maintenance
+                        LLC</span><input type="hidden" name="txtEmpId78" value="194" id="txtEmpId78"></td>
+                  </tr>
+                  <tr id="Emprow79">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox79" id="chkid79"
+                        onclick="javascript:funcheckempids(79);">
+                    </td>
+                    <td id="td106"><span>EOJ-TECH-Embassy of
+                        Japan</span><input type="hidden" name="txtEmpId79" value="106" id="txtEmpId79"></td>
+                  </tr>
+                  <tr id="Emprow80">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox80" id="chkid80"
+                        onclick="javascript:funcheckempids(80);">
+                    </td>
+                    <td id="td109"><span>ERG-CLNG-Embassy of
+                        the Republic of
+                        Germany</span><input type="hidden" name="txtEmpId80" value="109" id="txtEmpId80"></td>
+                  </tr>
+                  <tr id="Emprow81">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox81" id="chkid81"
+                        onclick="javascript:funcheckempids(81);">
+                    </td>
+                    <td id="td15"><span>ES-CLNG-Eagles
+                        Spearing</span><input type="hidden" name="txtEmpId81" value="15" id="txtEmpId81"></td>
+                  </tr>
+                  <tr id="Emprow82">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox82" id="chkid82"
+                        onclick="javascript:funcheckempids(82);">
+                    </td>
+                    <td id="td21"><span>FAL1-TECH-Falcon
+                        House</span><input type="hidden" name="txtEmpId82" value="21" id="txtEmpId82"></td>
+                  </tr>
+                  <tr id="Emprow83">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox83" id="chkid83"
+                        onclick="javascript:funcheckempids(83);">
+                    </td>
+                    <td id="td22"><span>FAL2-CLNG-Falcon
+                        House</span><input type="hidden" name="txtEmpId83" value="22" id="txtEmpId83"></td>
+                  </tr>
+                  <tr id="Emprow84">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox84" id="chkid84"
+                        onclick="javascript:funcheckempids(84);">
+                    </td>
+                    <td id="td23"><span>FAL3-SEC-Falcon
+                        House</span><input type="hidden" name="txtEmpId84" value="23" id="txtEmpId84"></td>
+                  </tr>
+                  <tr id="Emprow85">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox85" id="chkid85"
+                        onclick="javascript:funcheckempids(85);">
+                    </td>
+                    <td id="td233"><span>FEDHR-Federal
+                        Authority of Govt.
+                        HR</span><input type="hidden" name="txtEmpId85" value="233" id="txtEmpId85"></td>
+                  </tr>
+                  <tr id="Emprow86">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox86" id="chkid86"
+                        onclick="javascript:funcheckempids(86);">
+                    </td>
+                    <td id="td247"><span>FF-TECH-FITNESS
+                        FIRST MEP FM
+                        SERVICES</span><input type="hidden" name="txtEmpId86" value="247" id="txtEmpId86"></td>
+                  </tr>
+                  <tr id="Emprow87">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox87" id="chkid87"
+                        onclick="javascript:funcheckempids(87);">
+                    </td>
+                    <td id="td151"><span>FGP-TECH-First Gulf
+                        Properties</span><input type="hidden" name="txtEmpId87" value="151" id="txtEmpId87"></td>
+                  </tr>
+                  <tr id="Emprow88">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox88" id="chkid88"
+                        onclick="javascript:funcheckempids(88);">
+                    </td>
+                    <td id="td110"><span>FML-TECH-Fluor
+                        MidEast
+                        Limited</span><input type="hidden" name="txtEmpId88" value="110" id="txtEmpId88"></td>
+                  </tr>
+                  <tr id="Emprow89">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox89" id="chkid89"
+                        onclick="javascript:funcheckempids(89);">
+                    </td>
+                    <td id="td24"><span>FTC-CLNG-Falcon
+                        Trade Corp</span><input type="hidden" name="txtEmpId89" value="24" id="txtEmpId89"></td>
+                  </tr>
+                  <tr id="Emprow90">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox90" id="chkid90"
+                        onclick="javascript:funcheckempids(90);">
+                    </td>
+                    <td id="td192"><span>GEBC-CLNG-German
+                        Emirati Business
+                        Center</span><input type="hidden" name="txtEmpId90" value="192" id="txtEmpId90"></td>
+                  </tr>
+                  <tr id="Emprow91">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox91" id="chkid91"
+                        onclick="javascript:funcheckempids(91);">
+                    </td>
+                    <td id="td25"><span>GI-CLNG-General
+                        International
+                        Group</span><input type="hidden" name="txtEmpId91" value="25" id="txtEmpId91"></td>
+                  </tr>
+                  <tr id="Emprow92">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox92" id="chkid92"
+                        onclick="javascript:funcheckempids(92);">
+                    </td>
+                    <td id="td135"><span>GIPCA-Real Estate
+                        Department of Sheikh
+                        Faisal -
+                        GIPCA</span><input type="hidden" name="txtEmpId92" value="135" id="txtEmpId92"></td>
+                  </tr>
+                  <tr id="Emprow93">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox93" id="chkid93"
+                        onclick="javascript:funcheckempids(93);">
+                    </td>
+                    <td id="td168"><span>GIS-DXB-German
+                        International School -
+                        Dubai Silicon
+                        Oasis</span><input type="hidden" name="txtEmpId93" value="168" id="txtEmpId93"></td>
+                  </tr>
+                  <tr id="Emprow94">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox94" id="chkid94"
+                        onclick="javascript:funcheckempids(94);">
+                    </td>
+                    <td id="td111"><span>GIS-TECH-German
+                        International School Abu
+                        Dhabi</span><input type="hidden" name="txtEmpId94" value="111" id="txtEmpId94"></td>
+                  </tr>
+                  <tr id="Emprow95">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox95" id="chkid95"
+                        onclick="javascript:funcheckempids(95);">
+                    </td>
+                    <td id="td173"><span>HACE-CLNG-Horse
+                        &amp; Carriage
+                        Equestrian Equipment
+                        LLC</span><input type="hidden" name="txtEmpId95" value="173" id="txtEmpId95"></td>
+                  </tr>
+                  <tr id="Emprow96">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox96" id="chkid96"
+                        onclick="javascript:funcheckempids(96);">
+                    </td>
+                    <td id="td81"><span>HAL-TECH-4 Villas
+                        Hasan Ali Al Lawghani
+                        Villa</span><input type="hidden" name="txtEmpId96" value="81" id="txtEmpId96"></td>
+                  </tr>
+                  <tr id="Emprow97">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox97" id="chkid97"
+                        onclick="javascript:funcheckempids(97);">
+                    </td>
+                    <td id="td174"><span>HBS-CLNG-Holland
+                        &amp; Barrett
+                        Store</span><input type="hidden" name="txtEmpId97" value="174" id="txtEmpId97"></td>
+                  </tr>
+                  <tr id="Emprow98">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox98" id="chkid98"
+                        onclick="javascript:funcheckempids(98);">
+                    </td>
+                    <td id="td149"><span>HDO-HO-Helpdesk
+                        Handover</span><input type="hidden" name="txtEmpId98" value="149" id="txtEmpId98"></td>
+                  </tr>
+                  <tr id="Emprow99">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox99" id="chkid99"
+                        onclick="javascript:funcheckempids(99);">
+                    </td>
+                    <td id="td193"><span>HHHT-CLNG-HHH
+                        Tahnoon Villa - Abu
+                        Dhabi</span><input type="hidden" name="txtEmpId99" value="193" id="txtEmpId99"></td>
+                  </tr>
+                  <tr id="Emprow100">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox100" id="chkid100"
+                        onclick="javascript:funcheckempids(100);">
+                    </td>
+                    <td id="td82"><span>HHS-TECH-8 Villas
+                        HH. Shtbz
+                        Villas</span><input type="hidden" name="txtEmpId100" value="82" id="txtEmpId100"></td>
+                  </tr>
+                  <tr id="Emprow101">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox101" id="chkid101"
+                        onclick="javascript:funcheckempids(101);">
+                    </td>
+                    <td id="td116"><span>HIL1-TECH-Hilton
+                        Hotel - Abu
+                        Dhabi</span><input type="hidden" name="txtEmpId101" value="116" id="txtEmpId101"></td>
+                  </tr>
+                  <tr id="Emprow102">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox102" id="chkid102"
+                        onclick="javascript:funcheckempids(102);">
+                    </td>
+                    <td id="td115"><span>HIL2-CLNG-Hilton
+                        Hotel - Abu
+                        Dhabi</span><input type="hidden" name="txtEmpId102" value="115" id="txtEmpId102"></td>
+                  </tr>
+                  <tr id="Emprow103">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox103" id="chkid103"
+                        onclick="javascript:funcheckempids(103);">
+                    </td>
+                    <td id="td235"><span>HLL-Houlihan Lokey
+                        Limited</span><input type="hidden" name="txtEmpId103" value="235" id="txtEmpId103"></td>
+                  </tr>
+                  <tr id="Emprow104">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox104" id="chkid104"
+                        onclick="javascript:funcheckempids(104);">
+                    </td>
+                    <td id="td112"><span>HMA-TECH-Hamad
+                        Mubarak Al Shamsi Villa
+                        No. 90</span><input type="hidden" name="txtEmpId104" value="112" id="txtEmpId104"></td>
+                  </tr>
+                  <tr id="Emprow105">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox105" id="chkid105"
+                        onclick="javascript:funcheckempids(105);">
+                    </td>
+                    <td id="td228"><span>HP-Health
+                        Point</span><input type="hidden" name="txtEmpId105" value="228" id="txtEmpId105"></td>
+                  </tr>
+                  <tr id="Emprow106">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox106" id="chkid106"
+                        onclick="javascript:funcheckempids(106);">
+                    </td>
+                    <td id="td75"><span>HRC-Human Resource
+                        Complaint</span><input type="hidden" name="txtEmpId106" value="75" id="txtEmpId106"></td>
+                  </tr>
+                  <tr id="Emprow107">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox107" id="chkid107"
+                        onclick="javascript:funcheckempids(107);">
+                    </td>
+                    <td id="td28"><span>HSC-CLNG-Hamdan
+                        Sports
+                        Complex</span><input type="hidden" name="txtEmpId107" value="28" id="txtEmpId107"></td>
+                  </tr>
+                  <tr id="Emprow108">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox108" id="chkid108"
+                        onclick="javascript:funcheckempids(108);">
+                    </td>
+                    <td id="td29"><span>HSS-SEC-Huawei
+                        Security
+                        Service</span><input type="hidden" name="txtEmpId108" value="29" id="txtEmpId108"></td>
+                  </tr>
+                  <tr id="Emprow109">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox109" id="chkid109"
+                        onclick="javascript:funcheckempids(109);">
+                    </td>
+                    <td id="td30"><span>HT-CLNG-Huawei Tech
+                        - AUH</span><input type="hidden" name="txtEmpId109" value="30" id="txtEmpId109"></td>
+                  </tr>
+                  <tr id="Emprow110">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox110" id="chkid110"
+                        onclick="javascript:funcheckempids(110);">
+                    </td>
+                    <td id="td31"><span>HT1-CLNG-Huawei Tech
+                        Cleaning and Other
+                        Services</span><input type="hidden" name="txtEmpId110" value="31" id="txtEmpId110"></td>
+                  </tr>
+                  <tr id="Emprow111">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox111" id="chkid111"
+                        onclick="javascript:funcheckempids(111);">
+                    </td>
+                    <td id="td189"><span>HVDFC-CLNG-Hillside
+                        Village
+                        -DFC</span><input type="hidden" name="txtEmpId111" value="189" id="txtEmpId111"></td>
+                  </tr>
+                  <tr id="Emprow112">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox112" id="chkid112"
+                        onclick="javascript:funcheckempids(112);">
+                    </td>
+                    <td id="td234"><span>HWML-Harbour Wealth
+                        Management
+                        Ltd</span><input type="hidden" name="txtEmpId112" value="234" id="txtEmpId112"></td>
+                  </tr>
+                  <tr id="Emprow113">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox113" id="chkid113"
+                        onclick="javascript:funcheckempids(113);">
+                    </td>
+                    <td id="td163"><span>IBN-CLNG-IBN
+                        Battuta
+                        Mall</span><input type="hidden" name="txtEmpId113" value="163" id="txtEmpId113"></td>
+                  </tr>
+                  <tr id="Emprow114">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox114" id="chkid114"
+                        onclick="javascript:funcheckempids(114);">
+                    </td>
+                    <td id="td172"><span>IBNEA-CLNG-IBN
+                        Battuta Mall - Expansion
+                        Area</span><input type="hidden" name="txtEmpId114" value="172" id="txtEmpId114"></td>
+                  </tr>
+                  <tr id="Emprow115">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox115" id="chkid115"
+                        onclick="javascript:funcheckempids(115);">
+                    </td>
+                    <td id="td161"><span>ICP-CLNG-International
+                        City
+                        Pavilion</span><input type="hidden" name="txtEmpId115" value="161" id="txtEmpId115"></td>
+                  </tr>
+                  <tr id="Emprow116">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox116" id="chkid116"
+                        onclick="javascript:funcheckempids(116);">
+                    </td>
+                    <td id="td225"><span>ICT-ICT United
+                        Square</span><input type="hidden" name="txtEmpId116" value="225" id="txtEmpId116"></td>
+                  </tr>
+                  <tr id="Emprow117">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox117" id="chkid117"
+                        onclick="javascript:funcheckempids(117);">
+                    </td>
+                    <td id="td238"><span>IFXI-IFX
+                        International</span><input type="hidden" name="txtEmpId117" value="238" id="txtEmpId117"></td>
+                  </tr>
+                  <tr id="Emprow118">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox118" id="chkid118"
+                        onclick="javascript:funcheckempids(118);">
+                    </td>
+                    <td id="td164"><span>IMI-CLNG-International
+                        Media
+                        Investments</span><input type="hidden" name="txtEmpId118" value="164" id="txtEmpId118"></td>
+                  </tr>
+                  <tr id="Emprow119">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox119" id="chkid119"
+                        onclick="javascript:funcheckempids(119);">
+                    </td>
+                    <td id="td155"><span>IPIC-CLNG-IPIC
+                        TOWER - AUH</span><input type="hidden" name="txtEmpId119" value="155" id="txtEmpId119"></td>
+                  </tr>
+                  <tr id="Emprow120">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox120" id="chkid120"
+                        onclick="javascript:funcheckempids(120);">
+                    </td>
+                    <td id="td33"><span>ITL231-CLNG-Index
+                        Tower Level 23
+                      </span><input type="hidden" name="txtEmpId120" value="33" id="txtEmpId120"></td>
+                  </tr>
+                  <tr id="Emprow121">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox121" id="chkid121"
+                        onclick="javascript:funcheckempids(121);">
+                    </td>
+                    <td id="td34"><span>ITL232-SEC-Index
+                        Tower Level 23
+                      </span><input type="hidden" name="txtEmpId121" value="34" id="txtEmpId121"></td>
+                  </tr>
+                  <tr id="Emprow122">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox122" id="chkid122"
+                        onclick="javascript:funcheckempids(122);">
+                    </td>
+                    <td id="td35"><span>ITO1-TECH-Index
+                        Tower
+                        Offices</span><input type="hidden" name="txtEmpId122" value="35" id="txtEmpId122"></td>
+                  </tr>
+                  <tr id="Emprow123">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox123" id="chkid123"
+                        onclick="javascript:funcheckempids(123);">
+                    </td>
+                    <td id="td36"><span>ITO2-CLNG-Index
+                        Tower
+                        Offices</span><input type="hidden" name="txtEmpId123" value="36" id="txtEmpId123"></td>
+                  </tr>
+                  <tr id="Emprow124">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox124" id="chkid124"
+                        onclick="javascript:funcheckempids(124);">
+                    </td>
+                    <td id="td37"><span>ITO3-SEC-Index Tower
+                        Offices</span><input type="hidden" name="txtEmpId124" value="37" id="txtEmpId124"></td>
+                  </tr>
+                  <tr id="Emprow125">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox125" id="chkid125"
+                        onclick="javascript:funcheckempids(125);">
+                    </td>
+                    <td id="td76"><span>ITR-IT
+                        Request</span><input type="hidden" name="txtEmpId125" value="76" id="txtEmpId125"></td>
+                  </tr>
+                  <tr id="Emprow126">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox126" id="chkid126"
+                        onclick="javascript:funcheckempids(126);">
+                    </td>
+                    <td id="td218"><span>ITRM-GR-Index Tower
+                        Retail Mall -
+                        GR</span><input type="hidden" name="txtEmpId126" value="218" id="txtEmpId126"></td>
+                  </tr>
+                  <tr id="Emprow127">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox127" id="chkid127"
+                        onclick="javascript:funcheckempids(127);">
+                    </td>
+                    <td id="td217"><span>ITRM-GT-Index Tower
+                        Retail Mall -
+                        GT</span><input type="hidden" name="txtEmpId127" value="217" id="txtEmpId127"></td>
+                  </tr>
+                  <tr id="Emprow128">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox128" id="chkid128"
+                        onclick="javascript:funcheckempids(128);">
+                    </td>
+                    <td id="td175"><span>JARC-CLNG-Jebel Ali
+                        Recreation
+                        Club</span><input type="hidden" name="txtEmpId128" value="175" id="txtEmpId128"></td>
+                  </tr>
+                  <tr id="Emprow129">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox129" id="chkid129"
+                        onclick="javascript:funcheckempids(129);">
+                    </td>
+                    <td id="td176"><span>JHOA-CLNG-Jumeirah
+                        Heights Owner's
+                        Association
+                        Building</span><input type="hidden" name="txtEmpId129" value="176" id="txtEmpId129"></td>
+                  </tr>
+                  <tr id="Emprow130">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox130" id="chkid130"
+                        onclick="javascript:funcheckempids(130);">
+                    </td>
+                    <td id="td162"><span>JPV-CLNG-Jumeirah
+                        Park
+                        Pavilion</span><input type="hidden" name="txtEmpId130" value="162" id="txtEmpId130"></td>
+                  </tr>
+                  <tr id="Emprow131">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox131" id="chkid131"
+                        onclick="javascript:funcheckempids(131);">
+                    </td>
+                    <td id="td186"><span>JUMO-CLNG-JUMO Gmbh
+                        Cleaning
+                        Services</span><input type="hidden" name="txtEmpId131" value="186" id="txtEmpId131"></td>
+                  </tr>
+                  <tr id="Emprow132">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox132" id="chkid132"
+                        onclick="javascript:funcheckempids(132);">
+                    </td>
+                    <td id="td169">
+                      <span>KBG-CLNG-Kongsberg</span><input type="hidden" name="txtEmpId132" value="169"
+                        id="txtEmpId132">
+                    </td>
+                  </tr>
+                  <tr id="Emprow133">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox133" id="chkid133"
+                        onclick="javascript:funcheckempids(133);">
+                    </td>
+                    <td id="td182"><span>KS-TECH-Khaadi
+                        Stores </span><input type="hidden" name="txtEmpId133" value="182" id="txtEmpId133"></td>
+                  </tr>
+                  <tr id="Emprow134">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox134" id="chkid134"
+                        onclick="javascript:funcheckempids(134);">
+                    </td>
+                    <td id="td38"><span>LDT-TECH-Landmark
+                        DWC &amp; HQ Tecom
+                        Building</span><input type="hidden" name="txtEmpId134" value="38" id="txtEmpId134"></td>
+                  </tr>
+                  <tr id="Emprow135">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox135" id="chkid135"
+                        onclick="javascript:funcheckempids(135);">
+                    </td>
+                    <td id="td157"><span>LGT-CLNG-LULU GROUP
+                        Y TOWER</span><input type="hidden" name="txtEmpId135" value="157" id="txtEmpId135"></td>
+                  </tr>
+                  <tr id="Emprow136">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox136" id="chkid136"
+                        onclick="javascript:funcheckempids(136);">
+                    </td>
+                    <td id="td150"><span>LLV-TECH-Living
+                        Legends
+                        Villa</span><input type="hidden" name="txtEmpId136" value="150" id="txtEmpId136"></td>
+                  </tr>
+                  <tr id="Emprow137">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox137" id="chkid137"
+                        onclick="javascript:funcheckempids(137);">
+                    </td>
+                    <td id="td148"><span>LMG-IFM-IFM
+                        Services LMG
+                      </span><input type="hidden" name="txtEmpId137" value="148" id="txtEmpId137"></td>
+                  </tr>
+                  <tr id="Emprow138">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox138" id="chkid138"
+                        onclick="javascript:funcheckempids(138);">
+                    </td>
+                    <td id="td249"><span>LMG-KSA-IFM
+                        Services
+                        KSA</span><input type="hidden" name="txtEmpId138" value="249" id="txtEmpId138"></td>
+                  </tr>
+                  <tr id="Emprow139">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox139" id="chkid139"
+                        onclick="javascript:funcheckempids(139);">
+                    </td>
+                    <td id="td158"><span>LOFT-CLNG-Loft
+                        Towers Dubai
+                        Sites</span><input type="hidden" name="txtEmpId139" value="158" id="txtEmpId139"></td>
+                  </tr>
+                  <tr id="Emprow140">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox140" id="chkid140"
+                        onclick="javascript:funcheckempids(140);">
+                    </td>
+                    <td id="td119"><span>LSG-CLNG-Lexington
+                        Security
+                        Group</span><input type="hidden" name="txtEmpId140" value="119" id="txtEmpId140"></td>
+                  </tr>
+                  <tr id="Emprow141">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox141" id="chkid141"
+                        onclick="javascript:funcheckempids(141);">
+                    </td>
+                    <td id="td219"><span>LV-GT-Louis
+                        Vuitton</span><input type="hidden" name="txtEmpId141" value="219" id="txtEmpId141"></td>
+                  </tr>
+                  <tr id="Emprow142">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox142" id="chkid142"
+                        onclick="javascript:funcheckempids(142);">
+                    </td>
+                    <td id="td47"><span>MAH-CLNG-Millennium
+                        Airport
+                        Hotel</span><input type="hidden" name="txtEmpId142" value="47" id="txtEmpId142"></td>
+                  </tr>
+                  <tr id="Emprow143">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox143" id="chkid143"
+                        onclick="javascript:funcheckempids(143);">
+                    </td>
+                    <td id="td122"><span>MAK-TECH-Makeen
+                        Properties</span><input type="hidden" name="txtEmpId143" value="122" id="txtEmpId143"></td>
+                  </tr>
+                  <tr id="Emprow144">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox144" id="chkid144"
+                        onclick="javascript:funcheckempids(144);">
+                    </td>
+                    <td id="td121"><span>MAK2-CLNG-Makeen
+                        Properties</span><input type="hidden" name="txtEmpId144" value="121" id="txtEmpId144"></td>
+                  </tr>
+                  <tr id="Emprow145">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox145" id="chkid145"
+                        onclick="javascript:funcheckempids(145);">
+                    </td>
+                    <td id="td120"><span>MBC-CLNG-Makateb
+                        Business
+                        Center</span><input type="hidden" name="txtEmpId145" value="120" id="txtEmpId145"></td>
+                  </tr>
+                  <tr id="Emprow146">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox146" id="chkid146"
+                        onclick="javascript:funcheckempids(146);">
+                    </td>
+                    <td id="td124"><span>MCMI1-CLNG-Masdar
+                        City &amp; Masdar
+                        Institute Cleaning
+                        Services</span><input type="hidden" name="txtEmpId146" value="124" id="txtEmpId146"></td>
+                  </tr>
+                  <tr id="Emprow147">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox147" id="chkid147"
+                        onclick="javascript:funcheckempids(147);">
+                    </td>
+                    <td id="td203"><span>MCMI10-CLNG-Masdar
+                        City &amp; Masdar
+                        Institute Cleaning
+                        Services</span><input type="hidden" name="txtEmpId147" value="203" id="txtEmpId147"></td>
+                  </tr>
+                  <tr id="Emprow148">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox148" id="chkid148"
+                        onclick="javascript:funcheckempids(148);">
+                    </td>
+                    <td id="td204"><span>MCMI11-CLNG-Masdar
+                        City &amp; Masdar
+                        Institute Cleaning
+                        Services</span><input type="hidden" name="txtEmpId148" value="204" id="txtEmpId148"></td>
+                  </tr>
+                  <tr id="Emprow149">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox149" id="chkid149"
+                        onclick="javascript:funcheckempids(149);">
+                    </td>
+                    <td id="td205"><span>MCMI12-CLNG-Masdar
+                        City &amp; Masdar
+                        Institute Cleaning
+                        Services</span><input type="hidden" name="txtEmpId149" value="205" id="txtEmpId149"></td>
+                  </tr>
+                  <tr id="Emprow150">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox150" id="chkid150"
+                        onclick="javascript:funcheckempids(150);">
+                    </td>
+                    <td id="td206"><span>MCMI13-CLNG-Masdar
+                        City &amp; Masdar
+                        Institute Cleaning
+                        Services</span><input type="hidden" name="txtEmpId150" value="206" id="txtEmpId150"></td>
+                  </tr>
+                  <tr id="Emprow151">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox151" id="chkid151"
+                        onclick="javascript:funcheckempids(151);">
+                    </td>
+                    <td id="td207"><span>MCMI14-CLNG-Masdar
+                        City &amp; Masdar
+                        Institute Cleaning
+                        Services</span><input type="hidden" name="txtEmpId151" value="207" id="txtEmpId151"></td>
+                  </tr>
+                  <tr id="Emprow152">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox152" id="chkid152"
+                        onclick="javascript:funcheckempids(152);">
+                    </td>
+                    <td id="td208"><span>MCMI15-CLNG-Masdar
+                        City &amp; Masdar
+                        Institute Cleaning
+                        Services</span><input type="hidden" name="txtEmpId152" value="208" id="txtEmpId152"></td>
+                  </tr>
+                  <tr id="Emprow153">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox153" id="chkid153"
+                        onclick="javascript:funcheckempids(153);">
+                    </td>
+                    <td id="td125"><span>MCMI2-CLNG-Masdar
+                        City &amp; Masdar
+                        Institute Façade
+                        Cleaning</span><input type="hidden" name="txtEmpId153" value="125" id="txtEmpId153"></td>
+                  </tr>
+                  <tr id="Emprow154">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox154" id="chkid154"
+                        onclick="javascript:funcheckempids(154);">
+                    </td>
+                    <td id="td196"><span>MCMI3-CLNG-Masdar
+                        City &amp; Masdar
+                        Institute Cleaning
+                        Services</span><input type="hidden" name="txtEmpId154" value="196" id="txtEmpId154"></td>
+                  </tr>
+                  <tr id="Emprow155">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox155" id="chkid155"
+                        onclick="javascript:funcheckempids(155);">
+                    </td>
+                    <td id="td197"><span>MCMI4-CLNG-Masdar
+                        City &amp; Masdar
+                        Institute Cleaning
+                        Services</span><input type="hidden" name="txtEmpId155" value="197" id="txtEmpId155"></td>
+                  </tr>
+                  <tr id="Emprow156">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox156" id="chkid156"
+                        onclick="javascript:funcheckempids(156);">
+                    </td>
+                    <td id="td198"><span>MCMI5-CLNG-Masdar
+                        City &amp; Masdar
+                        Institute Cleaning
+                        Services</span><input type="hidden" name="txtEmpId156" value="198" id="txtEmpId156"></td>
+                  </tr>
+                  <tr id="Emprow157">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox157" id="chkid157"
+                        onclick="javascript:funcheckempids(157);">
+                    </td>
+                    <td id="td199"><span>MCMI6-CLNG-Masdar
+                        City &amp; Masdar
+                        Institute Cleaning
+                        Services</span><input type="hidden" name="txtEmpId157" value="199" id="txtEmpId157"></td>
+                  </tr>
+                  <tr id="Emprow158">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox158" id="chkid158"
+                        onclick="javascript:funcheckempids(158);">
+                    </td>
+                    <td id="td200"><span>MCMI7-CLNG-Masdar
+                        City &amp; Masdar
+                        Institute Cleaning
+                        Services</span><input type="hidden" name="txtEmpId158" value="200" id="txtEmpId158"></td>
+                  </tr>
+                  <tr id="Emprow159">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox159" id="chkid159"
+                        onclick="javascript:funcheckempids(159);">
+                    </td>
+                    <td id="td201"><span>MCMI8-CLNG-Masdar
+                        City &amp; Masdar
+                        Institute Cleaning
+                        Services</span><input type="hidden" name="txtEmpId159" value="201" id="txtEmpId159"></td>
+                  </tr>
+                  <tr id="Emprow160">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox160" id="chkid160"
+                        onclick="javascript:funcheckempids(160);">
+                    </td>
+                    <td id="td202"><span>MCMI9-CLNG-Masdar
+                        City &amp; Masdar
+                        Institute Cleaning
+                        Services</span><input type="hidden" name="txtEmpId160" value="202" id="txtEmpId160"></td>
+                  </tr>
+                  <tr id="Emprow161">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox161" id="chkid161"
+                        onclick="javascript:funcheckempids(161);">
+                    </td>
+                    <td id="td241"><span>MER-GR-MERCK Office
+                        - GR</span><input type="hidden" name="txtEmpId161" value="241" id="txtEmpId161"></td>
+                  </tr>
+                  <tr id="Emprow162">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox162" id="chkid162"
+                        onclick="javascript:funcheckempids(162);">
+                    </td>
+                    <td id="td240"><span>MER-GT-MERCK Office
+                        - GT</span><input type="hidden" name="txtEmpId162" value="240" id="txtEmpId162"></td>
+                  </tr>
+                  <tr id="Emprow163">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox163" id="chkid163"
+                        onclick="javascript:funcheckempids(163);">
+                    </td>
+                    <td id="td226"><span>MFZE-Mammoet
+                        FZE</span><input type="hidden" name="txtEmpId163" value="226" id="txtEmpId163"></td>
+                  </tr>
+                  <tr id="Emprow164">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox164" id="chkid164"
+                        onclick="javascript:funcheckempids(164);">
+                    </td>
+                    <td id="td153"><span>MG-CLNG-Meydan
+                        Grandstand</span><input type="hidden" name="txtEmpId164" value="153" id="txtEmpId164"></td>
+                  </tr>
+                  <tr id="Emprow165">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox165" id="chkid165"
+                        onclick="javascript:funcheckempids(165);">
+                    </td>
+                    <td id="td195"><span>MHGM-CLNG-Millennium
+                        Hotel GM's
+                        Villa</span><input type="hidden" name="txtEmpId165" value="195" id="txtEmpId165"></td>
+                  </tr>
+                  <tr id="Emprow166">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox166" id="chkid166"
+                        onclick="javascript:funcheckempids(166);">
+                    </td>
+                    <td id="td209"><span>MISP-GR-Mubadala
+                        IPIC Square
+                        Project</span><input type="hidden" name="txtEmpId166" value="209" id="txtEmpId166"></td>
+                  </tr>
+                  <tr id="Emprow167">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox167" id="chkid167"
+                        onclick="javascript:funcheckempids(167);">
+                    </td>
+                    <td id="td123"><span>MKT-TECH-Malak
+                        Towers</span><input type="hidden" name="txtEmpId167" value="123" id="txtEmpId167"></td>
+                  </tr>
+                  <tr id="Emprow168">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox168" id="chkid168"
+                        onclick="javascript:funcheckempids(168);">
+                    </td>
+                    <td id="td139"><span>MMN-TECH-Shiekh
+                        Mabarak Mohd Al
+                        Nahyan</span><input type="hidden" name="txtEmpId168" value="139" id="txtEmpId168"></td>
+                  </tr>
+                  <tr id="Emprow169">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox169" id="chkid169"
+                        onclick="javascript:funcheckempids(169);">
+                    </td>
+                    <td id="td262"><span>MPM-MPM
+                        Properties</span><input type="hidden" name="txtEmpId169" value="262" id="txtEmpId169"></td>
+                  </tr>
+                  <tr id="Emprow170">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox170" id="chkid170"
+                        onclick="javascript:funcheckempids(170);">
+                    </td>
+                    <td id="td126"><span>MRK1-TECH-Mohamad
+                        Rasool Khoory &amp; Sons
+                        10
+                        Outlets</span><input type="hidden" name="txtEmpId170" value="126" id="txtEmpId170"></td>
+                  </tr>
+                  <tr id="Emprow171">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox171" id="chkid171"
+                        onclick="javascript:funcheckempids(171);">
+                    </td>
+                    <td id="td127"><span>MRK2-TECH-Mohamad
+                        Rasool Khoory &amp; Sons
+                        10
+                        Outlets</span><input type="hidden" name="txtEmpId171" value="127" id="txtEmpId171"></td>
+                  </tr>
+                  <tr id="Emprow172">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox172" id="chkid172"
+                        onclick="javascript:funcheckempids(172);">
+                    </td>
+                    <td id="td128"><span>MRK3-TECH-Mohamad
+                        Rasool Khoory &amp; Sons
+                        10
+                        Outlets</span><input type="hidden" name="txtEmpId172" value="128" id="txtEmpId172"></td>
+                  </tr>
+                  <tr id="Emprow173">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox173" id="chkid173"
+                        onclick="javascript:funcheckempids(173);">
+                    </td>
+                    <td id="td129"><span>MRK4-TECH-Mohamad
+                        Rasool Khoory &amp; Sons
+                        10
+                        Outlets</span><input type="hidden" name="txtEmpId173" value="129" id="txtEmpId173"></td>
+                  </tr>
+                  <tr id="Emprow174">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox174" id="chkid174"
+                        onclick="javascript:funcheckempids(174);">
+                    </td>
+                    <td id="td130"><span>MRK5-TECH-Mohamad
+                        Rasool Khoory &amp; Sons
+                        10
+                        Outlets</span><input type="hidden" name="txtEmpId174" value="130" id="txtEmpId174"></td>
+                  </tr>
+                  <tr id="Emprow175">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox175" id="chkid175"
+                        onclick="javascript:funcheckempids(175);">
+                    </td>
+                    <td id="td131"><span>MRKS-CLNG-Mohamad
+                        Rasool Khoory &amp; Sons
+                        - Khalidiya Mall
+                      </span><input type="hidden" name="txtEmpId175" value="131" id="txtEmpId175">
+                    </td>
+                  </tr>
+                  <tr id="Emprow176">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox176" id="chkid176"
+                        onclick="javascript:funcheckempids(176);">
+                    </td>
+                    <td id="td177"><span>MRS-CLNG-Marina
+                        Square</span><input type="hidden" name="txtEmpId176" value="177" id="txtEmpId176"></td>
+                  </tr>
+                  <tr id="Emprow177">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox177" id="chkid177"
+                        onclick="javascript:funcheckempids(177);">
+                    </td>
+                    <td id="td258"><span>MRT-Marina Rise
+                        Tower</span><input type="hidden" name="txtEmpId177" value="258" id="txtEmpId177"></td>
+                  </tr>
+                  <tr id="Emprow178">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox178" id="chkid178"
+                        onclick="javascript:funcheckempids(178);">
+                    </td>
+                    <td id="td132"><span>MSA-TECH-Mr.
+                        Mohamed Saeed Abdullah
+                        Al Naqbi</span><input type="hidden" name="txtEmpId178" value="132" id="txtEmpId178"></td>
+                  </tr>
+                  <tr id="Emprow179">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox179" id="chkid179"
+                        onclick="javascript:funcheckempids(179);">
+                    </td>
+                    <td id="td80"><span>MSAV-TECH-3 Villas
+                        of Mohamedd Saeed
+                        Alnaqbi</span><input type="hidden" name="txtEmpId179" value="80" id="txtEmpId179"></td>
+                  </tr>
+                  <tr id="Emprow180">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox180" id="chkid180"
+                        onclick="javascript:funcheckempids(180);">
+                    </td>
+                    <td id="td154"><span>MUL-CLNG-Make Up
+                        Lab Bas
+                        Mall</span><input type="hidden" name="txtEmpId180" value="154" id="txtEmpId180"></td>
+                  </tr>
+                  <tr id="Emprow181">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox181" id="chkid181"
+                        onclick="javascript:funcheckempids(181);">
+                    </td>
+                    <td id="td220"><span>MWO-GR-Mubadala
+                        Wave One</span><input type="hidden" name="txtEmpId181" value="220" id="txtEmpId181"></td>
+                  </tr>
+                  <tr id="Emprow182">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox182" id="chkid182"
+                        onclick="javascript:funcheckempids(182);">
+                    </td>
+                    <td id="td180"><span>NDTG-CLNG-NDT
+                        Global</span><input type="hidden" name="txtEmpId182" value="180" id="txtEmpId182"></td>
+                  </tr>
+                  <tr id="Emprow183">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox183" id="chkid183"
+                        onclick="javascript:funcheckempids(183);">
+                    </td>
+                    <td id="td179"><span>OBR-CLNG-The Oberoi
+                        Beach Resort Al Zorah -
+                        Ajman</span><input type="hidden" name="txtEmpId183" value="179" id="txtEmpId183"></td>
+                  </tr>
+                  <tr id="Emprow184">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox184" id="chkid184"
+                        onclick="javascript:funcheckempids(184);">
+                    </td>
+                    <td id="td256"><span>OC-TECH-Oasis
+                        Centre LLC</span><input type="hidden" name="txtEmpId184" value="256" id="txtEmpId184"></td>
+                  </tr>
+                  <tr id="Emprow185">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox185" id="chkid185"
+                        onclick="javascript:funcheckempids(185);">
+                    </td>
+                    <td id="td49"><span>OH-CLNG-Oberoi
+                        Hotel</span><input type="hidden" name="txtEmpId185" value="49" id="txtEmpId185"></td>
+                  </tr>
+                  <tr id="Emprow186">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox186" id="chkid186"
+                        onclick="javascript:funcheckempids(186);">
+                    </td>
+                    <td id="td50"><span>OSL-SEC-Oracle
+                        Systems
+                        Limited</span><input type="hidden" name="txtEmpId186" value="50" id="txtEmpId186"></td>
+                  </tr>
+                  <tr id="Emprow187">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox187" id="chkid187"
+                        onclick="javascript:funcheckempids(187);">
+                    </td>
+                    <td id="td255">
+                      <span>OVHProject-ProjectOverheadAUX-DXB</span><input type="hidden" name="txtEmpId187" value="255"
+                        id="txtEmpId187">
+                    </td>
+                  </tr>
+                  <tr id="Emprow188">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox188" id="chkid188"
+                        onclick="javascript:funcheckempids(188);">
+                    </td>
+                    <td id="td227"><span>PAH-Pivot Asset
+                        Holding</span><input type="hidden" name="txtEmpId188" value="227" id="txtEmpId188"></td>
+                  </tr>
+                  <tr id="Emprow189">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox189" id="chkid189"
+                        onclick="javascript:funcheckempids(189);">
+                    </td>
+                    <td id="td171"><span>PALL-TECH-PALL
+                        Netherland
+                        BV</span><input type="hidden" name="txtEmpId189" value="171" id="txtEmpId189"></td>
+                  </tr>
+                  <tr id="Emprow190">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox190" id="chkid190"
+                        onclick="javascript:funcheckempids(190);">
+                    </td>
+                    <td id="td51"><span>PDQ1-TECH-Porsche HQ
+                        Dubai, DSO</span><input type="hidden" name="txtEmpId190" value="51" id="txtEmpId190"></td>
+                  </tr>
+                  <tr id="Emprow191">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox191" id="chkid191"
+                        onclick="javascript:funcheckempids(191);">
+                    </td>
+                    <td id="td52"><span>PDQ2-CLNG-Porsche HQ
+                        Dubai, DSO</span><input type="hidden" name="txtEmpId191" value="52" id="txtEmpId191"></td>
+                  </tr>
+                  <tr id="Emprow192">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox192" id="chkid192"
+                        onclick="javascript:funcheckempids(192);">
+                    </td>
+                    <td id="td53"><span>PDQ3-SEC-Porsche HQ
+                        Dubai, DSO</span><input type="hidden" name="txtEmpId192" value="53" id="txtEmpId192"></td>
+                  </tr>
+                  <tr id="Emprow193">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox193" id="chkid193"
+                        onclick="javascript:funcheckempids(193);">
+                    </td>
+                    <td id="td55">
+                      <span>PGS-CLNG-Progesys</span><input type="hidden" name="txtEmpId193" value="55" id="txtEmpId193">
+                    </td>
+                  </tr>
+                  <tr id="Emprow194">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox194" id="chkid194"
+                        onclick="javascript:funcheckempids(194);">
+                    </td>
+                    <td id="td191"><span>PHL-CLNG-Pass
+                        Holdco
+                        Limited</span><input type="hidden" name="txtEmpId194" value="191" id="txtEmpId194"></td>
+                  </tr>
+                  <tr id="Emprow195">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox195" id="chkid195"
+                        onclick="javascript:funcheckempids(195);">
+                    </td>
+                    <td id="td263"><span>PROVIS-YAS ACRES
+                        Community – Yas
+                        Island</span><input type="hidden" name="txtEmpId195" value="263" id="txtEmpId195"></td>
+                  </tr>
+                  <tr id="Emprow196">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox196" id="chkid196"
+                        onclick="javascript:funcheckempids(196);">
+                    </td>
+                    <td id="td54"><span>PT-CLNG-Prime
+                        Transport
+                        LLC</span><input type="hidden" name="txtEmpId196" value="54" id="txtEmpId196"></td>
+                  </tr>
+                  <tr id="Emprow197">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox197" id="chkid197"
+                        onclick="javascript:funcheckempids(197);">
+                    </td>
+                    <td id="td57"><span>QAS-CLNG-Qasr Al
+                        Sabah Integrated FM
+                        Services</span><input type="hidden" name="txtEmpId197" value="57" id="txtEmpId197"></td>
+                  </tr>
+                  <tr id="Emprow198">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox198" id="chkid198"
+                        onclick="javascript:funcheckempids(198);">
+                    </td>
+                    <td id="td58"><span>QAS-SEC-Qasr Al
+                        Sabah Integrated FM
+                        Services</span><input type="hidden" name="txtEmpId198" value="58" id="txtEmpId198"></td>
+                  </tr>
+                  <tr id="Emprow199">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox199" id="chkid199"
+                        onclick="javascript:funcheckempids(199);">
+                    </td>
+                    <td id="td56"><span>QAS-TECH-Qasr Al
+                        Sabah Integrated FM
+                        Services</span><input type="hidden" name="txtEmpId199" value="56" id="txtEmpId199"></td>
+                  </tr>
+                  <tr id="Emprow200">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox200" id="chkid200"
+                        onclick="javascript:funcheckempids(200);">
+                    </td>
+                    <td id="td59"><span>QGB1-CLNG-Quebeisi
+                        SGB LLC</span><input type="hidden" name="txtEmpId200" value="59" id="txtEmpId200"></td>
+                  </tr>
+                  <tr id="Emprow201">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox201" id="chkid201"
+                        onclick="javascript:funcheckempids(201);">
+                    </td>
+                    <td id="td60"><span>QGB2-SEC-Quebeisi
+                        SGB LLC</span><input type="hidden" name="txtEmpId201" value="60" id="txtEmpId201"></td>
+                  </tr>
+                  <tr id="Emprow202">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox202" id="chkid202"
+                        onclick="javascript:funcheckempids(202);">
+                    </td>
+                    <td id="td61"><span>RBA-CLNG-Red Bull
+                        Asia</span><input type="hidden" name="txtEmpId202" value="61" id="txtEmpId202"></td>
+                  </tr>
+                  <tr id="Emprow203">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox203" id="chkid203"
+                        onclick="javascript:funcheckempids(203);">
+                    </td>
+                    <td id="td159"><span>RH-CLNG-Ramada
+                        Hotel Abu Dhabi
+                        Housekeeping</span><input type="hidden" name="txtEmpId203" value="159" id="txtEmpId203"></td>
+                  </tr>
+                  <tr id="Emprow204">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox204" id="chkid204"
+                        onclick="javascript:funcheckempids(204);">
+                    </td>
+                    <td id="td167"><span>RIZZ-CLNG-Rizzani
+                        DWC Office</span><input type="hidden" name="txtEmpId204" value="167" id="txtEmpId204"></td>
+                  </tr>
+                  <tr id="Emprow205">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox205" id="chkid205"
+                        onclick="javascript:funcheckempids(205);">
+                    </td>
+                    <td id="td134"><span>RRD-TECH-Rahma
+                        Rashid Ali Al Darmaki
+                        (NHL-4)</span><input type="hidden" name="txtEmpId205" value="134" id="txtEmpId205"></td>
+                  </tr>
+                  <tr id="Emprow206">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox206" id="chkid206"
+                        onclick="javascript:funcheckempids(206);">
+                    </td>
+                    <td id="td137"><span>SAG-TECH-Saeed
+                        Abdulla Al Ghafli Villa
+                        No. 82</span><input type="hidden" name="txtEmpId206" value="137" id="txtEmpId206"></td>
+                  </tr>
+                  <tr id="Emprow207">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox207" id="chkid207"
+                        onclick="javascript:funcheckempids(207);">
+                    </td>
+                    <td id="td141"><span>SFB-TECH-Shka.
+                        Fatima Bint Mubarak
+                        Building</span><input type="hidden" name="txtEmpId207" value="141" id="txtEmpId207"></td>
+                  </tr>
+                  <tr id="Emprow208">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox208" id="chkid208"
+                        onclick="javascript:funcheckempids(208);">
+                    </td>
+                    <td id="td140"><span>SFB2-CLNG-Shka.
+                        Fatima Bint Mubarak
+                        Building</span><input type="hidden" name="txtEmpId208" value="140" id="txtEmpId208"></td>
+                  </tr>
+                  <tr id="Emprow209">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox209" id="chkid209"
+                        onclick="javascript:funcheckempids(209);">
+                    </td>
+                    <td id="td70"><span>SHDD-CLNG-Sofitel
+                        Hotel Dubai
+                        Downtown</span><input type="hidden" name="txtEmpId209" value="70" id="txtEmpId209"></td>
+                  </tr>
+                  <tr id="Emprow210">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox210" id="chkid210"
+                        onclick="javascript:funcheckempids(210);">
+                    </td>
+                    <td id="td181"><span>SILK-CLNG-SILKOR
+                        HOLDING - ABU
+                        DHABI</span><input type="hidden" name="txtEmpId210" value="181" id="txtEmpId210"></td>
+                  </tr>
+                  <tr id="Emprow211">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox211" id="chkid211"
+                        onclick="javascript:funcheckempids(211);">
+                    </td>
+                    <td id="td138"><span>SKG-TECH-Salem
+                        Khalifa Al Ghafly Villa
+                        Nos. 83</span><input type="hidden" name="txtEmpId211" value="138" id="txtEmpId211"></td>
+                  </tr>
+                  <tr id="Emprow212">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox212" id="chkid212"
+                        onclick="javascript:funcheckempids(212);">
+                    </td>
+                    <td id="td142"><span>SMBC-CLNG-Sumitomo
+                        Mitsui Banking
+                        Corporation
+                        -SMBC</span><input type="hidden" name="txtEmpId212" value="142" id="txtEmpId212"></td>
+                  </tr>
+                  <tr id="Emprow213">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox213" id="chkid213"
+                        onclick="javascript:funcheckempids(213);">
+                    </td>
+                    <td id="td187"><span>SPS-CLNG-Souq
+                        Planet
+                        Stores</span><input type="hidden" name="txtEmpId213" value="187" id="txtEmpId213"></td>
+                  </tr>
+                  <tr id="Emprow214">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox214" id="chkid214"
+                        onclick="javascript:funcheckempids(214);">
+                    </td>
+                    <td id="td143"><span>TA-CLNG-Turkish
+                        Airlines</span><input type="hidden" name="txtEmpId214" value="143" id="txtEmpId214"></td>
+                  </tr>
+                  <tr id="Emprow215">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox215" id="chkid215"
+                        onclick="javascript:funcheckempids(215);">
+                    </td>
+                    <td id="td77"><span>TAO-TECH-2 Villas of
+                        Tefla Amani
+                        Omar</span><input type="hidden" name="txtEmpId215" value="77" id="txtEmpId215"></td>
+                  </tr>
+                  <tr id="Emprow216">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox216" id="chkid216"
+                        onclick="javascript:funcheckempids(216);">
+                    </td>
+                    <td id="td72"><span>TI-CLNG-Tia
+                        Investment LLC - EBC
+                        Offices</span><input type="hidden" name="txtEmpId216" value="72" id="txtEmpId216"></td>
+                  </tr>
+                  <tr id="Emprow217">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox217" id="chkid217"
+                        onclick="javascript:funcheckempids(217);">
+                    </td>
+                    <td id="td251"><span>TMCK-Tajmeel
+                        Medical Center Karama
+                        Abudhabi</span><input type="hidden" name="txtEmpId217" value="251" id="txtEmpId217"></td>
+                  </tr>
+                  <tr id="Emprow218">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox218" id="chkid218"
+                        onclick="javascript:funcheckempids(218);">
+                    </td>
+                    <td id="td213"><span>UAEP-TECH-Umm Al
+                        Emarat Park</span><input type="hidden" name="txtEmpId218" value="213" id="txtEmpId218"></td>
+                  </tr>
+                  <tr id="Emprow219">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox219" id="chkid219"
+                        onclick="javascript:funcheckempids(219);">
+                    </td>
+                    <td id="td230"><span>UNI-CLNG-Uni-Asia
+                        Group consultancy
+                        services
+                        limited</span><input type="hidden" name="txtEmpId219" value="230" id="txtEmpId219"></td>
+                  </tr>
+                  <tr id="Emprow220">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox220" id="chkid220"
+                        onclick="javascript:funcheckempids(220);">
+                    </td>
+                    <td id="td144"><span>UTSK-CLNG-UTS Kent
+                        LLC</span><input type="hidden" name="txtEmpId220" value="144" id="txtEmpId220"></td>
+                  </tr>
+                  <tr id="Emprow221">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox221" id="chkid221"
+                        onclick="javascript:funcheckempids(221);">
+                    </td>
+                    <td id="td73"><span>VSLME-CLNG-VSL
+                        Middle East
+                        LLC</span><input type="hidden" name="txtEmpId221" value="73" id="txtEmpId221"></td>
+                  </tr>
+                  <tr id="Emprow222">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox222" id="chkid222"
+                        onclick="javascript:funcheckempids(222);">
+                    </td>
+                    <td id="td185"><span>VVFT-CLNG-VVF
+                        Technical
+                        Services</span><input type="hidden" name="txtEmpId222" value="185" id="txtEmpId222"></td>
+                  </tr>
+                  <tr id="Emprow223">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox223" id="chkid223"
+                        onclick="javascript:funcheckempids(223);">
+                    </td>
+                    <td id="td215"><span>WILO-GR-Wilo Middle
+                        East -
+                        Jafza</span><input type="hidden" name="txtEmpId223" value="215" id="txtEmpId223"></td>
+                  </tr>
+                  <tr id="Emprow224">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox224" id="chkid224"
+                        onclick="javascript:funcheckempids(224);">
+                    </td>
+                    <td id="td214"><span>WILO-GT-Wilo Middle
+                        East -
+                        Jafza</span><input type="hidden" name="txtEmpId224" value="214" id="txtEmpId224"></td>
+                  </tr>
+                  <tr id="Emprow225">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox225" id="chkid225"
+                        onclick="javascript:funcheckempids(225);">
+                    </td>
+                    <td id="td216"><span>WILO-SD-Wilo Middle
+                        East -
+                        Jafza</span><input type="hidden" name="txtEmpId225" value="216" id="txtEmpId225"></td>
+                  </tr>
+                  <tr id="Emprow226">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox226" id="chkid226"
+                        onclick="javascript:funcheckempids(226);">
+                    </td>
+                    <td id="td156"><span>WTCM-CLNG-WTC Mall
+                        &amp; Souk
+                        AUH</span><input type="hidden" name="txtEmpId226" value="156" id="txtEmpId226"></td>
+                  </tr>
+                  <tr id="Emprow227">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox227" id="chkid227"
+                        onclick="javascript:funcheckempids(227);">
+                    </td>
+                    <td id="td145"><span>WYS-CLNG-West Yas
+                        School</span><input type="hidden" name="txtEmpId227" value="145" id="txtEmpId227"></td>
+                  </tr>
+                  <tr id="Emprow228">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox228" id="chkid228"
+                        onclick="javascript:funcheckempids(228);">
+                    </td>
+                    <td id="td146"><span>XIS-CLNG-Xervon
+                        Industrial Services
+                        LLC</span><input type="hidden" name="txtEmpId228" value="146" id="txtEmpId228"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-transparent header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-secondary">Priority</h6>
+            <div class="header-elements">
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div style="height: 300px; overflow-x: hidden; overflow-y: scroll;">
+              <table id="tablepriorityInfo" tabindex="7" class="table table-striped table-bordered table-hover">
+                <tbody>
+                  <tr id="Emprow1">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox1" id="chkpriorityid1"
+                        onclick="javascript:funcheckprioritesids(1);">
+                    </td>
+                    <td id="td1"><span>Routine</span><input type="hidden" name="txtpriorityId1" value="1"
+                        id="txtpriorityId1">
+                    </td>
+                  </tr>
+                  <tr id="Emprow2">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox2" id="chkpriorityid2"
+                        onclick="javascript:funcheckprioritesids(2);">
+                    </td>
+                    <td id="td2"><span>Emergency -
+                        N</span><input type="hidden" name="txtpriorityId2" value="2" id="txtpriorityId2">
+                    </td>
+                  </tr>
+                  <tr id="Emprow3">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox3" id="chkpriorityid3"
+                        onclick="javascript:funcheckprioritesids(3);">
+                    </td>
+                    <td id="td3"><span>Emergency -
+                        A</span><input type="hidden" name="txtpriorityId3" value="3" id="txtpriorityId3">
+                    </td>
+                  </tr>
+                  <tr id="Emprow4">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox4" id="chkpriorityid4"
+                        onclick="javascript:funcheckprioritesids(4);">
+                    </td>
+                    <td id="td4"><span>Essential -
+                        N</span><input type="hidden" name="txtpriorityId4" value="4" id="txtpriorityId4">
+                    </td>
+                  </tr>
+                  <tr id="Emprow5">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox5" id="chkpriorityid5"
+                        onclick="javascript:funcheckprioritesids(5);">
+                    </td>
+                    <td id="td5"><span>Essential - A
+                      </span><input type="hidden" name="txtpriorityId5" value="5" id="txtpriorityId5">
+                    </td>
+                  </tr>
+                  <tr id="Emprow6">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox6" id="chkpriorityid6"
+                        onclick="javascript:funcheckprioritesids(6);">
+                    </td>
+                    <td id="td6">
+                      <span>Maintenance</span><input type="hidden" name="txtpriorityId6" value="6" id="txtpriorityId6">
+                    </td>
+                  </tr>
+                  <tr id="Emprow7">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox7" id="chkpriorityid7"
+                        onclick="javascript:funcheckprioritesids(7);">
+                    </td>
+                    <td id="td7">
+                      <span>Variation</span><input type="hidden" name="txtpriorityId7" value="7" id="txtpriorityId7">
+                    </td>
+                  </tr>
+                  <tr id="Emprow8">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox8" id="chkpriorityid8"
+                        onclick="javascript:funcheckprioritesids(8);">
+                    </td>
+                    <td id="td8"><span>PPM</span><input type="hidden" name="txtpriorityId8" value="8"
+                        id="txtpriorityId8">
+                    </td>
+                  </tr>
+                  <tr id="Emprow9">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox9" id="chkpriorityid9"
+                        onclick="javascript:funcheckprioritesids(9);">
+                    </td>
+                    <td id="td10"><span>P1</span><input type="hidden" name="txtpriorityId9" value="10"
+                        id="txtpriorityId9">
+                    </td>
+                  </tr>
+                  <tr id="Emprow10">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox10" id="chkpriorityid10"
+                        onclick="javascript:funcheckprioritesids(10);">
+                    </td>
+                    <td id="td11"><span>P2</span><input type="hidden" name="txtpriorityId10" value="11"
+                        id="txtpriorityId10">
+                    </td>
+                  </tr>
+                  <tr id="Emprow11">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox11" id="chkpriorityid11"
+                        onclick="javascript:funcheckprioritesids(11);">
+                    </td>
+                    <td id="td12"><span>P3</span><input type="hidden" name="txtpriorityId11" value="12"
+                        id="txtpriorityId11">
+                    </td>
+                  </tr>
+                  <tr id="Emprow12">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox12" id="chkpriorityid12"
+                        onclick="javascript:funcheckprioritesids(12);">
+                    </td>
+                    <td id="td13"><span>P4</span><input type="hidden" name="txtpriorityId12" value="13"
+                        id="txtpriorityId12">
+                    </td>
+                  </tr>
+                  <tr id="Emprow13">
+                    <td width="10%" align="center"><input type="checkbox"
+                        style="width:20px; position:static; height:20px;" name="checkbox13" id="chkpriorityid13"
+                        onclick="javascript:funcheckprioritesids(13);">
+                    </td>
+                    <td id="td14"><span>P5</span><input type="hidden" name="txtpriorityId13" value="14"
+                        id="txtpriorityId13">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /content area -->
+</div>
+<!-- /inner content -->

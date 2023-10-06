@@ -1,0 +1,10 @@
+<div class="form-group">
+  <app-label [label]="(placeholder ?? label)" [isRequired]="isRequired" [show]="showLabel" [tooltip]="tooltip"></app-label>
+  <textarea [rows] ="rows" cols="3" class="form-control shadow-none form-control shadow-none-sm"
+    [placeholder]="(placeholder??label) | titlecase" [innerHtml]="innerHtml" [readonly]="isReadonly"
+    (input)="inputChange.emit($event);validateField()" [required]="isRequired" [value]="value"
+    ></textarea>
+  <span class="text-danger" *ngIf="!isValid">
+    {{ getErrorMessage(formGroup, label.toLowerCase() === 'desc.' ? 'description' : label.charAt(0).toLowerCase() + label.slice(1)) }}
+  </span>
+</div>

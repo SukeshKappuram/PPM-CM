@@ -1,0 +1,285 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [items]="['PPM', 'Task Instructions']" [activeItem]="'Create'" [pageTitle]="'Task Instructions'"
+    [buttons]="buttons" (modified)="buttonClicked($event)">
+  </app-page-header>
+
+  <!-- Content area -->
+  <div class="content" *ngIf="isDataLoaded">
+    <app-alert id="alert-taskInstructions"></app-alert>
+    <div class="row">
+      <div class=" col-xl-4 col-md-12">
+        <div class="card">
+          <div class="card-header bg-transparent header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-secondary">General</h6>
+            <div class="header-elements">
+            </div>
+          </div>
+
+          <div class="card-body">
+            <form [formGroup]="generalTaskInstForm">
+              <div class="row">
+                <div class="col-6">
+                  <app-text-field [formControlName]="'code'" [formGroup]="generalTaskInstForm" [fieldName]="'code'"
+                    [label]="'Code'" ngDefaultControl [value]="'ASC:'+pad(tId,3)" [isReadonly]="true"
+                    [isRequired]="false">
+                  </app-text-field>
+                </div>
+
+                <div class="col-6">
+                  <app-label [label]="'Classification'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.classifications" [filterable]="true" textField="name"
+                    valueField="id" (filterChange)="handleFilter($event,'classifications')"
+                    [formControlName]="'classification'" [defaultItem]="defaultItem('Classifications')"
+                    [readonly]="!isEditable" (selectionChange)="classificationChanged($event)">
+                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                      <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                    </ng-template>
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-12">
+                  <app-text-field [formControlName]="'name'" [formGroup]="generalTaskInstForm" [fieldName]="'name'"
+                    [label]="'Name'" ngDefaultControl [value]="instruction?.name??''" [isReadonly]="!isEditable">
+                  </app-text-field>
+                </div>
+
+                <div class="col-6">
+                  <app-label [label]="'Type'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.types" [filterable]="true" textField="name" valueField="id"
+                    (filterChange)="handleFilter($event,'types')" [formControlName]="'type'"
+                    [defaultItem]="defaultItem('Types')" [disabled]="!isEditable">
+                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                      <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                    </ng-template>
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-6">
+                  <app-label [label]="'Sub Type'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.subTypes" [filterable]="true" textField="name"
+                    valueField="id" (filterChange)="handleFilter($event,'subTypes')" [formControlName]="'subType'"
+                    [defaultItem]="defaultItem('Sub Type')" [disabled]="!isEditable">
+                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                      <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                    </ng-template>
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-6">
+                  <app-label [label]="'Category'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.categories" [filterable]="true" textField="name"
+                    valueField="id" (filterChange)="handleFilter($event,'categories')" [formControlName]="'category'"
+                    [defaultItem]="defaultItem('Category')" [disabled]="!isEditable">
+                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                      <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                    </ng-template>
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-6">
+                  <app-label [label]="'Discipline'" [isRequired]="true"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.disciplines" [filterable]="true" textField="name"
+                    valueField="id" (filterChange)="handleFilter($event,'disciplines')" [formControlName]="'discipline'"
+                    [defaultItem]="defaultItem('Discipline')" [disabled]="!isEditable">
+                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                      <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                    </ng-template>
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-6">
+                  <app-label [label]="'Priority'" [isRequired]="isPriorityRequired"></app-label>
+                  <kendo-dropdownlist class="form-group" [data]="filteredData?.priorities" [filterable]="true" textField="name"
+                    valueField="id" (filterChange)="handleFilter($event,'priorities')" [formControlName]="'priority'"
+                    [defaultItem]="defaultItem('Priority')">
+                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                      <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+                    </ng-template>
+                  </kendo-dropdownlist>
+                </div>
+
+                <div class="col-6" style="margin-top: 30px;">
+                  <div class="custom-control custom-switch custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="sc_li_c"
+                      [formControlName]="'isMasterInstruction'" [disabled]="!isEditable">
+                    <label class="custom-control-label" for="sc_li_c">Master Instructions</label>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-8">
+        <div class="card">
+          <div class="card-header bg-transparent header-elements-inline">
+            <h6 class="card-title font-weight-semibold text-secondary">Financials</h6>
+            <div class="header-elements p-0">
+            </div>
+          </div>
+
+          <div class=" card-body">
+            <form [formGroup]="financialTaskInstForm">
+              <div class="row">
+                <div class="col-md-2">
+                  <app-text-field [formControlName]="'noOfStaff'" [formGroup]="financialTaskInstForm"
+                    [fieldName]="'noOfStaff'" [label]="'No Of Staff'" ngDefaultControl
+                    (inputChange)="calculateTotalTime($event.target.value,null)" [value]="instruction?.noOfStaff??0"
+                    [placeholder]="'No. of Staff'" [isRequired]="false" [isReadonly]="!isEditable">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-3">
+                  <app-text-field [formControlName]="'estLabourCost'" [formGroup]="financialTaskInstForm"
+                    [fieldName]="'estLabourCost'" [label]="'Est Labour Cost'" ngDefaultControl [pipe]="'currency'"
+                    [value]="instruction?.estimatedLabourCost??0" [isRequired]="false" [placeholder]="'Est.Labour Cost'"
+                    [isReadonly]="!isEditable">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-3">
+                  <app-text-field [formControlName]="'estStockCost'" [formGroup]="financialTaskInstForm"
+                    [fieldName]="'estStockCost'" [label]="'Est Stock Cost'" [placeholder]="'Est.Stock Cost'"
+                    ngDefaultControl [value]="instruction?.estimatedStockCost??0" [isRequired]="false"
+                    [pipe]="'currency'" [isReadonly]="!isEditable">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-2">
+                  <app-text-field inputType="number" [formControlName]="'estTime'" [formGroup]="financialTaskInstForm"
+                    [fieldName]="'estTime'" [label]="'Est Time'" [placeholder]="'Est. Time(mn)'"
+                    [tooltip]="'in Minutes'" ngDefaultControl [value]="instruction?.estimatedTimeInMins??0"
+                    [isReadonly]="!isEditable" (inputChange)="calculateTotalTime(null,$event.target.value)">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-2">
+                  <app-text-field inputType="number" [formControlName]="'totalTime'" [formGroup]="financialTaskInstForm"
+                    [fieldName]="'totalTime'" [label]="'Total Time'" [placeholder]="'Total Time(mn)'"
+                    [tooltip]="'in Minutes'" ngDefaultControl [value]="instruction?.totalTimeInMins"
+                    [isRequired]="false" [isReadonly]="true">
+                  </app-text-field>
+                </div>
+
+                <div class="col-md-12">
+                  <app-token-input [formControlName]="'sparesRequired'" [formGroup]="financialTaskInstForm"
+                    [label]="'Spares required'" [items]="sparesRequired" ngDefaultControl
+                    (inputChange)="sparesUpdated($event)" [isReadonly]="!isEditable"
+                    [placeholder]="'Enter spares required'">
+                  </app-token-input>
+                </div>
+
+                <div class="col-md-12 mt-4">
+                  <h6 class="card-title font-weight-semibold text-secondary">HSEQ</h6>
+                </div>
+
+                <div class="col-md-12 mt-1 mb-2">
+                  <app-token-input [formControlName]="'hseqElements'" [formGroup]="financialTaskInstForm"
+                    [label]="'Hseq Elements'" [items]="hseqElements" ngDefaultControl
+                    (inputChange)="hseqElementsUpdated($event)" [placeholder]="'Enter a new HSEQ element'"
+                    [isReadonly]="!isEditable">
+                  </app-token-input>
+                </div>
+
+                <div class="col-md-12">
+                  <app-textarea-field [formControlName]="'hseqComment'" [formGroup]="financialTaskInstForm"
+                    [fieldName]="'hseqComment'" [label]="'hseq Comment'" [placeholder]="'HSEQ Comment'" ngDefaultControl
+                    [value]="instruction?.hseqComment??''" [isReadonly]="!isEditable" [isRequired]="false">
+                  </app-textarea-field>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header text-right">
+            <button type="button" class="btn btn-sm btn-secondary" (click)="addTaskDetails()">
+              Add</button>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <form [formGroup]="taskInstructionDetailsForm">
+                <table class="table text-nowrap">
+                  <thead class="bg-secondary text-white">
+                    <tr>
+                      <th><img src="assets/images/logo-sm-light.png" width="20px" loading="lazy"></th>
+                      <th>S.no</th>
+                      <th style="width: 7%">Code *</th>
+                      <th style="width: 40%">Check List * </th>
+                      <th style="width: 20%;">Group *</th>
+                      <th>Standard *</th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="taskInstructionDetails">
+                    <ng-container *ngFor="let taskDetails of taskInstructionDetails.controls; let i = index">
+                      <tr [formGroupName]="i">
+                        <td>
+                          <div class="list-icons">
+                            <div class="dropdown position-static">
+                              <a class="btn btn-sm btn-outline-secondary border-2 btn-icon btn-icon-action rounded-pill dropdown-toggle"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots font-size-sm" style="transform: rotate(90deg);"
+                                  title="Actions"></i>
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-left">
+                                <a class="dropdown-item" (click)="saveTaskDetails(i, taskDetails)">
+                                  <i class="bi bi-check-circle p-2" title="save" aria-hidden="true"></i>
+                                  Save</a>
+                                <a class="dropdown-item" (click)="deleteTaskDetails(i,taskDetails)" title="delete">
+                                  <i class="bi bi-trash text-danger p-2" aria-hidden="true"></i>
+                                  Delete</a>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          {{i+1}}
+                        </td>
+                        <td>
+                          <app-text-field [formControlName]="'code'" [formGroup]="getTaskDetails(taskDetails)"
+                            [showLabel]="false" [label]="'code'" [fieldName]="'code'" ngDefaultControl
+                            [value]="instructionDetails[i]?.code??''" [isReadonly]="!isEditable">
+                          </app-text-field>
+                        </td>
+                        <td>
+                          <app-textarea-field [formControlName]="'details'" [formGroup]="getTaskDetails(taskDetails)"
+                            [showLabel]="false" [label]="'details'" [fieldName]="'details'" ngDefaultControl [rows]="2"
+                            [value]="instructionDetails[i]?.details??''" [isReadonly]="!isEditable">
+                          </app-textarea-field>
+                        </td>
+                        <td>
+                          <kendo-dropdownlist class="form-group" [formControlName]="'groupId'" [data]="masterData?.groups" textField="name"
+                            valueField="id" [filterable]="true" [defaultItem]="defaultItem('Group')">
+                            <ng-template kendoDropDownListItemTemplate let-dataItem>
+                              <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}
+                              </span>
+                            </ng-template>
+                          </kendo-dropdownlist>
+                        </td>
+                        <td>
+                          <kendo-dropdownlist class="form-group" [formControlName]="'standardId'" [data]="masterData?.standards"
+                            textField="name" valueField="id" [filterable]="true" [defaultItem]="defaultItem('Standard')">
+                            <ng-template kendoDropDownListItemTemplate let-dataItem>
+                              <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}
+                              </span>
+                            </ng-template>
+                          </kendo-dropdownlist>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /content area -->
+</div>

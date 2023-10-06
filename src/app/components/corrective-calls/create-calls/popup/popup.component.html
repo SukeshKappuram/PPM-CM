@@ -1,0 +1,123 @@
+<div class="modal-content">
+  <div class="modal-header bg-secondary text-white">
+    <h6 class="modal-title">{{data.title}}</h6>
+    <button type="button" class="btn-close btn-close-white" mat-button mat-dialog-close aria-label="Close"></button>
+  </div>
+  <ng-container [ngSwitch]="data.contentId">
+    <div class="modal-body text-center" *ngSwitchCase="Popups.HtmlContent">
+      <div [innerHTML]="inputData" class="table-responsive" style="height:250px; overflow-y:scroll">
+      </div>
+      <button type="button" class="btn btn-secondary mt-1" mat-button mat-dialog-close aria-label="Close">Close</button>
+    </div>
+    <div class="modal-body text-center" *ngSwitchCase="Popups.CustomContent">
+      <div class="row my-1">
+        <div class="col-sm-4 col-md-4">
+          <p>HSEQ Questions <sup class="text-danger">*</sup><i class="bi bi-info-circle"
+              [title]="'Selected Answers will be applied to all un-answered questions within the work order'"></i></p>
+        </div>
+        <div class="col-sm-4 col-md-8 example-col">
+          <kendo-buttongroup [selection]="'single'">
+            <button kendoButton [toggleable]="true" (click)="selectedHseq = 1">Yes</button>
+            <button class="custom-border-btn" kendoButton [toggleable]="true" (click)="selectedHseq = 2">No</button>
+            <button kendoButton [toggleable]="true" (click)="selectedHseq = 3">NA</button>
+          </kendo-buttongroup>
+        </div>
+      </div>
+      <div class="row my-1" *ngIf="inputData.serviceType === ServiceType.PM">
+        <div class="col-sm-4 col-md-4">
+          <p>Task Instructions <sup class="text-danger">*</sup><i class="bi bi-info-circle"
+              [title]="'Selected Answers will be applied to all un-answered questions within the work order'"></i></p>
+        </div>
+        <div class="col-sm-8 col-md-8 example-col">
+          <kendo-buttongroup [selection]="'single'">
+            <button kendoButton [toggleable]="true" (click)="selectedCheckList = 1">Yes</button>
+            <button kendoButton [toggleable]="true" (click)="selectedCheckList = 2">No</button>
+            <button kendoButton [toggleable]="true" (click)="selectedCheckList = 3">NA</button>
+          </kendo-buttongroup>
+        </div>
+      </div>
+      <div class="row my-1">
+        <label class="col-sm-4 col-md-4 col-form-label text-left pl-4">
+          LOC <sup class="text-danger">*</sup>
+        </label>
+        <div class="col-lg-8">
+          <kendo-dropdownlist class="form-group" [data]="filteredData?.locs" [filterable]="true" textField="name"
+            valueField="id" [defaultItem]="{
+              code: 'Select',
+              name: 'LOC'
+            }" (filterChange)="handleFilter($event, 'locs')" (selectionChange)="setLoc($event)">
+            <ng-template kendoDropDownListItemTemplate let-dataItem>
+              <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
+            </ng-template>
+          </kendo-dropdownlist>
+        </div>
+      </div>
+      <div class="modal-footer border-0 mt-3">
+        <button type="button" class="btn btn-link" mat-button mat-dialog-close aria-label="Close">Cancel</button>
+        <button type="button" class="btn btn-secondary" (click)="closeWorkOrders()">Close</button>
+      </div>
+    </div>
+    <div class="modal-body" *ngSwitchCase="Popups.TableData">
+      <div class="float-right mb-2" *ngIf="!loadAllResourcesByDefault && data.contentName === 'Resources'">
+        <div class="custom-control custom-switch custom-control-inline">
+          <input type="checkbox" class="custom-control-input" id="sc_li_c" [(ngModel)]="loadAllResources"
+            (change)="getAllResources(loadAllResources)">
+          <label class="custom-control-label font-weight-bold" for="sc_li_c">Load All Resources</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="w-25 float-end mb-2">
+            <input type="text" class="form-control" placeholder="Search here" [(ngModel)]="query">
+            <div class="form-control-feedback form-control-feedback-sm form-control-feedback-toggle text-muted mr-1">
+              <i [ngClass]="query === '' ? 'bi bi-search' : 'bi bi-x-lg'"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-responsive" style="height:250px; overflow-y:scroll">
+        <table class="table datatable-basic">
+          <thead class="bg-secondary text-white">
+            <tr>
+              <td *ngIf="data.contentName === 'Resources'">
+              </td>
+              <ng-container *ngFor="let col of gridData?.configuration?.columns">
+                <th *ngIf="col.showColumn">
+                  {{col.displayText}}
+                </th>
+              </ng-container>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of gridData?.data | search: query" [ngClass]="{'row-highlighter': row.selected}"
+              (click)="select(row)">
+              <td *ngIf="data.contentName === 'Resources'">
+                <div class="custom-control custom-radio ml-2">
+                  <input type="radio" name="resource" class="custom-control-input" [id]="'cc_ls_f_'+row.id"
+                    (click)="addResource(row)">
+                  <label class="custom-control-label" [for]="'cc_ls_f_'+row.id"></label>
+                </div>
+              </td>
+              <ng-container *ngFor="let col of gridData?.configuration?.columns">
+                <td *ngIf="col.showColumn">
+                  {{row[col.mappingColumn]}}
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="gridData?.data?.length === 0" class="container text-center">
+          No Records Available
+        </div>
+      </div>
+
+      <div class="modal-footer border-0 mt-3" *ngIf="data.contentName === 'Resources'">
+        <button type="button" class="btn btn-link" mat-button mat-dialog-close aria-label="Close">Close</button>
+        <button type="button" class="btn btn-secondary" [disabled]="selectedResource === 0"
+          (click)="AssignResource()">Assign</button>
+      </div>
+    </div>
+  </ng-container>
+</div>

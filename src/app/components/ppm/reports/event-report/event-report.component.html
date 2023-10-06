@@ -1,0 +1,67 @@
+<!-- Inner content -->
+<div class="content-inner" (scroll)="scrollHandler($event)">
+
+  <app-page-header [items]="['PPM', 'Reports']" [activeItem]="'Planned Event Report'"
+    [pageTitle]="'Planned Event Report'" [buttons]="buttons">
+  </app-page-header>
+
+  <!-- Content area -->
+  <div class="content">
+    <app-alert id="alert-taskInstructions"></app-alert>
+    <div class="card">
+      <div class="card-header bg-transparent header-elements-inline">
+        <h6 class="card-title font-weight-semibold text-secondary">Planned Event Report</h6>
+        <div class="header-elements d-none">
+        </div>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="plannedForm">
+          <div class="row">
+            <div class="col-md-3">
+              <app-text-field [formControlName]="'fromDt'" [formGroup]="plannedForm" [fieldName]="'fromDt'"
+                [label]="'From Dt.'" ngDefaultControl [isRequired]="false" [value]="'' | localizedDate" [pipe]="'date'">
+              </app-text-field>
+            </div>
+
+            <div class="col-md-3">
+              <app-text-field [formControlName]="'toDt'" [formGroup]="plannedForm" [fieldName]="'toDt'"
+                [label]="'To Dt.'" ngDefaultControl [isRequired]="false" [value]="'' | localizedDate" [pipe]="'date'">
+              </app-text-field>
+
+            </div>
+
+            <div class="col-md-3">
+              <app-label [label]="'contract'" [isRequired]="true"></app-label>
+              <kendo-dropdownlist class="form-group" [formControlName]="'contract'" [data]="" textField="name" valueField="id"
+                [filterable]="true" [defaultItem]="'Select contract'">
+              </kendo-dropdownlist>
+            </div>
+
+            <div class="col-md-3">
+              <app-label [label]="'building'" [isRequired]="true"></app-label>
+              <kendo-dropdownlist class="form-group" [formControlName]="'building'" [data]="" textField="name" valueField="id"
+                [filterable]="true" [defaultItem]="'Select building'">
+              </kendo-dropdownlist>
+            </div>
+
+            <div class="col-md-3">
+              <app-label [label]="'EventType'" [isRequired]="true"></app-label>
+              <kendo-dropdownlist class="form-group" [formControlName]="'eventType'" [data]="" textField="name" valueField="id"
+                [filterable]="true" [defaultItem]="'Select eventType'">
+              </kendo-dropdownlist>
+            </div>
+
+            <div class="col-md-3">
+              <app-label [label]="'Status'" [isRequired]="true"></app-label>
+              <kendo-dropdownlist class="form-group" [formControlName]="'status'" [data]="" textField="name" valueField="id"
+                [filterable]="true" [defaultItem]="'Select status'">
+              </kendo-dropdownlist>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- /content area -->
+</div>
+<!-- /inner content -->

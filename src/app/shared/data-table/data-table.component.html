@@ -1,0 +1,30 @@
+<!-- <div class="content">
+  <div class="card">
+    <div class="card-header bg-transparent header-elements-inline" *ngIf="headerTitle">
+      <h6 class="card-title font-weight-semibold text-secondary">
+        {{headerTitle}}
+      </h6>
+    </div>
+    <div class="card-body table-responsive-md">
+      <table class="table text-nowrap datatable-basic table-striped table-borderless table-hover" datatable
+        [dtOptions]="dtOptions" id="d-data-table" style="width:100%">
+        <thead>
+          <tr class="bg-secondary text-white">
+            <th *ngIf="gridData?.actions?.canSelect" class="no-sorting">
+              <div class="custom-control custom-checkbox mb-2">
+                <input type="checkbox" class="custom-control-input" [id]="'selectAll'" (click)="selectAll($event)">
+                <label class="custom-control-label" [for]="'selectAll'"></label>
+              </div>
+            </th>
+            <ng-container *ngFor="let col of gridData?.configuration?.columns">
+              <th *ngIf="col.showColumn">{{col.displayText | titlecase}}</th>
+            </ng-container>
+            <th *ngIf="hasAction(gridData?.actions)">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> -->

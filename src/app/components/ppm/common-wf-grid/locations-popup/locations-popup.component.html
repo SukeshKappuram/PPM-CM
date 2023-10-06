@@ -1,0 +1,11 @@
+<div class="card p-0 m-0">
+  <div class="modal-header bg-secondary text-white">
+    <h6 class="modal-title">{{data.title}}</h6>
+    <button type="button" class="btn-close btn-close-white" mat-button mat-dialog-close aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <ng-container *ngIf="gridData?.configuration?.columns?.length">
+      <app-kendo-grid [gridDetails]="gridData" [hasCustomClass]="true" [customClass]="'custom-width-grid'"></app-kendo-grid>
+    </ng-container>
+  </div>
+</div>

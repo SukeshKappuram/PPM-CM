@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" id="fav-icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+  <app-root></app-root>
+  <script>
+    [...document.querySelectorAll('[data-bs-toggle="tooltip"]')]
+    .forEach(el => {console.log(el); new bootstrap.Tooltip(el)});
+    [...document.querySelectorAll('[data-bs-toggle="popover"]')]
+    .forEach(el => new bootstrap.Tooltip(el));
+  </script>
+</body>
+</html>

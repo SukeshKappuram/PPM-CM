@@ -1,0 +1,26 @@
+.dropdown-toggle::after {
+  display: none !important;
+}
+.img-fluid {
+  max-width: 100%;
+  height: 50px;
+}
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+.dropzone {
+  height: 30px;
+  min-height: 25px !important;
+  font-size: 10px;
+  padding: 0;
+
+  ngx-dropzone-label {
+    margin: 1px auto;
+  }
+}
+
+.img-fluid {
+  width: 60px;
+  height: 60px;
+}

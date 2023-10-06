@@ -1,0 +1,209 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [pageTitle]="'Access Roles'" [pageDescription]="''" [buttons]="buttons"
+    [items]="['Core', 'User Management']" [activeItem]="'Access Roles'" (modified)="buttonClicked($event)">
+  </app-page-header>
+  <div class="content" *ngIf="isDataLoaded">
+    <div class="page-content-wrapper">
+      <div class="container-fluid">
+        <div class="row">
+          <!--Role Access info-->
+          <div class="card">
+            <div class="card-header  bg-transparent  header-elements-inline">
+              <h6 class="card-title font-weight-semibold text-blue">Role Info
+              </h6>
+            </div>
+            <div class="card-body">
+              <form [formGroup]="roleInfo">
+                <div class="row">
+                  <div class="col-sm-4 mb-2">
+
+                    <app-label [label]="'Role'" [isRequired]="true"></app-label>
+                    <kendo-dropdownlist class="form-group" [data]="masterData?.roles" [textField]="'name'" [valueField]="'id'"
+                      [defaultItem]="'Select role'" [formControlName]="'role'" (selectionChange)="rolesSelected($event)"
+                      [readonly]="!isEditable">
+                    </kendo-dropdownlist>
+                  </div>
+
+                  <div class="col-sm-4 mb-2">
+
+                    <app-label [label]="'Role Access'" [isRequired]="true"></app-label>
+                    <kendo-dropdownlist class="form-group" [data]="roleAccesses" [textField]="'name'" [valueField]="'id'"
+                      [defaultItem]="'Select roleAccess'" [formControlName]="'roleAccess'" (selectionChange)="getData($event)"
+                      [readonly]="!isEditable">
+                    </kendo-dropdownlist>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header bg-transparent header-elements-inline">
+              <h6 class="card-title font-weight-semibold text-blue">Role Access Details
+              </h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
+                <table class="table table-striped table-bordered text-nowrap table-fixed">
+                  <thead>
+                    <tr class="bg-secondary text-white">
+                      <th scope="col">Menu Item</th>
+                      <th scope="col" class="text-left">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" id="all_All"
+                            (change)="selectAll('fullAccess', $event)" [(ngModel)]="access.fullAccess">
+                          <label class="custom-control-label" for="all_All">All</label>
+                        </div>
+                      </th>
+                      <th scope="col">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" id="chkAdd"
+                            (change)="selectAll('canCreate', $event)" [(ngModel)]="access.canCreate">
+                          <label class="custom-control-label" for="chkAdd">Add</label>
+                        </div>
+                      </th>
+                      <th scope="col">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" id="chkUpdate"
+                            (change)="selectAll('canUpdate', $event)" [(ngModel)]="access.canUpdate">
+                          <label class="custom-control-label" for="chkUpdate">Update</label>
+                        </div>
+                      </th>
+                      <th scope="col">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" id="all_View"
+                            (change)="selectAll('viewOnly', $event)" [(ngModel)]="access.viewOnly">
+                          <label class="custom-control-label" for="all_View">View</label>
+                        </div>
+                      </th>
+                      <th scope="col">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" id="all_Delete"
+                            (change)="selectAll('canDelete', $event)" [(ngModel)]="access.canDelete">
+                          <label class="custom-control-label" for="all_Delete">Delete</label>
+                        </div>
+                      </th>
+                      <th scope="col">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" id="all_Approve"
+                            (change)="selectAll('canApprove', $event)" [(ngModel)]="access.canApprove">
+                          <label class="custom-control-label" for="all_Approve">Approve</label>
+                        </div>
+                      </th>
+                      <th scope="col">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" id="all_Upload"
+                            (change)="selectAll('canUpload', $event)" [(ngModel)]="access.canUpload">
+                          <label class="custom-control-label" for="all_Upload">Upload</label>
+                        </div>
+                      </th>
+                      <th scope="col">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" id="all_Download"
+                            (change)="selectAll('canDownload', $event)" [(ngModel)]="access.canDownload">
+                          <label class="custom-control-label" for="all_Download">Download</label>
+                        </div>
+                      </th>
+                      <th scope="col">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" id="all_Print"
+                            (change)="selectAll('canPrint', $event)" [(ngModel)]="access.canPrint">
+                          <label class="custom-control-label" for="all_Print">Print</label>
+                        </div>
+                      </th>
+                      <th scope="col">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" id="all_Export"
+                            (change)="selectAll('canExport', $event)" [(ngModel)]="access.canExport">
+                          <label class="custom-control-label" for="all_Export">Export</label>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let roleAccess of roleAccessDetails; let i = index">
+                      <td>
+                        <!-- <div class="pl-0">{{roleAccess.menuName +' - '+ roleAccess.sectionName}}</div> -->
+                        <div class="pl-0">{{roleAccess.sectionName +' - '+ roleAccess.menuName}}</div>
+                      </td>
+                      <td class="text-left ">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" [id]="'fullAccess'+i"
+                            [checked]="roleAccess.fullAccess" (click)="updateRoleAccess(i,'fullAccess')">
+                          <label class="custom-control-label" [for]="'fullAccess'+i"></label>
+                        </div>
+                      </td>
+                      <td class="text-left">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" [id]="'createAccess'+i"
+                            [checked]="roleAccess.canCreate" (click)="updateRoleAccess(i,'canCreate')">
+                          <label class="custom-control-label" [for]="'createAccess'+i"></label>
+                        </div>
+                      </td>
+                      <td class="text-left">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" [id]="'updateAccess'+i"
+                            [checked]="roleAccess.canUpdate" (click)="updateRoleAccess(i,'canUpdate')">
+                          <label class="custom-control-label" [for]="'updateAccess'+i"></label>
+                        </div>
+                      </td>
+                      <td class="text-left">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" [id]="'viewAccess'+i"
+                            [checked]="roleAccess.viewOnly" (click)="updateRoleAccess(i,'viewOnly')">
+                          <label class="custom-control-label" [for]="'viewAccess'+i"></label>
+                        </div>
+                      </td>
+                      <td class="text-left">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" [id]="'deleteAccess'+i"
+                            [checked]="roleAccess.canDelete" (click)="updateRoleAccess(i,'canDelete')">
+                          <label class="custom-control-label" [for]="'deleteAccess'+i"></label>
+                        </div>
+                      </td>
+                      <td class="text-left">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" [id]="'approveAccess'+i"
+                            [checked]="roleAccess.canApprove" (click)="updateRoleAccess(i,'canApprove')">
+                          <label class="custom-control-label" [for]="'approveAccess'+i"></label>
+                        </div>
+                      </td>
+                      <td class="text-left">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" [id]="'uploadAccess'+i"
+                            [checked]="roleAccess.canUpload" (click)="updateRoleAccess(i,'canUpload')">
+                          <label class="custom-control-label" [for]="'uploadAccess'+i"></label>
+                        </div>
+                      </td>
+                      <td class="text-left">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" [id]="'downloadAccess'+i"
+                            [checked]="roleAccess.canDownload" (click)="updateRoleAccess(i,'canDownload')">
+                          <label class="custom-control-label" [for]="'downloadAccess'+i"></label>
+                        </div>
+                      <td class="text-left">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" [id]="'printAccess'+i"
+                            [checked]="roleAccess.canPrint" (click)="updateRoleAccess(i,'canPrint')">
+                          <label class="custom-control-label" [for]="'printAccess'+i"></label>
+                        </div>
+                      </td>
+                      <td class="text-left">
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                          <input type="checkbox" class="custom-control-input" [id]="'exportAccess'+i"
+                            [checked]="roleAccess.canExport" (click)="updateRoleAccess(i,'canExport')">
+                          <label class="custom-control-label" [for]="'exportAccess'+i"></label>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- Role Access Info-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

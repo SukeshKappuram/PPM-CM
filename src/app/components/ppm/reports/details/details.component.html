@@ -1,0 +1,103 @@
+<!-- Inner content -->
+<div class="content-inner" (scroll)="scrollHandler($event)">
+
+  <app-page-header [items]="['PPM', 'Reports']" [activeItem]="'Details'" [pageTitle]="'PPM Details'"></app-page-header>
+
+  <!-- Content area -->
+  <div class="content">
+    <app-alert id="alert-taskInstructions"></app-alert>
+    <div class="card">
+      <div class="card-header bg-transparent header-elements-inline">
+        <h6 class="card-title font-weight-semibold text-secondary">PPM Assign</h6>
+        <div class="header-elements">
+        </div>
+      </div>
+      <div class="card-body">
+        <form>
+          <div class="row">
+            <div class="col-md-3">
+              <app-text-field [formControlName]="'fromDate'" [formGroup]="detailsForm" [fieldName]="'fromDate'"
+                [label]="'From Date'" ngDefaultControl [isRequired]="false" [value]="'' | localizedDate"
+                [pipe]="'date'">
+              </app-text-field>
+            </div>
+
+            <div class="col-md-3">
+              <app-text-field [formControlName]="'toDate'" [formGroup]="detailsForm" [fieldName]="'toDate'"
+                [label]="'To Date'" ngDefaultControl [isRequired]="false" [value]="'' | localizedDate" [pipe]="'date'">
+              </app-text-field>
+            </div>
+
+            <div class="col-md-3">
+              <app-label [label]="'Contract'" [isRequired]="true"></app-label>
+              <kendo-dropdownlist class="form-group" [formControlName]="'contract'" [data]="" textField="name" valueField="id"
+                [filterable]="true"  [defaultItem]="'Select contract'">
+              </kendo-dropdownlist>
+            </div>
+
+            <div class="col-md-3">
+               <app-label [label]="'Status'" [isRequired]="true"></app-label>
+              <kendo-dropdownlist class="form-group" [formControlName]="'status'" [data]="" textField="name" valueField="id"
+                [filterable]="true"  [defaultItem]="'Select status'">
+              </kendo-dropdownlist>
+            </div>
+
+            <div class="col-md-3">
+              <a class="btn btn-block btn-secondary px-3" style="text-transform: capitalize;">
+                Submit
+              </a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table text-nowrap datatable-basic">
+            <thead>
+              <tr class="bg-secondary text-white">
+                <th>Job No.</th>
+                <th>Asset Code</th>
+                <th>Contract</th>
+                <th>Building</th>
+                <th>Location</th>
+                <th>Category</th>
+                <th>Problem</th>
+                <th>Logged By</th>
+                <th>Reported Dt.</th>
+                <th>Completed Dt.</th>
+                <th>Sector</th>
+                <th>LOC</th>
+                <th>Status</th>
+                <th>Resource</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr>
+                <td> Lorem, ipsum. </td>
+                <td> Lorem, ipsum. </td>
+                <td> Lorem, ipsum. </td>
+                <td> Lorem, ipsum. </td>
+                <td> Lorem, ipsum. </td>
+                <td> Lorem, ipsum. </td>
+                <td> Lorem, ipsum. </td>
+                <td> Lorem, ipsum. </td>
+                <td> Lorem, ipsum. </td>
+                <td> Lorem, ipsum. </td>
+                <td> Lorem, ipsum. </td>
+                <td> Lorem, ipsum. </td>
+                <td> Lorem, ipsum. </td>
+                <td> Lorem, ipsum. </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /content area -->
+</div>
+<!-- /inner content -->

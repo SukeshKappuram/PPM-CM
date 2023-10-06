@@ -1,0 +1,684 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [items]="['Core','Administration']" [activeItem]="'Customer'" [pageTitle]="pageTitle"
+    [buttons]="buttons" (modified)="buttonClicked($event)">
+  </app-page-header>
+  <div class="content">
+    <div class="d-flex align-items-start flex-column flex-md-row">
+      <div class="w-100 overflow-auto order-2 order-md-1 order-lg-1">
+        <div class="w-100   order-2 order-md-1">
+          <div class="row">
+            <div class="  col-xl-12 col-md-12">
+              <ul class="nav nav-tabs nav-tabs-bottom">
+                <li class="nav-item"><a class="nav-link active fetchGrid" data-toggle="tab">General</a></li>
+              </ul>
+
+              <div class="tab-content" *ngIf="isDataLoaded">
+                <div class="row" id="divGeneralInfo">
+                  <div class="content">
+                    <!-- Inner container -->
+                    <div class="d-lg-flex align-items-lg-start">
+
+                      <!-- Left sidebar component -->
+                      <div
+                        class="sidebar sidebar-light bg-transparent sidebar-component sidebar-component-left wmin-300 border-0 shadow-none sidebar-expand-lg mr-3">
+
+                        <!-- Sidebar content -->
+                        <div class="sidebar-content">
+
+                          <!-- Navigation -->
+                          <div class="card text-center">
+                            <div class="card-header bg-transparent header-elements-inline">
+                              <span class="card-title font-weight-semibold">General</span>
+                              <div class="header-elements">
+                                <i class="bi bi-star-fill" [ngClass]="formData?.isVIP?'text-yellow':''"> </i>
+                                <span class="card-title font-weight-semibold">VIP</span>
+                              </div>
+                            </div>
+
+                            <div class="card-body text-center">
+                              <div class="col-md-6 mx-auto">
+                                <div id="imgborder" style="display:none;border-width:thin;border-color:red;">
+                                </div>
+                                <div class="card-img-actions d-inline-block mb-3">
+                                  <img class="img-fluid rounded-circle" id="615fdaa3-58a7-45cc-81f6-d9f4a82e73e4"
+                                    [src]="imageUrl" width="100" height="100" alt="">
+                                  <div class="card-img-actions-overlay rounded-circle">
+                                    <a onclick="$('#fileAttachProfilePic').click();"
+                                      class="btn btn-outline bg-white text-white border-white border-2 btn-icon rounded-round">
+                                      <i class="bi bi-plus"></i>
+                                    </a>
+                                  </div>
+                                  <input id="fileAttachProfilePic" data-iscircle="true"
+                                    (change)="onChangeProfile($event)" data-image="615fdaa3-58a7-45cc-81f6-d9f4a82e73e4"
+                                    style="display:none" name="fileAttachProfilePic" type="file" multiple>
+                                </div>
+                              </div>
+
+                              <h6 class="font-weight-semibold mb-0"> </h6>
+                              <span class="d-block opacity-75">Cust Id :
+                                {{formData?.id?'CS'+pad(formData?.id,4):'--New--'}}</span>
+                            </div>
+
+                            <ul class="nav nav-sidebar">
+                              <li class="nav-item" (click)="tabId = 1">
+                                <a class="nav-link" [ngClass]="tabId === 1? 'active': ''" data-toggle="tab">
+                                  <i class="bi bi-person-fill"></i>
+                                  My profile
+                                </a>
+                              </li>
+                              <li class="nav-item" (click)="tabId = 2">
+                                <a class="nav-link" [ngClass]="tabId === 2? 'active': ''" data-toggle="tab">
+                                  <i class="bi bi-telephone-fill"></i>
+                                  Contact Info
+
+                                </a>
+                              </li>
+                              <li class="nav-item" (click)="tabId = 3">
+                                <a class="nav-link" [ngClass]="tabId === 3? 'active': ''" data-toggle="tab">
+                                  <i class="bi bi-building-fill"></i>
+                                  Property Info
+
+                                </a>
+                              </li>
+                              <li class="nav-item" (click)="tabId = 4">
+                                <a class="nav-link" [ngClass]="tabId === 4? 'active': ''" data-toggle="tab">
+                                  <i class="bi bi-file-earmark-text-fill"></i>
+                                  Documents
+
+                                </a>
+                              </li>
+                              <li class="nav-item" (click)="tabId = 5">
+                                <a class="nav-link" [ngClass]="tabId === 5? 'active': ''" data-toggle="tab">
+                                  <i class="bi bi-person-fill-lock"></i>
+                                  Authentication
+
+                                </a>
+                              </li>
+                              <li class="nav-item" (click)="tabId = 6">
+                                <a class="nav-link" [ngClass]="tabId === 6? 'active': ''" data-toggle="tab">
+                                  <i class="bi bi-heart-fill"></i>
+                                  Interests
+                                </a>
+                              </li>
+
+                            </ul>
+                          </div>
+                          <!-- /navigation -->
+                          <!-- Online users -->
+
+                          <!-- /online users -->
+                        </div>
+                        <!-- /sidebar content -->
+
+                      </div>
+                      <!-- /left sidebar component -->
+
+                      <!-- Right content -->
+                      <div class="tab-content flex-1">
+                        <div class="tab-pane fade" [ngClass]="tabId===1?'active show':''" id="profile">
+
+
+                          <form [formGroup]="myProfile">
+                            <!--General Info-->
+                            <div class="card">
+                              <div class="card-header bg-transparent header-elements-inline">
+                                <span class="card-title font-weight-semibold">General
+                                  information</span>
+                              </div>
+
+                              <div class="card-body ">
+                                <div class="col-12 mb-2 pl-0">
+                                  <span class="title font-weight-semibold font-size-sm mb-2">Customer
+                                    Type</span>
+                                </div>
+                                <ul class="types-list">
+                                  <li class="mr-1" *ngFor="let customerType of masterData?.customerTypes"
+                                    (click)="customerTypeSelected(customerType)">
+                                    <label class="types-list__label">
+                                      <input type="radio" [formControlName]="'customerType'" [value]="customerType.id"
+                                        class="cust-type" name="type-radio" id="TypeId">
+                                      <span class="types-list__text owner">{{customerType.name}}</span>
+                                    </label>
+                                  </li>
+                                </ul>
+                                <div class=" ml-0 mt-2">
+                                  <ul class="subtypes-list subtype-all customer-type-1">
+                                    <li class="mr-1" *ngFor="let cs of customerSubTypes"
+                                      (click)="customerSubTypeSelected(cs)">
+                                      <label class="types-list__label">
+                                        <input class="cust-sub-type" [formControlName]="'customerSubType'"
+                                          [value]="cs.id" type="radio" id="SubTypeId" name="SubTypeId">
+                                        <span class="types-list__text selecttype_checked">{{cs.name}}</span>
+                                      </label>
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-12 mb-2">
+                                    <ul class="types-list subtype-all customer-type-2 ml-0"
+                                      *ngIf="selectedCustomerType?.name==='Tenant'">
+                                      <li>
+                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                          <input type="checkbox" class="custom-control-input" id="chkIsBoardMember"
+                                            data-val="true" data-val-required="The IsBoardMember field is required."
+                                            name="IsBoardMember" value="true">
+                                          <label class="custom-control-label pt-1 font-size-12"
+                                            for="chkIsBoardMember">Association
+                                            Board Member</label>
+                                        </div>
+                                      </li>
+                                      <li>
+                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                          <input type="checkbox" class="custom-control-input" id="chkVip"
+                                            data-val="true" data-val-required="The IsVip field is required."
+                                            name="IsVip" value="true">
+                                          <label class="custom-control-label pt-1 font-size-12" for="chkVip">VIP</label>
+                                        </div>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!--General Info-->
+                            <!-- Profile info -->
+                            <div class="card">
+                              <div class="card-header  bg-transparent  header-elements-inline">
+                                <h6 class="card-title font-weight-semibold text-blue">
+                                  Profile information
+                                </h6>
+                              </div>
+
+                              <!--Customer info-->
+                              <div class="card-body">
+                                <div class="row">
+                                  <div class="col-sm-3 mb-2">
+                                    <app-text-field [formControlName]="'customerId'" [formGroup]="myProfile"
+                                      [fieldName]="'customerId'" [label]="'Customer Id'" ngDefaultControl
+                                      [value]="formData?.id??0" [isReadonly]="true">
+                                    </app-text-field>
+                                  </div>
+
+                                  <div class="col-sm-3 mb-2">
+                                    <app-text-field [formControlName]="'firstName'" [formGroup]="myProfile"
+                                      [fieldName]="'firstName'" [label]="'First Name'" ngDefaultControl
+                                      [value]="formData?.firstName" [isRequired]="true">
+                                    </app-text-field>
+                                  </div>
+
+                                  <div class="col-sm-3 mb-2">
+                                    <app-text-field [formControlName]="'middleName'" [formGroup]="myProfile"
+                                      [fieldName]="'middleName'" [label]="'Middle Name'" ngDefaultControl
+                                      [value]="formData?.middleName" [isRequired]="false">
+                                    </app-text-field>
+                                  </div>
+
+                                  <div class="col-sm-3 mb-2">
+                                    <app-text-field [formControlName]="'lastName'" [formGroup]="myProfile"
+                                      [fieldName]="'lastName'" [label]="'Last Name'" ngDefaultControl
+                                      [value]="formData?.lastName" [isRequired]="true">
+                                    </app-text-field>
+                                  </div>
+
+                                  <div class="col-sm-4 mb-2">
+                                    <app-text-field [formControlName]="'dob'" [formGroup]="myProfile"
+                                      [fieldName]="'dob'" [label]="'dob'" [placeholder]="'#DOB'" ngDefaultControl
+                                      [value]="formData?.dob | localizedDate" [pipe]="'date'" [isRequired]="false">
+                                    </app-text-field>
+                                  </div>
+
+                                  <div class="col-sm-4 mb-2">
+                                    <app-dropdown [formControlName]="'nationality'" [label]="'Nationality'"
+                                      [formGroup]="myProfile" [fieldName]="'nationality'"
+                                      [dataList]="masterData?.nationalities" ngDefaultControl
+                                      [value]="formData?.nationalityId??''" [isRequired]="false">
+                                    </app-dropdown>
+                                  </div>
+
+                                  <div class="col-sm-4 mb-2">
+                                    <app-dropdown [formControlName]="'gender'" [label]="'Gender'"
+                                      [formGroup]="myProfile" [fieldName]="'gender'" [dataList]="genders"
+                                      ngDefaultControl [value]="formData?.gender??''" [isRequired]="false">
+                                    </app-dropdown>
+                                  </div>
+
+                                  <div class="card-header  bg-transparent  header-elements-inline">
+                                    <h6 class="card-title font-weight-semibold text-blue">
+                                      Address
+                                    </h6>
+                                  </div>
+                                  <hr>
+
+                                  <div class="col-sm-6 mb-2">
+                                    <app-dropdown [formControlName]="'country'" [label]="'Country'"
+                                      [formGroup]="myProfile" [fieldName]="'country'" [dataList]="masterData?.countries"
+                                      ngDefaultControl [value]="formData?.countryId??''" [isRequired]="true"
+                                      (selectionChange)="countrySelected($event)">
+                                    </app-dropdown>
+                                  </div>
+
+                                  <div class="col-sm-6 mb-2">
+                                    <app-dropdown [formControlName]="'state'" [label]="'State'" [formGroup]="myProfile "
+                                      [fieldName]="'state'" [dataList]="states" ngDefaultControl
+                                      [value]="formData?.stateId??''" [isRequired]="true"
+                                      (selectionChange)="stateSelected($event)">
+                                    </app-dropdown>
+                                  </div>
+
+                                  <div class="col-sm-6 mb-2">
+                                    <app-dropdown [formControlName]="'city'" [label]="'City'" [formGroup]="myProfile "
+                                      [fieldName]="'city'" [dataList]="cities" ngDefaultControl
+                                      [value]="formData?.cityId??''" [isRequired]="false"
+                                      (selectionChange)="citySelected($event)">
+                                    </app-dropdown>
+                                  </div>
+
+                                  <div class="col-sm-6 mb-2">
+                                    <app-text-field [formControlName]="'streetNo'" [formGroup]="myProfile"
+                                      [fieldName]="'streetNo'" [label]="'Street No'" ngDefaultControl
+                                      [value]="formData?.streetNo" [isRequired]="false">
+                                    </app-text-field>
+                                  </div>
+
+                                  <div class="col-sm-4 mb-2">
+                                    <app-text-field [formControlName]="'streetName'" [formGroup]="myProfile"
+                                      [fieldName]="'streetName'" [label]="'Street Name'" ngDefaultControl
+                                      [value]="formData?.streetName" [isRequired]="false">
+                                    </app-text-field>
+                                  </div>
+
+                                  <div class="col-sm-4 mb-2">
+                                    <app-text-field [formControlName]="'landMark'" [formGroup]="myProfile"
+                                      [fieldName]="'landMark'" [label]="'Land Mark'" ngDefaultControl
+                                      [value]="formData?.landMark" [isRequired]="false">
+                                    </app-text-field>
+                                  </div>
+
+                                  <div class="col-sm-4 mb-2">
+                                    <app-text-field [formControlName]="'zipCode'" [formGroup]="myProfile"
+                                      [fieldName]="'zipCode'" [label]="'Zip Code'" [placeholder]="'#PO Box/Zip Code'"
+                                      ngDefaultControl [value]="formData?.postalCode" [isRequired]="false"
+                                      (keypress)="validateNumericInput($event,4,6)">
+                                    </app-text-field>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- /profile info -->
+                          </form>
+                        </div>
+
+                        <div class="tab-pane fade" [ngClass]="tabId===2?'active show':''" id="contact">
+                          <!-- Contact -->
+                          <form [formGroup]="contactInfo">
+                            <div>
+                              <div class="card">
+                                <div class="card-header  bg-transparent  header-elements-inline">
+                                  <h6 class="card-title font-weight-semibold text-blue">
+                                    Contact Information
+                                  </h6>
+                                </div>
+                                <div class="card-body">
+                                  <div class="row">
+                                    <div class="col-sm-1 mb-2">
+                                      <div class="dropdown mt-3">
+                                        <a class="badge badge-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                          style="padding: 11px 8px;">
+                                          {{mobileCode?.dialCode}}
+                                        </a>
+                                        <div class="dropdown-menu border-purple dropdown-menu-right"
+                                          style="max-height: 200px !important; overflow-y: auto !important;">
+                                          <a class="dropdown-item text-secondary font-size-sm"
+                                            *ngFor="let item of masterData?.countries"
+                                            (click)="countryCodeSelected(item)">
+                                            {{item.code + ' ' +item.dialCode}} </a>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-5 mb-2">
+                                      <app-text-field [formControlName]="'mobileNo'" [formGroup]="contactInfo"
+                                        [fieldName]="'mobileNo'" [label]="'Mobile No'" ngDefaultControl
+                                        [value]="formData?.contactMobileNumber" [isRequired]="false"
+                                        (keypress)="validateNumericInput($event,6,15)">
+                                      </app-text-field>
+                                    </div>
+
+                                    <div class="col-sm-6 mb-2">
+                                      <app-text-field [formControlName]="'emailAddress'" [formGroup]="contactInfo"
+                                        [fieldName]="'emailAddress'" [label]="'Email Address'" ngDefaultControl
+                                        [value]="formData?.contactEmail" [isRequired]="true"
+                                        (keyup)="validateEmailPattern($event)">
+                                      </app-text-field>
+                                    </div>
+
+                                    <div class="col-sm-1 mb-2">
+                                      <div class="dropdown mt-3">
+                                        <a class="badge badge-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                          style="padding: 11px 8px;">
+                                          {{landLineCode?.dialCode}}
+                                        </a>
+                                        <div class="dropdown-menu border-purple dropdown-menu-right"
+                                          style="max-height: 200px !important; overflow-y: auto !important;">
+                                          <a class="dropdown-item text-secondary font-size-sm"
+                                            *ngFor="let item of masterData?.countries"
+                                            (click)="countryCodeSelected(item, CountryCodes.LANDLINE)">
+                                            {{item.code + ' ' +item.dialCode}} </a>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-sm-5 mb-2">
+                                      <app-text-field [formControlName]="'landNo'" [formGroup]="contactInfo"
+                                        [fieldName]="'landNo'" [label]="'Land No'" ngDefaultControl
+                                        [value]="formData?.contactLandLineNumber" [isRequired]="false"
+                                        (keypress)="validateNumericInput($event,6,15)">
+                                      </app-text-field>
+                                    </div>
+
+                                    <div class="col-sm-1 mb-2">
+                                      <div class="dropdown mt-3">
+                                        <a class="badge badge-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                          style="padding: 11px 8px;">
+                                          {{faxNoCode?.dialCode}}
+                                        </a>
+                                        <div class="dropdown-menu border-purple dropdown-menu-right"
+                                          style="max-height: 200px !important; overflow-y: auto !important;">
+                                          <a class="dropdown-item text-secondary font-size-sm"
+                                            *ngFor="let item of masterData?.countries"
+                                            (click)="countryCodeSelected(item, CountryCodes.FAX)">
+                                            {{item.code + ' ' +item.dialCode}} </a>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-sm-5 mb-2">
+                                      <app-text-field [formControlName]="'fax'" [formGroup]="contactInfo"
+                                        [fieldName]="'fax'" [label]="'Fax'" ngDefaultControl
+                                        [value]="formData?.contactFaxNumberNumber" [isRequired]="false"
+                                        (keypress)="validateNumericInput($event,6,15)">
+                                      </app-text-field>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="card">
+                                <div class="card-header  bg-transparent  header-elements-inline">
+                                  <h6 class="card-title font-weight-semibold text-blue">
+                                    Emergency
+                                    Contact</h6>
+                                </div>
+
+                                <div class="card-body">
+                                  <div class="row">
+                                    <div class="col-sm-4 mb-2">
+                                      <app-text-field [formControlName]="'name'" [formGroup]="contactInfo"
+                                        [fieldName]="'name'" [label]="'Name'" ngDefaultControl
+                                        [value]="formData?.emergencyContactName" [isRequired]="false">
+                                      </app-text-field>
+                                    </div>
+                                    <div class="col-sm-4 mb-2">
+                                      <app-text-field [formControlName]="'lastName'" [formGroup]="contactInfo"
+                                        [fieldName]="'lastName'" [label]="'Last Name'" ngDefaultControl
+                                        [value]="formData?.emergencyContactLastName" [isRequired]="false">
+                                      </app-text-field>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                      <app-dropdown [formControlName]="'relationship'" [label]="'Relationship'"
+                                        [formGroup]="contactInfo" [fieldName]="'relationship'"
+                                        [dataList]="masterData?.relationships" ngDefaultControl
+                                        [value]="formData?.emergencyContactRelationShip??''" [isRequired]="false">
+                                      </app-dropdown>
+                                    </div>
+
+                                    <div class="col-sm-1 mb-2">
+                                      <div class="dropdown mt-3">
+                                        <a class="badge badge-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                                          style="padding: 11px 8px;">
+                                          {{alternateMobileCode?.dialCode}}
+                                        </a>
+                                        <div class="dropdown-menu border-purple dropdown-menu-right"
+                                          style="max-height: 200px !important; overflow-y: auto !important;">
+                                          <a class="dropdown-item text-secondary font-size-sm"
+                                            *ngFor="let item of masterData?.countries"
+                                            (click)="countryCodeSelected(item, CountryCodes.ALTERNATE)">
+                                            {{item.code + ' ' +item.dialCode}} </a>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-sm-4 mb-2">
+                                      <app-text-field [formControlName]="'emergencyMobileNo'" [formGroup]="contactInfo"
+                                        [fieldName]="'emergencyMobileNo'" [label]="'Emergency Mobile No'"
+                                        ngDefaultControl [value]="formData?.emergencyContactMobileNumber"
+                                        [placeholder]="'Mobile No'" [isRequired]="false"
+                                        (keypress)="validateNumericInput($event,6,15)">
+                                      </app-text-field>
+                                    </div>
+                                    <div class="col-sm-4 mb-2">
+                                      <app-text-field [formControlName]="'emergencyEmail'" [formGroup]="contactInfo"
+                                        [fieldName]="'emergencyEmail'" [label]="'Emergency Email'" ngDefaultControl
+                                        [value]="formData?.emergencyContactEmail" [placeholder]="'Email Address'"
+                                        [isRequired]="true" (keyup)="validateEmailPattern($event)">
+                                      </app-text-field>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                          <!-- /Contact -->
+                        </div>
+
+                        <div class="tab-pane fade" [ngClass]="tabId===3?'active show':''" id="propertyinfo">
+                          <!--property Info-->
+                          <div class="card">
+                            <div class="card-header bg-transparent">
+                              <span class="card-title font-weight-semibold">PropertyInfo</span>
+                            </div>
+
+                            <div class="card-body">
+                              <form [formGroup]="propertyInfo">
+                                <div class="row">
+                                  <div class="col-md-4 mb-2">
+                                    <app-dropdown [formControlName]="'building'" [label]="'Building'"
+                                      [formGroup]="propertyInfo" [fieldName]="'building'" [dataList]="buildings"
+                                      ngDefaultControl [value]="formData?.buildingId??''" [isRequired]="true"
+                                      (selectionChange)="buildingSelected($event)">
+                                    </app-dropdown>
+                                  </div>
+
+
+                                  <div class="col-md-4 mb-2">
+                                    <app-dropdown [formControlName]="'floor'" [label]="'Floor'"
+                                      [formGroup]="propertyInfo" [fieldName]="'floor'" [dataList]="masterData?.floors"
+                                      ngDefaultControl [value]="formData?.floorId??''" [isRequired]="true">
+                                    </app-dropdown>
+                                  </div>
+
+
+                                  <div class="col-md-4 mb-2">
+                                    <app-dropdown [formControlName]="'unit'" [label]="'Unit'" [formGroup]="propertyInfo"
+                                      [fieldName]="'unit'" [dataList]="units" ngDefaultControl
+                                      [value]="formData?.unitId??''" [isRequired]="true"
+                                      (selectionChange)="unitSelected($event)">
+                                    </app-dropdown>
+                                  </div>
+
+                                  <div class="col-sm-4 mb-2">
+                                    <app-text-field [formControlName]="'unitType'" [formGroup]="propertyInfo"
+                                      [fieldName]="'unitType'" [label]="'Unit Type'" ngDefaultControl
+                                      [value]="selectedUnit?.unitTypeName" [isRequired]="false">
+                                    </app-text-field>
+                                  </div>
+
+
+                                  <div class="col-sm-4 mb-2">
+                                    <app-text-field [formControlName]="'areaSqft'" [formGroup]="propertyInfo"
+                                      [fieldName]="'areaSqft'" [label]="'Area Sqft'" ngDefaultControl
+                                      [value]="selectedUnit?.builtUpAreaSqFt" [isRequired]="false" [isReadonly]="true">
+                                    </app-text-field>
+                                  </div>
+
+                                  <div class="col-sm-4 mb-2">
+                                    <app-text-field [formControlName]="'areaSqmt'" [formGroup]="propertyInfo"
+                                      [fieldName]="'areaSqmt'" [label]="'Area Sqmt'" ngDefaultControl [value]="''"
+                                      [isRequired]="false" [isReadonly]="true">
+                                    </app-text-field>
+                                  </div>
+
+                                  <div class="col-sm-6 mb-2">
+                                    <div class="form-group">
+                                      <p class="font-weight-semibold"></p>
+                                      <div class="p-1 mt-2">
+                                        <div class="custom-control custom-checkbox custom-control-inline mt-3">
+                                          <input type="checkbox" [formControlName]="'isOccupant'"
+                                            class="custom-control-input" id="chkIsOccupant" checked="" data-val="true"
+                                            data-val-required="The IsOccupant field is required." name="IsOccupant"
+                                            value="true">
+                                          <label class="custom-control-label" for="chkIsOccupant">Owner
+                                            Occupied</label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+
+                          <!--property Info-->
+                        </div>
+
+
+                        <div class="tab-pane fade" [ngClass]="tabId===4?'active show':''" id="docs">
+                          <!--Personal  Docs start-->
+                          <div class="card">
+                            <div class="card-header bg-transparent header-elements-inline">
+                              <h5 class="card-title font-weight-semibold font-size-lg">
+                                Personal Documents </h5>
+                            </div>
+                            <div class="card-body">
+                              <div class="card-body-content">
+                                <div class="card-body-content-block">
+                                  <div class="row">
+                                    <div class="col-12">
+                                      <div class="col-12" id="divDocuments">
+                                        <table class="table table-bordered last-td mb-0" id="tblPersonalDocs">
+                                          <thead>
+                                            <tr class="bg-grid-th color-white">
+                                              <th>Name</th>
+                                              <th>Document
+                                                Name
+                                              </th>
+                                              <th>Document
+                                                Size
+                                              </th>
+                                              <th>Uploaded On
+                                              </th>
+                                              <th>Status</th>
+                                              <th class="text-center">
+                                                Actions</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                          </tbody>
+                                        </table>
+                                        <div id="divDocError" class="text-danger mt-3">
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Personal Documents End -->
+                        </div>
+
+
+                        <div class="tab-pane fade" [ngClass]="tabId===5?'active show':''" id="auth">
+
+                          <!-- Account settings -->
+                          <div class="card">
+                            <div class="card-header bg-transparent header-elements-inline">
+                              <span class="card-title font-weight-semibold">Account
+                                settings</span>
+
+                              <div class="header-elements">
+
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="modal-content col-md-12 mb-2">
+                            <div class="card-header  bg-transparent  header-elements-inline">
+                              <h6 class="card-title font-weight-semibold text-blue">
+                                Other Reference
+                              </h6>
+                            </div>
+                            <hr>
+                            <div class="card-body">
+                              <form [formGroup]="authentication">
+                                <div class="row">
+                                  <div class="col-md-6 mb-2">
+                                    <app-text-field [formControlName]="'refCode1'" [formGroup]="authentication"
+                                      [fieldName]="'refCode1'" [label]="'RefCode1'" ngDefaultControl
+                                      [value]="formData?.refCode1" [isRequired]="false">
+                                    </app-text-field>
+                                  </div>
+
+                                  <div class="col-md-6 mb-2">
+                                    <app-text-field [formControlName]="'refCode2'" [formGroup]="authentication"
+                                      [fieldName]="'refCode2'" [label]="'RefCode2'" ngDefaultControl
+                                      [value]="formData?.refCode2" [isRequired]="false">
+                                    </app-text-field>
+                                  </div>
+                                  <div class="card-header  bg-transparent  header-elements-inline">
+                                    <p class="card-title font-weight-semibold text-blue">
+                                      Map To Profiles
+                                    </p>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                          <!-- /account settings -->
+                          <!-- /orders history -->
+                        </div>
+
+                        <div class="tab-pane fade" [ngClass]="tabId===6?'active show':''" id="interests">
+                          <!--Interests-->
+                          <div class="card">
+                            <div class="card-header bg-transparent">
+                              <span class="card-title font-weight-semibold">Interests</span>
+                            </div>
+                            <div class="card-body">
+                              <ul class="types-list">
+                                <li *ngFor="let interest of masterData?.customerInterests" class="mr-1">
+                                  <label class="types-list__label">
+                                    <input type="checkbox" class="cust-type" id="CustomerInterests_0__FieldValue"
+                                      name="CustomerInterest" [value]="interest.id">
+                                    <span class="types-list__text  build-facilities">{{interest.name}}</span>
+                                  </label>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                          <!--interests-->
+                        </div>
+                      </div>
+                      <!-- /right content -->
+                    </div>
+                    <!-- /inner container -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

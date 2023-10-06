@@ -1,0 +1,13 @@
+<!-- Inner content -->
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header [pageTitle]="selectedModule.name" [pageDescription]="''" [buttons]="buttons"
+    [items]="menuItems" [activeItem]="pageTitle"  (modified)="buttonClicked($event)">
+  </app-page-header>
+  <div class="notification-area">
+    <app-alert id="alert-assetsList"></app-alert>
+  </div>
+  <ng-container *ngIf="gridData?.configuration?.columns?.length">
+    <app-kendo-grid #assetGrid [gridDetails]="gridData" (edited)="edit($event)" (deleted)="deleteAsset($event)" [fileName]="selectedModule.name">
+    </app-kendo-grid>
+  </ng-container>
+</div>

@@ -1,0 +1,15 @@
+<div class="content-inner" (scroll)="scrollHandler($event)">
+  <app-page-header #header [items]="config?.items" [activeItem]="config?.title" [pageTitle]="config?.title"
+    [isFilterable]="true" (toggleFilter)="gridFilter.toggleShow()">
+  </app-page-header>
+  <app-grid-filter #gridFilter (filterChanged)="getData($event)" [filterType]="config?.filter"
+    [showStartEndDates]="config?.showStartEndDates" [api]="config?.apiEndpoint"
+    [isProjectMandatory]="config?.isProjectMandatory" [isExportable]="config?.isExportable"
+    [setBackFrequency]="config?.setBackFrequency ?? config?.defaultSetbackFrequencyInMonths" [isMultiSelect]="config?.isFrequencyMultiSelect"
+    [isFrequencyMandatory]="config?.isFrequencyMandatory" [useSearchButton]="config?.useSearchButton ?? true">
+  </app-grid-filter>
+  <ng-container *ngIf="gridData?.configuration?.columns?.length">
+    <app-kendo-grid [gridDetails]="gridData" [isViewable]="true" (edited)="view($event)" (view)="openLocation($event)"
+      [fileName]="config?.title"></app-kendo-grid>
+  </ng-container>
+</div>

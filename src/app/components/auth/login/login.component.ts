@@ -104,23 +104,13 @@ export class LoginComponent extends CommonComponent implements OnInit {
                 this.navState.quickActions = results.quickActions;
                 this.navState.currentAccount = results.accounts[0];
                 this.navService.setNavigationState(this.navState);
-                let defaultMenu = result.isDefaultRoute?.toString().split('~');
                 let menuGroup : any = this.navState.menuGroups ? this.navState.menuGroups[0] : null;
-                let menuSection = menuGroup?.groupedSections[0];
-                let menuItem = menuSection?.menuItems[0];
-                if (result.isDefaultRoute !== '0') {
-                  menuGroup = this.navState.menuGroups?.find(
-                    (menu: any) => menu.groupId === parseInt(defaultMenu[0])
-                  );
-                  menuSection = menuGroup?.groupedSections?.find(
-                    (menu: any) => menu.sectionId === parseInt(defaultMenu[1])
-                  );
-                  menuItem = menuSection?.menuItems?.find(
-                    (item: any) => item.tabId === parseInt(defaultMenu[2])
-                  );
-                }
                 if (menuGroup?.groupedSections) {
-                  this.SelectMenu(menuSection, menuItem, menuGroup);
+                  this.SelectMenu(
+                    menuGroup?.groupedSections[0],
+                    menuGroup?.groupedSections[0]?.menuItems[0],
+                    menuGroup
+                  );
                 }
               },
               error: () => {

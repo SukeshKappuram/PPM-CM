@@ -15,7 +15,7 @@ export class SharedService{
 
   numberToWord(num:any)
   {
-    return new ToWords().convert(num);
+    // return new ToWords().convert(num);
   }
 
   setMasterData(): void {

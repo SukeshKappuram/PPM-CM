@@ -14,8 +14,6 @@ import { HttpInterceptorService } from './services/http-interceptor.service';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { NgModule } from '@angular/core';
-import { NgxEchartsModule } from 'ngx-echarts';
-import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { SharedModule } from './shared/shared.module';
 import { ThemeService } from './services/theme.service';
 
@@ -31,11 +29,7 @@ import { ThemeService } from './services/theme.service';
     NgHttpLoaderModule.forRoot(),
     AuthModule,
     MatAutocompleteModule,
-    AngularEditorModule ,
-    NgxEchartsModule.forRoot({
-      echarts: () => import('echarts')
-    }),
-    NgxExtendedPdfViewerModule
+    AngularEditorModule
   ],
   providers: [
     {

@@ -3,7 +3,7 @@
   "version": "1.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve -o",
     "build": "node build-version.js prod && ng build --configuration production",
     "build-uat": "node build-version.js uat && ng build --configuration uat",
     "build-qa": "node build-version.js qa && ng build --configuration qa",

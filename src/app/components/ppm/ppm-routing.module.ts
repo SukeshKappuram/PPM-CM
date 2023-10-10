@@ -1,24 +1,24 @@
 import { RouterModule, Routes } from '@angular/router';
 
-import { ApiEndpoints } from './../../models/enums/api-endpoints.enum';
+import { NgModule } from '@angular/core';
+import { FilterType } from 'src/app/models/enums/FilterType.enum';
+import { ServiceStatus } from 'src/app/models/enums/ServiceStatus.enum';
+import { ServiceType } from 'src/app/models/enums/ServiceType.enum';
 import { AssetsListComponent } from '../asset-register/assets-master/assets-list/assets-list.component';
-import { CommonWfGridComponent } from './common-wf-grid/common-wf-grid.component';
 import { CreateCallsComponent } from '../corrective-calls/create-calls/create-calls.component';
-import { CreateHseqComponent } from './questions/create-hseq/create-hseq.component';
+import { ApiEndpoints } from './../../models/enums/api-endpoints.enum';
+import { CommonWfGridComponent } from './common-wf-grid/common-wf-grid.component';
 import { CreateIssuerComponent } from './create-issuer/create-issuer.component';
 import { CreatePlannerComponent } from './create-planner/create-planner.component';
 import { CreateSchedulerComponent } from './create-scheduler/create-scheduler.component';
-import { CreateTaskInstructionComponent } from './task-instructions/create-task-instruction/create-task-instruction.component';
+import { LogsComponent } from './logs/logs.component';
+import { CreateHseqComponent } from './questions/create-hseq/create-hseq.component';
+import { QuestionsComponent } from './questions/questions.component';
 import { DetailsComponent } from './reports/details/details.component';
 import { EventReportComponent } from './reports/event-report/event-report.component';
-import { FilterType } from 'src/app/models/enums/FilterType.enum';
-import { LogsComponent } from './logs/logs.component';
-import { NgModule } from '@angular/core';
-import { QuestionsComponent } from './questions/questions.component';
 import { ReportsComponent } from './reports/reports.component';
-import { ServiceStatus } from 'src/app/models/enums/ServiceStatus.enum';
-import { ServiceType } from 'src/app/models/enums/ServiceType.enum';
 import { SlaReportComponent } from './reports/sla-report/sla-report.component';
+import { CreateTaskInstructionComponent } from './task-instructions/create-task-instruction/create-task-instruction.component';
 import { TaskInstructionsComponent } from './task-instructions/task-instructions.component';
 
 const routes: Routes = [
@@ -87,7 +87,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'ppm-log/open',
+    path: 'open',
     component: LogsComponent,
     data: {
       serviceType: ServiceType.PM,
@@ -96,7 +96,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'ppm-log/closed',
+    path: 'closed',
     component: LogsComponent,
     data: {
       statusId: ServiceStatus.CLOSED,
@@ -106,7 +106,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'ppm-log/archived',
+    path: 'archived',
     component: LogsComponent,
     data: {
       statusId: ServiceStatus.ARCHIVED,

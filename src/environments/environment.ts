@@ -4,16 +4,16 @@
 
 export const environment = {
   production: false,
-  isDemoVersion: false,
+  isDemoVersion: true,
   envName: 'development',
-  coreApiUrl: 'http://uatcustomer.rynasolutions.com/CustomerApi/api',
-  amApiUrl: 'http://uatcustomer.rynasolutions.com/AssetMgmtApi/api',
-  ppmApiUrl: 'http://uatcustomer.rynasolutions.com/PMApi/api',
-  stockApiUrl: 'http://uatcustomer.rynasolutions.com/StockApi/api',
-  scheduledTaskApiUrl: 'http://uatcustomer.rynasolutions.com/SchduledApi/api',
-  reportApiUrl: 'http://uatcustomer.rynasolutions.com/ReportApi/api',
-  hrmsApiUrl: 'http://uatcustomer.rynasolutions.com/HRMSMgmtApi/api',
-  quoteApiUrl: 'http://uatcustomer.rynasolutions.com/QuoteMgmtApi/api',
+  coreApiUrl: 'http://devcustomer.rynasolutions.com/CustomerApi/api',
+  amApiUrl: 'http://devcustomer.rynasolutions.com/AssetMgmtApi/api',
+  ppmApiUrl: 'http://devcustomer.rynasolutions.com/CustomerApi/api',
+  stockApiUrl: 'http://devcustomer.rynasolutions.com/StockApi/api',
+  scheduledTaskApiUrl: 'http://devcustomer.rynasolutions.com/SchduledApi/api',
+  reportApiUrl: 'http://devcustomer.rynasolutions.com/ReportApi/api',
+  hrmsApiUrl: 'http://devcustomer.rynasolutions.com/HRMSMgmtApi/api',
+  quoteApiUrl: 'http://devcustomer.rynasolutions.com/QuoteMgmtApi/api',
 
   // coreApiUrl: 'http://democafm.rynasolutions.com/CoreApi/api',
   // amApiUrl: 'http://democafm.rynasolutions.com/AssetMgmtApi/api',
@@ -30,7 +30,7 @@ export const environment = {
   // scheduledTaskApiUrl: 'http://uatcafm.smrthub.com/SchduledApi/api',
   // reportApiUrl: 'http://uatcafm.smrthub.com/ReportApi/api',
   // quoteApiUrl:'http://uatcafm.smrthub.com/QuoteMgmtApi/api',
-  ver: '1'
+  ver: '2'
 };
 
 /*

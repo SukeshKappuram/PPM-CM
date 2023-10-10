@@ -52,7 +52,7 @@ const routes: Routes = [
           )
       },
       {
-        path: 'reactive-wo',
+        path: 'reactive',
         loadChildren: () =>
           import('./components/reactive-calls/reactive-calls.module').then(
             (m) => m.ReactiveCallsModule

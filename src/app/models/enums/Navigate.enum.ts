@@ -14,20 +14,20 @@ export enum Navigate {
   VIEW_SCHEDULE_GRID = 'planned-maintenance/ppm-scheduler/scheduler',
 
   PPM_LOG_CREATE = 'planned-maintenance/ppm-log/create',
-  REACTIVE_LOG_CREATE = 'reactive-wo/create',
+  REACTIVE_LOG_CREATE = 'reactive/create',
   CORRECTIVE_LOG_CREATE = 'corrective-wo/create',
 
   PPM_LOG_COPY = 'planned-maintenance/ppm-log/create/copy',
-  REACTIVE_LOG_COPY = 'reactive-wo/create/copy',
+  REACTIVE_LOG_COPY = 'reactive/create/copy',
   CORRECTIVE_LOG_COPY = 'corrective-wo/create/copy',
 
   PPM_LOG = 'planned-maintenance/ppm-log/edit/',
-  REACTIVE_LOG = 'reactive-wo/edit/',
+  REACTIVE_LOG = 'reactive/edit/',
   CORRECTIVE_LOG = 'corrective-wo/edit/',
   SCHEDULED_LOG = 'scheduled-tasks/task/edit/',
 
   PPM_CALLS = 'planned-maintenance/ppm-log/',
-  REACTIVE_CALLS = 'reactive-wo/',
+  REACTIVE_CALLS = 'reactive/',
   CORRECTIVE_CALLS = 'corrective-wo/',
   SCHEDULE_TASKS = 'scheduler-task/',
 

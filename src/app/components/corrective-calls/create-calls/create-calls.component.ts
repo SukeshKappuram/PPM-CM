@@ -619,7 +619,14 @@ export class CreateCallsComponent extends CommonComponent implements OnInit {
       btns = btns.filter(
         (button) => button.id !== 'Actions' && button.id !== 'New w/o'
       );
-    } 
+    } else if(this.navState.currentLogId !== 0 && this.serviceTypeId === 2){
+      this.isEditable = this.userAccess?.canAdd ?? false;
+      btns = btns.filter(
+        (button) =>
+          button.id !== 'Actions' &&
+          button.id !== 'Save'
+      );
+    }
     this.buttons = btns;
     this.updateButtons();
   }

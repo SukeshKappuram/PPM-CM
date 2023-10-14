@@ -1515,6 +1515,32 @@ export class TabsMasterViewComponent extends CommonComponent {
                 id: 'alert-taskLog'
               });
             }
+          }else if (result === -5) {
+            if (this.currentView === MasterComponentTypes.MAN_POWER) {
+              this.alertService.error(
+                'Mobile user access limit reached. Please deallocate an existing user to allocate new user(s)',
+                {
+                  id: 'alert-taskLog'
+                }
+              );
+            } else {
+              this.alertService.error(`Could not save ${this.currentView} !!`, {
+                id: 'alert-taskLog'
+              });
+            }
+          }else if (result === -6) {
+            if (this.currentView === MasterComponentTypes.MAN_POWER) {
+              this.alertService.error(
+                'Web user access limit reached. Please deallocate an existing user to allocate new user(s)',
+                {
+                  id: 'alert-taskLog'
+                }
+              );
+            } else {
+              this.alertService.error(`Could not save ${this.currentView} !!`, {
+                id: 'alert-taskLog'
+              });
+            }
           }
         },
         error: (e: any) => {

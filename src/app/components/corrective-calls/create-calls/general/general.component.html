@@ -47,7 +47,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" *ngIf="mode === LogMode.EDIT">
         <div class="col-lg-6">
           <div class="row mb-1">
             <label class="col-form-label col-lg-3  ">
@@ -55,7 +55,7 @@
             <div class="col-lg-9">
               <kendo-dropdownlist class="form-group" [data]="filteredData?.locs" ngDefaultControl [filterable]="true"
                 textField="name" valueField="id" [formControlName]="'loc'" [defaultItem]="defaultItem('LOC')"
-                (filterChange)="handleFilter($event, 'locs')" [readonly]="mode === LogMode.LOCKED || mode === LogMode.EDIT"
+                (filterChange)="handleFilter($event, 'locs')" [readonly]="true"
                 (selectionChange)="setLoc()">
                 <ng-template kendoDropDownListItemTemplate let-dataItem>
                   <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
@@ -78,7 +78,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-sm-6 ">
           <div class="row mb-2">
             <label class="col-from-lable col-lg-3">PPM Id
@@ -108,7 +108,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="row">
         <div class="col-md-12">
@@ -148,7 +148,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-lg-6">
           <div class="row mb-1 form-group  ">
             <label class="col-form-label col-lg-3"> Est. Stock
@@ -199,7 +199,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </form>
   </div>
 </div>

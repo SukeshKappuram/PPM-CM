@@ -45,6 +45,8 @@ export class GeneralComponent extends CommonComponent {
   @Output() logUpdated: EventEmitter<any> = new EventEmitter();
   @Output() assetUpdated: EventEmitter<any> = new EventEmitter();
   @ViewChild('category') categoryDD!: DropdownComponent;
+  typesId: any;
+  subTypesId: any;
 
   constructor(
     private fb: FormBuilder,
@@ -83,6 +85,9 @@ export class GeneralComponent extends CommonComponent {
       .subscribe({
         next: (result: any) => {
           let tLog = result.taskLogInfo;
+          this.typesId = result.configuration?.types[0]?.id ?? null;
+          this.subTypesId = result.configuration?.subTypes[0]?.id ?? null;
+          this.masterData = result.configuration;
           if (updateForm) {
             this.masterData = result.configuration;
             this.filteredData = { ...this.masterData };
@@ -132,19 +137,21 @@ export class GeneralComponent extends CommonComponent {
       title: [tLog?.title, Validators.required],
       reportedDt: [tLog?.reportedDate ?? new Date(), Validators.required],
       category: [tLog?.categoryId, Validators.required],
-      loc: [tLog?.locId, Validators.required],
-      locDate: [tLog?.locDate],
+      type: [this.typesId],
+      subType: [this.subTypesId],
+      loc: [tLog?.locId],
+      // locDate: [tLog?.locDate],
       summary: [tLog?.summary],
       updateSummary: [tLog?.summary],
       updateHoldSummary: [tLog?.onHoldReason],
       rejectedSummary: [tLog?.rejectedReason],
-      estStockCost: [tLog?.estimatedStockCost],
-      estLabourCost: [tLog?.estimatedLabourCost],
-      estTime: [tLog?.estimatedTime],
+      // estStockCost: [tLog?.estimatedStockCost],
+      // estLabourCost: [tLog?.estimatedLabourCost],
+      // estTime: [tLog?.estimatedTime],
       closedDate: [tLog?.completionDate],
-      refNumber: [tLog?.refNumber],
-      ppmId: [tLog?.ppmCode],
-      parentWo: [tLog?.parentWorkOrder]
+      // refNumber: [tLog?.refNumber],
+      // ppmId: [tLog?.ppmCode],
+      // parentWo: [tLog?.parentWorkOrder]
     });
     this.generalForm?.valueChanges.subscribe(() => {
       this.assetUpdated.emit();
@@ -249,12 +256,12 @@ export class GeneralComponent extends CommonComponent {
       this.taskLogInfo?.categoryId ??
       taskInstruction?.categoryId ??
       generalForm.category;
-    generalForm.estLabourCost =
-      taskInstruction?.estimatedLabourCost ?? generalForm.estLabourCost;
-    generalForm.estStockCost =
-      taskInstruction?.estimatedStockCost ?? generalForm.estStockCost;
-    generalForm.estTime =
-      taskInstruction?.estimatedTimeInMins ?? generalForm.estTime;
+    // generalForm.estLabourCost =
+    //   taskInstruction?.estimatedLabourCost ?? generalForm.estLabourCost;
+    // generalForm.estStockCost =
+    //   taskInstruction?.estimatedStockCost ?? generalForm.estStockCost;
+    // generalForm.estTime =
+    //   taskInstruction?.estimatedTimeInMins ?? generalForm.estTime;
     this.generalForm.patchValue(generalForm);
   }
 
@@ -308,7 +315,7 @@ export class GeneralComponent extends CommonComponent {
         })
         .afterClosed()
         .subscribe((result) => {
-          switch (result.contentName) {
+          switch (result?.contentName) {
             case 'Assets':
               let asset = result.selectedAsset;
               this.taskLogInfo['assetCode'] = asset.code;

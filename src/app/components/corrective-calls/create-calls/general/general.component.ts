@@ -45,6 +45,8 @@ export class GeneralComponent extends CommonComponent {
   @Output() logUpdated: EventEmitter<any> = new EventEmitter();
   @Output() assetUpdated: EventEmitter<any> = new EventEmitter();
   @ViewChild('category') categoryDD!: DropdownComponent;
+  typesId: any;
+  subTypesId: any;
 
   constructor(
     private fb: FormBuilder,
@@ -83,6 +85,9 @@ export class GeneralComponent extends CommonComponent {
       .subscribe({
         next: (result: any) => {
           let tLog = result.taskLogInfo;
+          this.typesId = result.configuration?.types[0]?.id ?? null;
+          this.subTypesId = result.configuration?.subTypes[0]?.id ?? null;
+          this.masterData = result.configuration;
           if (updateForm) {
             this.masterData = result.configuration;
             this.filteredData = { ...this.masterData };
@@ -103,7 +108,7 @@ export class GeneralComponent extends CommonComponent {
                 });
               }
               this.updateAsset(false);
-              // this.setLoc(this.taskLogInfo?.locDate);
+              this.setLoc(this.taskLogInfo?.locDate);
             }
             this.ds.updateReportedDate(this.taskLogInfo?.loggedByDate);
           } else {
@@ -132,7 +137,9 @@ export class GeneralComponent extends CommonComponent {
       title: [tLog?.title, Validators.required],
       reportedDt: [tLog?.reportedDate ?? new Date(), Validators.required],
       category: [tLog?.categoryId, Validators.required],
-      // loc: [tLog?.locId, Validators.required],
+      type: [this.typesId],
+      subType: [this.subTypesId],
+      loc: [tLog?.locId],
       // locDate: [tLog?.locDate],
       summary: [tLog?.summary],
       updateSummary: [tLog?.summary],
@@ -258,14 +265,14 @@ export class GeneralComponent extends CommonComponent {
     this.generalForm.patchValue(generalForm);
   }
 
-  // setLoc(locDate?: any) {
-  //   this.taskLogInfo['locDate'] = this.datePipe.transform(
-  //     locDate ? locDate : new Date(),
-  //     'dd-MMM-yyyy HH:mm',
-  //     locDate === undefined
-  //   );
-  //   this.generalForm.controls['locDate'].setValue(this.taskLogInfo['locDate']);
-  // }
+  setLoc(locDate?: any) {
+    this.taskLogInfo['locDate'] = this.datePipe.transform(
+      locDate ? locDate : new Date(),
+      'dd-MMM-yyyy HH:mm',
+      locDate === undefined
+    );
+    this.generalForm.controls['locDate'].setValue(this.taskLogInfo['locDate']);
+  }
 
   openPopup(type: number) {
     let title = '';

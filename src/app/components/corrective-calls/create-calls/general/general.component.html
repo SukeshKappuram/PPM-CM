@@ -32,64 +32,12 @@
       <div class="row">
         <div class="col-lg-6">
           <div class="row mb-1  ">
-            <label class="col-form-label col-lg-3 pl-2">Type <sup class="text-danger">*</sup>
-            </label>
-            <div class="col-lg-9">
-              <kendo-dropdownlist class="form-group" [data]="filteredData?.types" ngDefaultControl [filterable]="true"
-                textField="name" valueField="id" [formControlName]="'type'" [defaultItem]="defaultItem('Type')"
-                [readonly]="mode === LogMode.LOCKED" (selectionChange)="typeChanged($event)"
-                (filterChange)="handleFilter($event, 'types')">
-                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                  <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
-                </ng-template>
-              </kendo-dropdownlist>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-6">
-          <div class="row mb-1  ">
-            <label class="col-form-label col-lg-3"> SubType<sup class="text-danger">*</sup>
-            </label>
-            <div class="col-lg-9">
-              <kendo-dropdownlist class="form-group" [data]="filteredData?.subTypes" ngDefaultControl
-                [filterable]="true" textField="name" valueField="id" [formControlName]="'subType'"
-                [defaultItem]="defaultItem('Sub Type')" [readonly]="mode === LogMode.LOCKED"
-                (filterChange)="handleFilter($event, 'subTypes')">
-                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                  <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
-                </ng-template>
-              </kendo-dropdownlist>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="row mb-1  ">
             <label class="col-form-label col-lg-3"> Category <sup class="text-danger">*</sup>
             </label>
             <div class="col-lg-9">
               <kendo-dropdownlist class="form-group" [data]="filteredData?.categories" [filterable]="true"
                 textField="name" valueField="id" [formControlName]="'category'" [defaultItem]="defaultItem('Category')"
                 [readonly]="mode === LogMode.LOCKED" (filterChange)="handleFilter($event, 'categories')">
-                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                  <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
-                </ng-template>
-              </kendo-dropdownlist>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-6 ">
-          <div class="row mb-1">
-            <label class="col-form-label col-lg-3"> Channel <sup class="text-danger">*</sup></label>
-            <div class="col-lg-9">
-              <kendo-dropdownlist class="form-group" [data]="filteredData?.channels" ngDefaultControl
-                [filterable]="true" textField="name" valueField="id" [formControlName]="'channel'"
-                [defaultItem]="defaultItem('Channel')" [readonly]="!isEditable"
-                (filterChange)="handleFilter($event, 'channels')">
                 <ng-template kendoDropDownListItemTemplate let-dataItem>
                   <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
                 </ng-template>
@@ -197,42 +145,6 @@
             [fieldName]="'rejectedSummary'" [label]="'Rejected Summary'" [showLabel]="false" ngDefaultControl [rows]="2"
             [value]="taskLogInfo?.rejectedReason" [isReadonly]="true">
           </app-textarea-field>
-        </div>
-      </div>
-
-      <div class="row mt-1">
-        <div class="col-lg-6">
-          <div class="row mb-1 form-group form-group-feedback form-group-feedback-right ">
-            <label class="col-form-label col-lg-3">
-              Priority <sup class="text-danger">*</sup></label>
-            <div class="col-lg-9">
-              <kendo-dropdownlist class="form-group" [data]="filteredData?.priorities" ngDefaultControl
-                [filterable]="true" textField="name" valueField="id" [formControlName]="'priority'"
-                [defaultItem]="defaultItem('Priority')" [readonly]="mode === LogMode.LOCKED"
-                (filterChange)="handleFilter($event, 'priorities')">
-                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                  <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
-                </ng-template>
-              </kendo-dropdownlist>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-6">
-          <div class="row mb-1 ">
-            <label class="col-form-label col-lg-3">Fault Code
-            </label>
-            <div class="col-lg-9">
-              <kendo-dropdownlist class="form-group" [data]="filteredData?.faultCodes" ngDefaultControl
-                [filterable]="true" textField="name" valueField="id" [formControlName]="'faultCode'"
-                [defaultItem]="defaultItem('Fault Code')" [readonly]="!isEditable"
-                (filterChange)="handleFilter($event, 'faultCodes')">
-                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                  <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
-                </ng-template>
-              </kendo-dropdownlist>
-            </div>
-          </div>
         </div>
       </div>
 

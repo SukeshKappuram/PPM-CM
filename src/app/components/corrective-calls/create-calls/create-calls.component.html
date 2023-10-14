@@ -29,18 +29,18 @@
       <div class="card no-shadow" style="width: 101%;">
         <div class="card-body p-0">
           <ul class="nav nav-tabs nav-tabs-solid mb-0">
-            <li class="nav-item"><a class="nav-link" (click)="openTab(10)" [ngClass]="tabId===10?'active':''"
-                data-toggle="tab">HSEQ</a></li>
+            <!-- <li class="nav-item"><a class="nav-link" (click)="openTab(10)" [ngClass]="tabId===10?'active':''"
+                data-toggle="tab">HSEQ</a></li> -->
             <li class="nav-item"><a class="nav-link" (click)="openTab(1)" [ngClass]="tabId===1?'active':''"
                 data-toggle="tab">Resource</a></li>
-            <li class="nav-item" *ngIf="serviceTypeId===ServiceType.PM"><a class="nav-link" (click)="openTab(2)"
-                [ngClass]="tabId===2?'active':''" data-toggle="tab">Checklist</a></li>
-            <li class="nav-item"><a class="nav-link" (click)="openTab(3)" [ngClass]="tabId===3?'active':''"
-                data-toggle="tab">PMS</a></li>
+            <!-- <li class="nav-item" *ngIf="serviceTypeId===ServiceType.PM"><a class="nav-link" (click)="openTab(2)"
+                [ngClass]="tabId===2?'active':''" data-toggle="tab">Checklist</a></li> -->
+            <!-- <li class="nav-item"><a class="nav-link" (click)="openTab(3)" [ngClass]="tabId===3?'active':''"
+                data-toggle="tab">PMS</a></li> -->
             <li class="nav-item"><a class="nav-link" (click)="openTab(4)" [ngClass]="tabId===4?'active':''"
                 data-toggle="tab">Escalation</a></li>
-            <li class="nav-item"><a class="nav-link" (click)="openTab(5)" [ngClass]="tabId===5?'active':''"
-                data-toggle="tab">Sub Tasks</a></li>
+            <!-- <li class="nav-item"><a class="nav-link" (click)="openTab(5)" [ngClass]="tabId===5?'active':''"
+                data-toggle="tab">Sub Tasks</a></li> -->
             <li class="nav-item"><a class="nav-link" (click)="openTab(6)" [ngClass]="tabId===6?'active':''"
                 data-toggle="tab">Documents</a></li>
             <li class="nav-item"><a class="nav-link" (click)="openTab(7)" [ngClass]="tabId===7?'active':''"
@@ -49,21 +49,21 @@
                 data-toggle="tab">Emails</a></li>
             <li class="nav-item"><a class="nav-link" (click)="openTab(9)" [ngClass]="tabId===9?'active':''"
                 data-toggle="tab" *ngIf="statusId === 3">Feedback</a></li>
-            <li class="nav-item"><a class="nav-link" (click)="openTab(11)" [ngClass]="tabId===11?'active':''"
+            <!-- <li class="nav-item"><a class="nav-link" (click)="openTab(11)" [ngClass]="tabId===11?'active':''"
                 data-toggle="tab">Stock</a></li>
             <li class="nav-item"><a class="nav-link" (click)="openTab(12)" [ngClass]="tabId===12?'active':''"
-                data-toggle="tab">MR</a></li>
+                data-toggle="tab">MR</a></li> -->
           </ul>
           <div class="tab-content card-body" [ngClass]="{'p-0':tabId<=0}">
             <div class="tab-pane fade" [ngClass]="tabId===1?'active show':''" id="resource" *ngIf="tabId===1">
               <app-resource #resources [resources]="masterData?.taskResources" (dataChanged)="setMasterData($event)"
                 [masterResources]="masterData?.masterResources" [statusId]="statusId"
-                [isLocked]="mode === LogMode.LOCKED" [userAccess]="userAccess"
+                [isLocked]="true" [userAccess]="userAccess"
                 (statusChanged)="general.getData(general?.taskLogInfo?.projectId, false)">
               </app-resource>
             </div>
 
-            <div class="tab-pane fade" [ngClass]="tabId===2 || tabId===10?'active show':''" id="checklist"
+            <!-- <div class="tab-pane fade" [ngClass]="tabId===2 || tabId===10?'active show':''" id="checklist"
               *ngIf="tabId===2 || tabId===10">
               <app-checklist #checklist [checkListItems]="masterData?.checkListItems" *ngIf="tabId===2;else hseq"
                 [tabId]="11" [isChecklist]="tabId===2" [statusId]="statusId" [isLocked]="mode === LogMode.LOCKED"
@@ -76,11 +76,11 @@
                   [isLocked]="mode === LogMode.LOCKED">
                 </app-checklist>
               </ng-template>
-            </div>
+            </div> -->
 
-            <div class="tab-pane fade" [ngClass]="tabId===3?'active show':''" id="pms" *ngIf="tabId===3">
+            <!-- <div class="tab-pane fade" [ngClass]="tabId===3?'active show':''" id="pms" *ngIf="tabId===3">
               <app-pms [serviceTypeId]="serviceTypeId"></app-pms>
-            </div>
+            </div> -->
 
             <div class="tab-pane fade" [ngClass]="tabId===4?'active show':''" id="escalate" *ngIf="tabId===4">
               <app-sub-task #subtasks [taskLogId]="navState.currentLogId" [gridData]="masterData?.escalations"
@@ -89,12 +89,12 @@
               </app-sub-task>
             </div>
 
-            <div class="tab-pane fade" [ngClass]="tabId===5?'active show':''" id="subtask" *ngIf="tabId===5">
+            <!-- <div class="tab-pane fade" [ngClass]="tabId===5?'active show':''" id="subtask" *ngIf="tabId===5">
               <app-sub-task #subtasks [taskLogId]="navState.currentLogId" [gridData]="masterData?.subTasks"
                 [data]="taskLogData?.subTask" [statusId]="statusId" (dataChanged)="setMasterData($event)"
                 [popupType]="'Sub Task'" [isLocked]="mode === LogMode.LOCKED">
               </app-sub-task>
-            </div>
+            </div> -->
 
             <div class="tab-pane fade" [ngClass]="tabId===6?'active show':''" id="documents" *ngIf="tabId===6">
               <app-attachments [type]="'Doc'" [taskLogId]="navState.currentLogId" [attachments]="masterData?.documents"
@@ -118,7 +118,7 @@
               <app-feedback [feedback]="taskLogData.feedback" (dataChanged)="setMasterData($event)"></app-feedback>
             </div>
 
-            <div class="tab-pane fade" [ngClass]="tabId===11?'active show':''" id="stocks" *ngIf="tabId===11">
+            <!-- <div class="tab-pane fade" [ngClass]="tabId===11?'active show':''" id="stocks" *ngIf="tabId===11">
               <app-stocks (dataChanged)="setMasterData($event)"></app-stocks>
             </div>
             <div class="tab-pane fade" [ngClass]="tabId===12?'active show':''" id="stocks" *ngIf="tabId===12">
@@ -126,7 +126,7 @@
                 [hasEditAccess]="mode !== LogMode.LOCKED && (generalForm.taskLogInfo?.statusId > ServiceStatus.OPEN || statusId > ServiceStatus.OPEN)"
                 [projectId]="generalForm?.taskLogInfo?.projectId" [taskTypeId]="serviceTypeId"
                 [reportedById]="generalForm?.taskLogInfo?.reportedById" [statusId]="statusId"></app-mr-tab>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

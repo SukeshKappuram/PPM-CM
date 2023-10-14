@@ -118,7 +118,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="row mb-2 form-group form-group-feedback form-group-feedback-right"
-            [hidden]="!selectedUserSubType?.isSelectable">
+            [hidden]="!selectedUserSubType?.isSelectable || isLoggedByCustomer">
             <label class="col-form-label col-md-3 px-0">Reporter <sup class="text-danger" *ngIf="!currentLog?.isAutoIssued">*</sup></label>
             <div class="col-md-9">
               <kendo-dropdownlist class="form-group" [data]="filteredData?.resources" [filterable]="true" textField="name" valueField="id"
@@ -131,12 +131,12 @@
           </div>
 
           <div class="row mb-2 form-group form-group-feedback form-group-feedback-right"
-            [hidden]="selectedUserSubType?.isSelectable && (!selectedResource?.name || mode === LogMode.CREATE)">
+            [hidden]="(selectedUserSubType?.isSelectable && (!selectedResource?.name || mode === LogMode.CREATE) || isLoggedByCustomer)">
             <label class="col-form-label col-md-3 px-0">Name <sup class="text-danger" *ngIf="!currentLog?.isAutoIssued">*</sup></label>
             <div class="col-md-9">
               <app-text-field [formControlName]="'name'" [formGroup]="reportedbyForm" [fieldName]="'name'"
                 [label]="'Name'" [showLabel]="false" ngDefaultControl [value]="selectedResource?.name"
-                [isReadonly]="mode !== LogMode.CREATE || selectedUserSubType?.isSelectable || currentLog?.isAutoIssued" [isRequired]="!currentLog?.isAutoIssued">
+                [isReadonly]="mode !== LogMode.CREATE || selectedUserSubType?.isSelectable || currentLog?.isAutoIssued || isLoggedByCustomer" [isRequired]="!currentLog?.isAutoIssued">
               </app-text-field>
               <div class="form-control-feedback form-control-feedback-sm text-muted mr-1">
                 <i class="bi bi-person-fill"></i>
@@ -150,7 +150,7 @@
             <div class="col-md-9">
               <app-text-field [formControlName]="'email'" [formGroup]="reportedbyForm" [fieldName]="'email'"
                 [label]="'Email'" [showLabel]="false" ngDefaultControl [value]="selectedResource?.email"
-                [isReadonly]="mode === LogMode.LOCKED || currentLog?.isAutoIssued" [isRequired]="!currentLog?.isAutoIssued">
+                [isReadonly]="mode === LogMode.LOCKED || currentLog?.isAutoIssued || isLoggedByCustomer" [isRequired]="!currentLog?.isAutoIssued">
               </app-text-field>
               <div class="form-control-feedback form-control-feedback-sm text-muted mr-1">
                 <i class="bi bi-envelope-fill"></i>
@@ -158,7 +158,7 @@
             </div>
           </div>
           <div class="row mb-2 form-group form-group-feedback form-group-feedback-right"
-            *ngIf="selectedResource?.mobileNo || mode === LogMode.CREATE || currentLog?.isAutoIssued">
+            *ngIf="selectedResource?.mobileNo || mode === LogMode.CREATE || currentLog?.isAutoIssued || isLoggedByCustomer">
             <label class="col-form-label col-md-3 px-0"> Mobile
             </label>
             <div class="col-md-3">
@@ -166,7 +166,7 @@
                 <a class="badge badge-secondary dropdown-toggle" data-bs-toggle="dropdown" style="padding: 12px 8px;">
                   {{selectedCountry?.mobileCode}}
                 </a>
-                <div class="dropdown-menu border-purple dropdown-menu-right" *ngIf="!currentLog?.isAutoIssued"
+                <div class="dropdown-menu border-purple dropdown-menu-right" *ngIf="!currentLog?.isAutoIssued || isLoggedByCustomer"
                   style="max-height: 200px !important; overflow-y: auto !important;">
                   <a class="dropdown-item text-secondary font-size-sm" *ngFor="let item of masterData?.countryCodes"
                     (click)="countrySelected(item)"> {{item.name}} </a>
@@ -176,7 +176,7 @@
             <div class="col-md-6">
               <app-text-field [formControlName]="'mobile'" [formGroup]="reportedbyForm" [fieldName]="'mobile'"
                 [label]="'Mobile'" [showLabel]="false" ngDefaultControl
-                [value]="selectedResource?.mobileNo??selectedResource?.mobile" [isReadonly]="mode === LogMode.LOCKED || currentLog?.isAutoIssued"
+                [value]="selectedResource?.mobileNo??selectedResource?.mobile" [isReadonly]="mode === LogMode.LOCKED || currentLog?.isAutoIssued || isLoggedByCustomer"
                 (keypress)="validateNumericInput($event,6,15)">
               </app-text-field>
             </div>

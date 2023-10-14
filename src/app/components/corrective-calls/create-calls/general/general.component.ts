@@ -30,7 +30,6 @@ export class GeneralComponent extends CommonComponent {
   assetForm!: FormGroup;
   taskLogInfo: any = {};
   hasAsset: boolean = false;
-  subTypes: any[] = [];
   currentSummary: any = '';
   LogMode = LogMode;
   currentLogId: number = 0;
@@ -45,8 +44,6 @@ export class GeneralComponent extends CommonComponent {
   @Output() actionsUpdated: EventEmitter<any> = new EventEmitter();
   @Output() logUpdated: EventEmitter<any> = new EventEmitter();
   @Output() assetUpdated: EventEmitter<any> = new EventEmitter();
-  @ViewChild('type') typeDD!: DropdownComponent;
-  @ViewChild('subType') subTypeDD!: DropdownComponent;
   @ViewChild('category') categoryDD!: DropdownComponent;
 
   constructor(
@@ -107,11 +104,6 @@ export class GeneralComponent extends CommonComponent {
               }
               this.updateAsset(false);
               this.setLoc(this.taskLogInfo?.locDate);
-              this.subTypes = this.masterData?.subTypes.filter(
-                (s: any) => s.typeId === tLog.typeId
-              );
-              this.filteredData['subTypes'] = this.subTypes;
-              this.generalForm.controls['subType'].setValue(tLog.subTypeId);
             }
             this.ds.updateReportedDate(this.taskLogInfo?.loggedByDate);
           } else {
@@ -139,18 +131,13 @@ export class GeneralComponent extends CommonComponent {
     this.generalForm = this.fb.group({
       title: [tLog?.title, Validators.required],
       reportedDt: [tLog?.reportedDate ?? new Date(), Validators.required],
-      type: [tLog?.typeId, Validators.required],
-      subType: [tLog?.subTypeId, Validators.required],
       category: [tLog?.categoryId, Validators.required],
-      channel: [tLog?.channelId, Validators.required],
       loc: [tLog?.locId, Validators.required],
       locDate: [tLog?.locDate],
       summary: [tLog?.summary],
       updateSummary: [tLog?.summary],
       updateHoldSummary: [tLog?.onHoldReason],
       rejectedSummary: [tLog?.rejectedReason],
-      priority: [tLog?.priorityId, Validators.required],
-      faultCode: [tLog?.faultCodeId],
       estStockCost: [tLog?.estimatedStockCost],
       estLabourCost: [tLog?.estimatedLabourCost],
       estTime: [tLog?.estimatedTime],
@@ -249,47 +236,25 @@ export class GeneralComponent extends CommonComponent {
     let tasklog = this.taskLogInfo;
     tasklog['title'] = this.taskLogInfo?.title ?? taskInstruction?.name;
     tasklog['taskInstructionId'] = instructionId;
-    tasklog['typeId'] = this.taskLogInfo?.typeId ?? taskInstruction?.typeId;
     tasklog['categoryId'] =
       this.taskLogInfo?.categoryId ?? taskInstruction?.categoryId;
-    tasklog['priorityId'] =
-      this.taskLogInfo?.priorityId ?? taskInstruction?.priorityId;
     tasklog['estimatedLabourCost'] = taskInstruction?.estimatedLabourCost;
     tasklog['estimatedStockCost'] = taskInstruction?.estimatedStockCost;
     tasklog['estimatedTime'] = taskInstruction?.estimatedTimeInMins;
     this.taskLogInfo = tasklog;
-    this.typeChanged({ id: tasklog?.typeId }, taskInstruction);
-  }
 
-  typeChanged(event: any, taskInstruction?: any) {
-    this.subTypes = this.masterData?.subTypes.filter(
-      (s: any) => s.typeId === event?.id
-    );
-    this.filteredData['subTypes'] = this.subTypes;
-    this.taskLogInfo['subTypeId'] =
-      this.taskLogInfo?.subTypeId ?? taskInstruction?.subTypeId;
-    if (!taskInstruction?.subTypeId) {
-      this.generalForm.controls['subType'].setValue(null);
-    }
     let generalForm = this.generalForm.value;
     generalForm.title = taskInstruction?.name ?? generalForm.title;
-    generalForm.type =
-      this.taskLogInfo?.typeId ?? taskInstruction?.typeId ?? generalForm.type;
     generalForm.category =
       this.taskLogInfo?.categoryId ??
       taskInstruction?.categoryId ??
       generalForm.category;
-    generalForm.priority =
-      this.taskLogInfo?.priorityId ??
-      taskInstruction?.priorityId ??
-      generalForm.priority;
     generalForm.estLabourCost =
       taskInstruction?.estimatedLabourCost ?? generalForm.estLabourCost;
     generalForm.estStockCost =
       taskInstruction?.estimatedStockCost ?? generalForm.estStockCost;
     generalForm.estTime =
       taskInstruction?.estimatedTimeInMins ?? generalForm.estTime;
-    generalForm.subType = taskInstruction?.subTypeId ?? generalForm.subType;
     this.generalForm.patchValue(generalForm);
   }
 

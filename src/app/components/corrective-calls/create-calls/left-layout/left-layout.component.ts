@@ -39,6 +39,7 @@ export class LeftLayoutComponent extends CommonComponent {
   loggedDate: Date = new Date();
   LogMode = LogMode;
   loggedByUser: any;
+  isLoggedByCustomer: boolean = false;
 
   @Input() mode: LogMode = LogMode.CREATE;
   @Output() locationChanged: EventEmitter<any> = new EventEmitter();
@@ -83,11 +84,14 @@ export class LeftLayoutComponent extends CommonComponent {
       .GetTaskLog(`TaskLog/GetProjectsMasterData/${this.navState.currentLogId}`)
       .subscribe({
         next: (result: any) => {
-          this.masterData['projects'] = result.projects;
+          this.isLoggedByCustomer =
+            this.getLoggedInUser()?.designation?.toLowerCase() === 'customer';
+          this.masterData['projects'] = result;
           this.filteredData = { ...this.masterData };
           this.locationForm = this.fb.group({
             project: [
-              this.masterData?.projects?.length === 1 && this.navState.currentLogId > 0
+              this.masterData?.projects?.length === 1 &&
+              this.navState.currentLogId > 0
                 ? this.masterData?.projects[0]?.id
                 : null,
               Validators.required
@@ -106,10 +110,7 @@ export class LeftLayoutComponent extends CommonComponent {
           this.reportedbyForm = this.fb.group({
             reporter: ['', Validators.required],
             name: ['', Validators.required],
-            email: [
-              '',
-              Validators.email
-            ],
+            email: ['', Validators.email],
             mobile: [
               '',
               [
@@ -121,7 +122,7 @@ export class LeftLayoutComponent extends CommonComponent {
             countryId: ['']
           });
           if (this.navState.currentLogId > 0) {
-            this.projectSelected({ id: result.projects[0]?.id });
+            this.projectSelected({ id: this.masterData?.projects[0]?.id });
           }
         },
         error: (e: any) => {
@@ -162,9 +163,11 @@ export class LeftLayoutComponent extends CommonComponent {
             let currentLog = {
               project: this.masterData?.projects[0]?.id,
               building:
-                this.currentLog?.building ?? this.masterData?.locationModel?.buildingId,
+                this.currentLog?.building ??
+                this.masterData?.locationModel?.buildingId,
               floor:
-                this.currentLog?.floor ?? this.masterData?.locationModel?.floorId,
+                this.currentLog?.floor ??
+                this.masterData?.locationModel?.floorId,
               unit:
                 this.currentLog?.unit ?? this.masterData?.locationModel?.unitId,
               room:
@@ -174,7 +177,7 @@ export class LeftLayoutComponent extends CommonComponent {
             this.selectLocationChange();
             this.ds.currentTaskLog.subscribe((taskLog: any) => {
               this.currentLog = taskLog;
-              if(this.currentLog?.isAutoIssued){
+              if (this.currentLog?.isAutoIssued) {
                 this.reportedbyForm?.get('name')?.clearValidators();
                 this.reportedbyForm?.get('email')?.clearValidators();
                 this.reportedbyForm?.get('mobile')?.clearValidators();
@@ -208,14 +211,16 @@ export class LeftLayoutComponent extends CommonComponent {
       });
   }
 
-  buildingChanged(building: any, resetValues:boolean = false) {
+  buildingChanged(building: any, resetValues: boolean = false) {
     this.units = [];
     this.rooms = [];
     let buildingId = building.id;
     this.units =
       buildingId === ''
         ? []
-        : this.masterData.units?.filter((u: any) => u.buildingId === buildingId);
+        : this.masterData.units?.filter(
+            (u: any) => u.buildingId === buildingId
+          );
     this.rooms = [];
     this.filteredData['units'] = this.units;
     this.filteredData['rooms'] = this.rooms;
@@ -223,14 +228,16 @@ export class LeftLayoutComponent extends CommonComponent {
       this.locationForm.controls['floor'].setValue(null);
     }
     this.floorChanged(resetValues);
-    if(resetValues)
-      this.selectLocationChange();
-    this.unitChanged({
-      id: this.currentLog?.unitId ?? this.masterData?.locationModel?.unitId
-    }, resetValues);
+    if (resetValues) this.selectLocationChange();
+    this.unitChanged(
+      {
+        id: this.currentLog?.unitId ?? this.masterData?.locationModel?.unitId
+      },
+      resetValues
+    );
   }
 
-  floorChanged(resetValues:boolean = false) {
+  floorChanged(resetValues: boolean = false) {
     if (!this.currentLog?.floorId || resetValues) {
       this.locationForm.controls['unit'].setValue(null);
       this.locationForm.controls['room'].setValue(null);
@@ -238,7 +245,7 @@ export class LeftLayoutComponent extends CommonComponent {
     }
   }
 
-  unitChanged(unit: any, resetValues:boolean = false) {
+  unitChanged(unit: any, resetValues: boolean = false) {
     let unitId = unit.id;
     this.rooms =
       unitId === ''
@@ -277,47 +284,20 @@ export class LeftLayoutComponent extends CommonComponent {
     this.reportedbyForm.controls['countryId']?.setValue(
       this.selectedCountry?.mobileCode
     );
-    if (this.selectedUserSubType.isSelectable) {
-      this.reportedbyForm?.get('reporter')?.addValidators(Validators.required);
-      this.apiService
-        .GetTaskLog(
-          `TaskLog/GetResourcesByReporterType/${this.selectedUserType?.id}/${this.selectedUserSubType?.id}/${this.navState.currentLogId}/${this.selectedProject}`
-        )
-        .subscribe({
-          next: (result: any) => {
-            this.masterData['resources'] = result.resources;
-            this.filteredData = { ...this.masterData };
-            this.selectResource({
-              id: this.currentLog?.reportedById
-            });
-          },
-          error: (e: any) => {
-            this.alertService.error('Error retreving instructions !!', {
-              id: 'alert-taskLog'
-            });
-            console.error(e);
-          },
-          complete: () => {}
-        });
-    } else {
-      this.reportedbyForm?.get('reporter')?.clearValidators();
-      let resourceData = this.reportedbyForm.value;
-      resourceData.name = this.currentLog?.reportedByName;
-      resourceData.email = this.currentLog?.emailAddress;
-      resourceData.mobile = this.currentLog?.mobileNo;
-      this.selectedResource = resourceData;
-      setTimeout(() => {
-        this.reportedbyForm.patchValue(resourceData);
-      }, 1000);
-    }
+    this.selectResource({
+      id: this.currentLog?.reportedById ?? 0
+    });
   }
 
   selectResource(event: any) {
     let resourceId = event?.id ?? '';
-    this.selectedResource = this.masterData?.resources?.find(
-      (r: any) => r.id === resourceId
-    );
-
+    if (this.isLoggedByCustomer) {
+      this.selectedResource = this.masterData?.customer;
+    } else {
+      this.selectedResource = this.masterData?.resources?.find(
+        (r: any) => r.id === resourceId
+      );
+    }
     let resourceData = this.reportedbyForm.value;
     resourceData.reporter = this.selectedResource?.id;
     resourceData.name = this.selectedResource?.name;
@@ -347,10 +327,10 @@ export class LeftLayoutComponent extends CommonComponent {
     this.locationForm.controls['room'].setValue(null);
   }
 
-  selectLocationChange(){
+  selectLocationChange() {
     this.updateForm();
     setTimeout(() => {
-      this.locationChanged.emit(this.locationForm.value)
+      this.locationChanged.emit(this.locationForm.value);
     }, 1000);
   }
   protected override buttonClicked(buttonType: any): void {

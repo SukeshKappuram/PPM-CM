@@ -103,7 +103,7 @@ export class GeneralComponent extends CommonComponent {
                 });
               }
               this.updateAsset(false);
-              this.setLoc(this.taskLogInfo?.locDate);
+              // this.setLoc(this.taskLogInfo?.locDate);
             }
             this.ds.updateReportedDate(this.taskLogInfo?.loggedByDate);
           } else {
@@ -132,19 +132,19 @@ export class GeneralComponent extends CommonComponent {
       title: [tLog?.title, Validators.required],
       reportedDt: [tLog?.reportedDate ?? new Date(), Validators.required],
       category: [tLog?.categoryId, Validators.required],
-      loc: [tLog?.locId, Validators.required],
-      locDate: [tLog?.locDate],
+      // loc: [tLog?.locId, Validators.required],
+      // locDate: [tLog?.locDate],
       summary: [tLog?.summary],
       updateSummary: [tLog?.summary],
       updateHoldSummary: [tLog?.onHoldReason],
       rejectedSummary: [tLog?.rejectedReason],
-      estStockCost: [tLog?.estimatedStockCost],
-      estLabourCost: [tLog?.estimatedLabourCost],
-      estTime: [tLog?.estimatedTime],
+      // estStockCost: [tLog?.estimatedStockCost],
+      // estLabourCost: [tLog?.estimatedLabourCost],
+      // estTime: [tLog?.estimatedTime],
       closedDate: [tLog?.completionDate],
-      refNumber: [tLog?.refNumber],
-      ppmId: [tLog?.ppmCode],
-      parentWo: [tLog?.parentWorkOrder]
+      // refNumber: [tLog?.refNumber],
+      // ppmId: [tLog?.ppmCode],
+      // parentWo: [tLog?.parentWorkOrder]
     });
     this.generalForm?.valueChanges.subscribe(() => {
       this.assetUpdated.emit();
@@ -249,23 +249,23 @@ export class GeneralComponent extends CommonComponent {
       this.taskLogInfo?.categoryId ??
       taskInstruction?.categoryId ??
       generalForm.category;
-    generalForm.estLabourCost =
-      taskInstruction?.estimatedLabourCost ?? generalForm.estLabourCost;
-    generalForm.estStockCost =
-      taskInstruction?.estimatedStockCost ?? generalForm.estStockCost;
-    generalForm.estTime =
-      taskInstruction?.estimatedTimeInMins ?? generalForm.estTime;
+    // generalForm.estLabourCost =
+    //   taskInstruction?.estimatedLabourCost ?? generalForm.estLabourCost;
+    // generalForm.estStockCost =
+    //   taskInstruction?.estimatedStockCost ?? generalForm.estStockCost;
+    // generalForm.estTime =
+    //   taskInstruction?.estimatedTimeInMins ?? generalForm.estTime;
     this.generalForm.patchValue(generalForm);
   }
 
-  setLoc(locDate?: any) {
-    this.taskLogInfo['locDate'] = this.datePipe.transform(
-      locDate ? locDate : new Date(),
-      'dd-MMM-yyyy HH:mm',
-      locDate === undefined
-    );
-    this.generalForm.controls['locDate'].setValue(this.taskLogInfo['locDate']);
-  }
+  // setLoc(locDate?: any) {
+  //   this.taskLogInfo['locDate'] = this.datePipe.transform(
+  //     locDate ? locDate : new Date(),
+  //     'dd-MMM-yyyy HH:mm',
+  //     locDate === undefined
+  //   );
+  //   this.generalForm.controls['locDate'].setValue(this.taskLogInfo['locDate']);
+  // }
 
   openPopup(type: number) {
     let title = '';
@@ -308,7 +308,7 @@ export class GeneralComponent extends CommonComponent {
         })
         .afterClosed()
         .subscribe((result) => {
-          switch (result.contentName) {
+          switch (result?.contentName) {
             case 'Assets':
               let asset = result.selectedAsset;
               this.taskLogInfo['assetCode'] = asset.code;

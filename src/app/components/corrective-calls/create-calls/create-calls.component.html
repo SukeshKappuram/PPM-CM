@@ -133,12 +133,12 @@
     </div>
 
     <div class="card mt-3" *ngIf="navState.currentLogId !== 0">
-      <div class="card-header pb-0">
+      <!--<div class="card-header pb-0">
         <h6 class="card-title pb-1">
           <a class="text-body" [ngClass]="tabs[1].isCollapsed?'collapsed':''" data-toggle="collapse"
             [attr.aria-expanded]="!tabs[1].isCollapsed" (click)="toggleTabs(1)" id="OpenCases">Open Cases</a>
         </h6>
-      </div>
+      </div>-->
       <div id="accordion-control-right-group2" [ngClass]="tabs[1].isCollapsed?'collapse':'collapse show'"
         data-parent="#OpenCases">
         <div class="card-body">

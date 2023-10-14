@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { ActivatedRoute } from '@angular/router';
 import { CommonComponent } from 'src/app/components/common/common.component';
 import { LocalizedDatePipe } from 'src/app/pipes/localized-date.pipe';
 import { ApiService } from 'src/app/services/api.service';
@@ -49,6 +50,7 @@ export class LeftLayoutComponent extends CommonComponent {
   @ViewChild('unit') unitsDD!: DropdownComponent;
   @ViewChild('room') roomsDD!: DropdownComponent;
   @ViewChild('reporter') reporterDD!: DropdownComponent;
+  serviceTypeId: any;
 
   constructor(
     private fb: FormBuilder,
@@ -57,7 +59,8 @@ export class LeftLayoutComponent extends CommonComponent {
     private navService: NavigationService,
     private ds: DataService,
     private authService: AuthService,
-    public localDatePipe: LocalizedDatePipe
+    public localDatePipe: LocalizedDatePipe,
+    private route: ActivatedRoute
   ) {
     super();
     this.navState = navService.getNavigationState();
@@ -72,6 +75,7 @@ export class LeftLayoutComponent extends CommonComponent {
     this.config.defaultCountryCode =
       this.navState?.currentAccount?.mainMobileCode ??
       this.config.defaultCountryCode;
+    this.serviceTypeId = this.route.snapshot.data['serviceType'];
   }
 
   public getLoggedInUser(): any {

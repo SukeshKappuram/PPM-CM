@@ -81,7 +81,7 @@
   </div>
 </div>
 
-<div class="card">
+<div class="card" *ngIf="serviceTypeId !== 2">
   <div class="card-header bg-transparent header-elements-inline pl-2">
     <h6 class="card-title text-secondary font-weight-semibold">Reported by</h6>
     <div class="header-elements">
@@ -186,7 +186,7 @@
     </form>
   </div>
 </div>
-<div class="card">
+<div class="card" *ngIf="serviceTypeId !== 2">
   <div class="card-header bg-transparent header-elements-inline pl-2">
     <h6 class="card-title text-secondary font-weight-semibold">Logged by</h6>
     <div class="header-elements">

@@ -158,7 +158,7 @@ export class CommonWfGridComponent extends CommonComponent {
           error: (e) => {
             this.alertService.error('Error Retrieving Issuer !!', {
               id: 'alert-issuer'
-            });
+            },e);
             console.error(e);
           },
           complete: () => {}

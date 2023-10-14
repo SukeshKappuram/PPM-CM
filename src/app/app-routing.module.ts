@@ -45,7 +45,7 @@ const routes: Routes = [
           )
       },
       {
-        path: 'corrective-wo',
+        path: 'feedback',
         loadChildren: () =>
           import('./components/corrective-calls/corrective-calls.module').then(
             (m) => m.CorrectiveCallsModule
@@ -59,7 +59,7 @@ const routes: Routes = [
           )
       },
       {
-        path: 'planned-maintenance',
+        path: 'pm',
         loadChildren: () =>
           import('./components/ppm/ppm.module').then((m) => m.PpmModule)
       },

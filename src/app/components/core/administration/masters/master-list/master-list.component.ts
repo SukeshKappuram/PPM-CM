@@ -171,7 +171,7 @@ export class MasterListComponent extends CommonComponent implements OnInit {
         error: (e) => {
           this.alertService.error('Error retreving data !!', {
             id: 'alert-assetsList'
-          });
+          },e);
           console.error(e);
         },
         complete: () => {}
@@ -245,7 +245,7 @@ export class MasterListComponent extends CommonComponent implements OnInit {
         error: (e) => {
           this.alertService.error('Error deleting asset !!', {
             id: 'alert-assetsList'
-          });
+          },e);
           console.error(e);
         },
         complete: () => this.getAssets()
@@ -379,7 +379,7 @@ export class MasterListComponent extends CommonComponent implements OnInit {
         error: (e) => {
           this.alertService.error('Error updating ' + this.pageTitle + ' !!', {
             id: 'alert-assetsList'
-          });
+          },e);
           console.error(e);
         },
         complete: () => this.getAssets()

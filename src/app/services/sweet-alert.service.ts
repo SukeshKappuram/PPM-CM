@@ -1,7 +1,8 @@
-import { AlertType } from './../models/enums/AlertType.enum';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SweetAlertResult } from 'sweetalert2';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { AlertType } from './../models/enums/AlertType.enum';
 import { AlertService } from './alert.service';
 
 @Injectable({
@@ -17,7 +18,10 @@ export class SweetAlertService extends AlertService {
     return Swal.fire(AlertType.Success.toLocaleUpperCase(), message, AlertType.Success);
   }
 
-  override error(message: string, options?: any): Promise<SweetAlertResult<any>> {
+  override error(message: string, options?: any, err?: any): Promise<SweetAlertResult<any>> {
+    if (err instanceof HttpErrorResponse && err.status === 401){
+      return Swal.fire(AlertType.Error.toLocaleUpperCase(), 'Session has been timed out', AlertType.Error);
+    }
     return Swal.fire(AlertType.Error.toLocaleUpperCase(), message, AlertType.Error);
   }
 

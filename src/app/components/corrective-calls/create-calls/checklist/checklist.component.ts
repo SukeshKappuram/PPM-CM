@@ -176,7 +176,7 @@ export class ChecklistComponent extends CommonComponent implements OnInit {
         error: (e) => {
           this.alertService.error('Error Retrieving Additional Data !!', {
             id: 'alert-resource'
-          });
+          },e);
           console.error(e);
         },
         complete: () => {}

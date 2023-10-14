@@ -459,7 +459,7 @@ export class LogsComponent extends CommonComponent {
               ' WorkOrder !!',
             {
               id: 'alert-issuer'
-            }
+            },e
           );
           console.error(e);
         },

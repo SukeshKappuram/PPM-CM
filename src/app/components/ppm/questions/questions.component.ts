@@ -26,7 +26,7 @@ export class QuestionsComponent extends CommonComponent implements OnInit {
       error: (e) => {
         this.alertService.error('Error Retrieving HSEQ Questions !!', {
           id: 'hesq-questions'
-        });
+        },e);
         console.error(e);
       },
       complete: () => { }

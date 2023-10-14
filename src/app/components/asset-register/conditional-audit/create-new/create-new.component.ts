@@ -139,7 +139,7 @@ export class CreateNewComponent extends CommonComponent {
         error: (e) => {
           this.alertService.error('Error retreving assets !!', {
             id: 'alert-conditionalAudit'
-          });
+          },e);
           console.error(e);
         },
         complete: () => {}
@@ -202,7 +202,7 @@ export class CreateNewComponent extends CommonComponent {
           error: (e) => {
             this.alertService.error('Error deleting audit !!', {
               id: 'alert-assetsList'
-            });
+            },e);
             console.error(e);
           },
           complete: () => {}
@@ -311,7 +311,7 @@ export class CreateNewComponent extends CommonComponent {
           error: (e) => {
             this.alertService.error('Error updating audit details!!', {
               id: 'alert-conditionalAudit'
-            });
+            },e);
             console.error(e);
           },
           complete: () => {}
@@ -350,7 +350,7 @@ export class CreateNewComponent extends CommonComponent {
         error: (e) => {
           this.alertService.error('Error updating audit details!!', {
             id: 'alert-conditionalAudit'
-          });
+          },e);
           console.error(e);
         },
         complete: () => {}
@@ -416,7 +416,7 @@ export class CreateNewComponent extends CommonComponent {
           error: (e) => {
             this.alertService.error('Error updating audit details!!', {
               id: 'alert-conditionalAudit'
-            });
+            },e);
             console.error(e);
           },
           complete: () => {}

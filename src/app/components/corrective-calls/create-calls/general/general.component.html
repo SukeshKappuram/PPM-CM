@@ -18,7 +18,7 @@
 
             <div class="col-lg-11 mb-1_25 pl-5">
               <app-text-field [formControlName]="'title'" [label]="'Title'" [formGroup]="generalForm"
-                [isReadonly]="mode === LogMode.LOCKED" [fieldName]="'title'" ngDefaultControl [isRequired]="false"
+                [isReadonly]="mode === LogMode.LOCKED || mode === LogMode.EDIT" [fieldName]="'title'" ngDefaultControl [isRequired]="false"
                 [value]="taskLogInfo?.title??''" [showLabel]="false">
               </app-text-field>
               <div class="form-control-feedback form-control-feedback-sm text-muted mr-1">
@@ -37,7 +37,7 @@
             <div class="col-lg-9">
               <kendo-dropdownlist class="form-group" [data]="filteredData?.categories" [filterable]="true"
                 textField="name" valueField="id" [formControlName]="'category'" [defaultItem]="defaultItem('Category')"
-                [readonly]="mode === LogMode.LOCKED" (filterChange)="handleFilter($event, 'categories')">
+                [readonly]="mode === LogMode.LOCKED || mode === LogMode.EDIT" (filterChange)="handleFilter($event, 'categories')">
                 <ng-template kendoDropDownListItemTemplate let-dataItem>
                   <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
                 </ng-template>
@@ -55,7 +55,7 @@
             <div class="col-lg-9">
               <kendo-dropdownlist class="form-group" [data]="filteredData?.locs" ngDefaultControl [filterable]="true"
                 textField="name" valueField="id" [formControlName]="'loc'" [defaultItem]="defaultItem('LOC')"
-                (filterChange)="handleFilter($event, 'locs')" [readonly]="mode === LogMode.LOCKED"
+                (filterChange)="handleFilter($event, 'locs')" [readonly]="mode === LogMode.LOCKED || mode === LogMode.EDIT"
                 (selectionChange)="setLoc()">
                 <ng-template kendoDropDownListItemTemplate let-dataItem>
                   <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
@@ -115,10 +115,10 @@
           <label>Summary</label>
           <app-textarea-field [formControlName]="'summary'" [formGroup]="generalForm" [isRequired]="false" [rows]="3"
             [fieldName]="'summary'" [label]="'Summary'" [showLabel]="false" ngDefaultControl [value]="currentSummary"
-            [isReadonly]="mode === LogMode.LOCKED">
+            [isReadonly]="mode === LogMode.LOCKED || mode === LogMode.EDIT">
           </app-textarea-field>
           <a class="btn btn-secondary btn-icon border-transparent rounded-pill btn-sharerep" title="Share to reporter"
-            (click)="updateSummary()" *ngIf="mode !== LogMode.LOCKED">
+            (click)="updateSummary()" *ngIf="mode !== LogMode.LOCKED && mode !== LogMode.EDIT">
             <i class="bi bi-send-fill"></i>
           </a>
         </div>
@@ -211,7 +211,7 @@
       <span class="col-12">
         <div class="custom-control custom-control-right custom-switch custom-control-inline">
           <input type="checkbox" class="custom-control-input" id="sc_ri_c" [(ngModel)]="hasAsset"
-            (change)="resetAsset(hasAsset)" [disabled]="mode === LogMode.LOCKED">
+            (change)="resetAsset(hasAsset)" [disabled]="mode === LogMode.LOCKED || mode === LogMode.EDIT">
           <label class="custom-control-label" for="sc_ri_c">Do You have any
             assets?</label>
         </div>
@@ -234,9 +234,9 @@
                 </app-text-field>
               </div>
               <div class="col-lg-2 pl-0">
-                <button class="btn custom-search" [ngClass]="hasAsset && mode !== LogMode.LOCKED ?'btn-secondary':'btn-light'"
+                <button class="btn custom-search" [ngClass]="hasAsset && mode !== LogMode.LOCKED && mode !== LogMode.EDIT ?'btn-secondary':'btn-light'"
                   type="button" data-toggle="modal" data-target="#modal_theme_asset" (click)="getAssets()"
-                  [disabled]="!hasAsset || mode === LogMode.LOCKED">
+                  [disabled]="!hasAsset || mode === LogMode.LOCKED || mode === LogMode.EDIT">
                   <i class="bi bi-zoom-in"></i>
                 </button>
               </div>

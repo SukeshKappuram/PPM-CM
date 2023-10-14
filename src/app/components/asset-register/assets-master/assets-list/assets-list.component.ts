@@ -112,7 +112,7 @@ export class AssetsListComponent extends CommonComponent implements OnInit {
           error: (e) => {
             this.alertService.error('Error retreving data !!', {
               id: 'alert-assetsList'
-            });
+            },e);
             console.error(e);
           },
           complete: () => {}
@@ -144,7 +144,7 @@ export class AssetsListComponent extends CommonComponent implements OnInit {
         error: (e) => {
           this.alertService.error('Error deleting asset !!', {
             id: 'alert-assetsList'
-          });
+          },e);
           console.error(e);
         },
         complete: () => this.getAssets()
@@ -187,7 +187,7 @@ export class AssetsListComponent extends CommonComponent implements OnInit {
             error: (e) => {
               this.alertService.error('Error getting data ', {
                 id: 'alert-assetsList'
-              });
+              },e);
               console.error(e);
             },
             complete: () => this.getAssets()
@@ -220,7 +220,7 @@ export class AssetsListComponent extends CommonComponent implements OnInit {
         this.formFieldBuilder = [];
       });
   }
-  
+
   addOrUpdate(item: any): void {
     this.apiService
       .AddOrUpdateAsset(
@@ -245,7 +245,7 @@ export class AssetsListComponent extends CommonComponent implements OnInit {
         error: (e) => {
           this.alertService.error('Error updating ' + this.pageTitle + ' !!', {
             id: 'alert-assetsList'
-          });
+          },e);
           console.error(e);
         },
         complete: () => this.getAssets()
@@ -310,7 +310,7 @@ export class AssetsListComponent extends CommonComponent implements OnInit {
         error: (e) => {
           this.alertService.error('Error updating ' + this.pageTitle + ' !!', {
             id: 'alert-assetsList'
-          });
+          },e);
           console.error(e);
         },
         complete: () => this.getAssets()

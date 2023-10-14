@@ -82,7 +82,7 @@ export class AccessRolesComponent extends CommonComponent {
         error: (e) => {
           this.alertService.error('Error retreving access role details !!', {
             id: 'alert-accessroles'
-          });
+          },e);
           console.error(e);
         },
         complete: () => {}

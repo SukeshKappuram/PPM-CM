@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
+
 import { Spinkit } from 'ng-http-loader';
 import { ThemeService } from './services/theme.service';
 

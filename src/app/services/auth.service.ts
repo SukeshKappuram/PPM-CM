@@ -1,13 +1,13 @@
 import * as CryptoJS from 'crypto-js';
 
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { Observable } from 'rxjs/internal/Observable';
-import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { ISecurityObject } from './../models/interfaces/auth/ISecurityObject';
 import { IUser } from '../models/interfaces/auth/IUser';
 import { IUserLogin } from '../models/interfaces/auth/IUserLogin';
-import { ISecurityObject } from './../models/interfaces/auth/ISecurityObject';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/internal/Observable';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -107,7 +107,7 @@ export class AuthService {
 
   logoutUser(): Observable<ISecurityObject> {
     return this.httpClient.post<ISecurityObject>(
-      `${environment.coreApiUrl}/Account/logout`,
+      `${environment.coreApiUrl}/Account/logout?isMobile=false`,
       null
     );
   }

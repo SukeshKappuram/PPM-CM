@@ -72,7 +72,7 @@ export class CreateHseqComponent extends CommonComponent{
       error: (e) => {
         this.alertService.error('Error Retrieving HSEQ Question Group !!', {
           id: 'hesq-questions'
-        });
+        },e);
         console.error(e);
       },
       complete: () => { }
@@ -129,7 +129,7 @@ export class CreateHseqComponent extends CommonComponent{
       error: (e) => {
         this.alertService.error('Error Updating HSEQ Questions !!', {
           id: 'hesq-questions'
-        });
+        },e);
         console.error(e);
       },
       complete: () => { }
@@ -158,7 +158,7 @@ export class CreateHseqComponent extends CommonComponent{
         error: (e) => {
           this.alertService.error('Error Updating HSEQ Questions !!', {
             id: 'hesq-questions'
-          });
+          },e);
           console.error(e);
         },
         complete: () => { }
@@ -178,7 +178,7 @@ export class CreateHseqComponent extends CommonComponent{
       error: (e) => {
         this.alertService.error('Error Updating HSEQ Questions !!', {
           id: 'hesq-questions'
-        });
+        },e);
         console.error(e);
       },
       complete: () => { }

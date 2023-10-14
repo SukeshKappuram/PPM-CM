@@ -266,7 +266,7 @@ export class PopupComponent extends CommonPopupComponent {
           error: (e) => {
             this.alertService.error('Error Updating Resources', {
               id: 'subTask-added'
-            });
+            },e);
           },
           complete: () => {}
         });
@@ -293,7 +293,7 @@ export class PopupComponent extends CommonPopupComponent {
           error: (e) => {
             this.alertService.error('Error retreving resource !!', {
               id: 'alert-resource'
-            });
+            },e);
             console.error(e);
           },
           complete: () => {}

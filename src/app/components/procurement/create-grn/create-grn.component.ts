@@ -77,7 +77,7 @@ export class CreateGrnComponent extends CommonComponent {
           error: (e) => {
             this.alertService.error('Error retreving GRN Details !!', {
               id: 'alert-grn'
-            });
+            },e);
             console.error(e);
           },
           complete: () => {}
@@ -202,7 +202,7 @@ export class CreateGrnComponent extends CommonComponent {
         error: (e) => {
           this.alertService.error('Error retreving GRN Details !!', {
             id: 'alert-grn'
-          });
+          },e);
           console.error(e);
         },
         complete: () => {}
@@ -239,7 +239,7 @@ export class CreateGrnComponent extends CommonComponent {
         error: (e) => {
           this.alertService.error('Error Saving GRN Details !!', {
             id: 'alert-grn'
-          });
+          },e);
           console.error(e);
         },
         complete: () => {}
@@ -339,7 +339,7 @@ export class CreateGrnComponent extends CommonComponent {
           error: (e) => {
             this.alertService.error('Error Saving GRN Details !!', {
               id: 'alert-grn'
-            });
+            },e);
             console.error(e);
           },
           complete: () => {}

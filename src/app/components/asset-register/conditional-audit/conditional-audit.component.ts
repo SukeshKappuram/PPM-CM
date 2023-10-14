@@ -48,7 +48,7 @@ export class ConditionalAuditComponent extends CommonComponent{
         error: (e) => {
           this.alertService.error('Error retreving assets !!', {
             id: 'alert-conditionalAudit'
-          });
+          },e);
           console.error(e);
         },
         complete: () => {}

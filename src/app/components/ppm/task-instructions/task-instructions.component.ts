@@ -40,7 +40,7 @@ export class TaskInstructionsComponent extends CommonComponent
       error: (e) => {
         this.alertService.error('Error retreving instructions !!', {
           id: 'alert-taskInstructions'
-        });
+        },e);
         console.error(e);
       },
       complete: () => {}
@@ -72,7 +72,7 @@ export class TaskInstructionsComponent extends CommonComponent
         error: (e) => {
           this.alertService.error('Error retreving instructions !!', {
             id: 'alert-taskInstructions'
-          });
+          },e);
           console.error(e);
         },
         complete: () => {}

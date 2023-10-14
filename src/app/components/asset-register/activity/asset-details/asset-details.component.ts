@@ -54,7 +54,7 @@ export class AssetDetailsComponent extends CommonComponent {
           error: (e) => {
             this.alertService.error('Error retreving assets !!', {
               id: 'alert-assetDetails'
-            });
+            },e);
             console.error(e);
           },
           complete: () => {}
@@ -81,7 +81,7 @@ export class AssetDetailsComponent extends CommonComponent {
           }
         },
         error: (e) => {
-          this.alertService.error('Error deleting asset !!', { id: '3' });
+          this.alertService.error('Error deleting asset !!', { id: '3' },e);
           console.error(e);
         },
         complete: () => this.getAssets({})

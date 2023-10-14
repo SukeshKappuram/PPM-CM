@@ -144,7 +144,7 @@ export class FinanceComponent extends CommonComponent implements OnInit, AfterVi
             }
           },
           error: (e) => {
-            this.alertService.error('Error saving !!', { id: 'alert-asset' });
+            this.alertService.error('Error saving !!', { id: 'alert-asset' }, e);
             console.error(e);
           },
           complete: () => {}

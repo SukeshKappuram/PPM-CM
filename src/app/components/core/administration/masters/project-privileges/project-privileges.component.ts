@@ -107,7 +107,7 @@ export class ProjectPrivilegesComponent
           }
         },
         error: (e) => {
-          this.alertService.error('Error saving !!', { id: 'alert-privilage' });
+          this.alertService.error('Error saving !!', { id: 'alert-privilage' },e);
           console.error(e);
         },
         complete: () => {}

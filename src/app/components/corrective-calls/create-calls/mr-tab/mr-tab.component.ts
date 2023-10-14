@@ -79,7 +79,7 @@ export class MrTabComponent extends CommonComponent implements OnInit {
         error: (e) => {
           this.alertService.error('Error Retreving MR Details !!', {
             id: 'alert-mr'
-          });
+          },e);
           console.error(e);
         },
         complete: () => {}
@@ -363,7 +363,7 @@ export class MrTabComponent extends CommonComponent implements OnInit {
             error: (e) => {
               this.alertService.error('Error Adding MR !!', {
                 id: 'alert-mr'
-              });
+              },e);
               console.error(e);
             },
             complete: () => {}

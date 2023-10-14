@@ -64,7 +64,7 @@ export class ChangePasswordComponent
             }
           },
           error: (e) => {
-            this.alertService.error('Error updating password');
+            this.alertService.error('Error updating password',{id:'alert-password'} ,e);
             console.error(e);
           },
           complete: () => {}

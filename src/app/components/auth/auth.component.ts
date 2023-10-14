@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
 import { AccountsComponent } from './accounts/accounts.component';
@@ -33,16 +39,33 @@ export class AuthComponent implements OnInit, OnDestroy {
     private ds: DataService
   ) {
     router.events.subscribe((val) => {
-      if(val instanceof NavigationEnd){
+      if (val instanceof NavigationEnd) {
         let navState = this.navService.getNavigationState();
         let navigationItem: INavigatedMenu = {
-          menuName: [navState.selectedGroup, navState.selectedMenu, navState.selectedSubMenu, navState.selectedSubMenuItem].filter((menu) => menu !== '').join('_'),
+          menuName: [
+            navState.selectedGroup,
+            navState.selectedMenu,
+            navState.selectedSubMenu,
+            navState.selectedSubMenuItem
+          ]
+            .filter((menu) => menu !== '')
+            .join('_'),
           menuUrl: this.router.url,
           navState: navState
         };
         this.navService.setNavigationHistory(navigationItem);
       }
-  });
+    });
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler(event: any) {
+    // event.preventDefault();
+    // event.returnValue = 'Your data will be lost!';
+    this.authService.logout();
+    sessionStorage.setItem('isLogggedOut', 'true');
+    this.router.navigate([Navigate.LOGIN]);
+    return true;
   }
 
   ngOnInit(): void {
@@ -59,7 +82,7 @@ export class AuthComponent implements OnInit, OnDestroy {
     // });
   }
 
-  updateHeaderActions(actions: any){
+  updateHeaderActions(actions: any) {
     this.quickActions = actions;
   }
 
@@ -83,20 +106,20 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  accountsLoaded(event: any): void{
+  accountsLoaded(event: any): void {
     this.accounts = event;
     const dialogRef = this.dialog
-        .open(AccountsComponent, {
-          data: {accounts: event},
-          autoFocus: true,
-          maxHeight: '90vh',
-          width: '70%',
-          disableClose: true
-        })
-        .afterClosed()
-        .subscribe((accountSelected) => {
-          this.updateAccount(accountSelected);
-        });
+      .open(AccountsComponent, {
+        data: { accounts: event },
+        autoFocus: true,
+        maxHeight: '90vh',
+        width: '70%',
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((accountSelected) => {
+        this.updateAccount(accountSelected);
+      });
   }
 
   updateAccount(accountSelected: any): void {
@@ -105,11 +128,13 @@ export class AuthComponent implements OnInit, OnDestroy {
         if (result) {
           let navState = this.navService.getNavigationState();
           this.accounts = navState.accounts;
-          navState.currentAccount = this.accounts.find(a => a.shortName === result.account_name);
+          navState.currentAccount = this.accounts.find(
+            (a) => a.shortName === result.account_name
+          );
           this.navService.setNavigationState(navState);
           this.authService.updateAuth(true, result);
           this.sidebar.getMenu();
-          this.ds.updateAccount(result.account_name??'');
+          this.ds.updateAccount(result.account_name ?? '');
         }
       },
       error: (e) => {

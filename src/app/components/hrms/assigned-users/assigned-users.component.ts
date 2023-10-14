@@ -76,14 +76,14 @@ export class AssignedUsersComponent extends CommonComponent implements OnInit {
 
   ngOnInit(): void {
     this.getHrGroups();
-  } 
+  }
 
   onGroupSelectionChange(selectedItem: any) {
      this.selectedGroupId = selectedItem.id;
-     if (this.selectedGroupId > 0) {     
+     if (this.selectedGroupId > 0) {
       this.getAssignedUsers();
       this.getUnAssignedUsers();
-     
+
     }
     else{
       this.gridData=this.gridDatatemp;
@@ -114,7 +114,7 @@ export class AssignedUsersComponent extends CommonComponent implements OnInit {
         error: (e) => {
           this.alertService.error('Error retreving data !!', {
             id: 'talert-assignUsers'
-          });
+          },e);
           console.error(e);
         },
         complete: () => {}
@@ -143,7 +143,7 @@ export class AssignedUsersComponent extends CommonComponent implements OnInit {
       error: (e) => {
         this.alertService.error('Error retreving data !!', {
           id: 'alert-assignUsers'
-        });
+        },e);
         console.error(e);
       },
       complete: () => {}
@@ -165,7 +165,7 @@ export class AssignedUsersComponent extends CommonComponent implements OnInit {
       error: (e) => {
         this.alertService.error('Error retreving data !!', {
           id: 'alert-assignUsers'
-        });
+        },e);
         console.error(e);
       },
       complete: () => {}
@@ -184,7 +184,7 @@ export class AssignedUsersComponent extends CommonComponent implements OnInit {
       error: (e) => {
         this.alertService.error('Error retreving data !!', {
           id: 'alert-assignUsers'
-        });
+        },e);
         console.error(e);
       },
       complete: () => {}

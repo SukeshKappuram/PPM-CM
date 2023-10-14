@@ -29,7 +29,7 @@
         <div class="col-md-9 ">
           <kendo-dropdownlist class="form-group" #building [data]="filteredData?.buildings" [filterable]="true" textField="name"
             valueField="id" (filterChange)="handleFilter($event,'buildings')" [formControlName]="'building'"
-            [defaultItem]="defaultItem('Building')" [readonly]="mode === LogMode.LOCKED"
+            [defaultItem]="defaultItem('Building')" [readonly]="mode === LogMode.LOCKED || mode === LogMode.EDIT"
             (selectionChange)="buildingChanged($event, true)">
             <ng-template kendoDropDownListItemTemplate let-dataItem>
               <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
@@ -43,7 +43,7 @@
         <div class="col-md-9">
           <kendo-dropdownlist class="form-group" #floor [data]="filteredData?.floors" [filterable]="true" textField="name" valueField="id"
             (filterChange)="handleFilter($event, 'floors')" [formControlName]="'floor'" [defaultItem]="defaultItem('Floor')"
-            [readonly]="mode === LogMode.LOCKED" (selectionChange)="floorChanged(true)">
+            [readonly]="mode === LogMode.LOCKED || mode === LogMode.EDIT" (selectionChange)="floorChanged(true)">
             <ng-template kendoDropDownListItemTemplate let-dataItem>
               <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
             </ng-template>
@@ -56,7 +56,7 @@
         <div class="col-md-9">
           <kendo-dropdownlist class="form-group" #unit [data]="filteredData?.units" [filterable]="true" textField="name" valueField="id"
             (filterChange)="handleFilterByDataSet(units,$event,'units')" [formControlName]="'unit'"
-            [defaultItem]="defaultItem('Unit')" (selectionChange)="unitChanged($event, true)" [readonly]="mode === LogMode.LOCKED">
+            [defaultItem]="defaultItem('Unit')" (selectionChange)="unitChanged($event, true)" [readonly]="mode === LogMode.LOCKED || mode === LogMode.EDIT">
             <ng-template kendoDropDownListItemTemplate let-dataItem>
               <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
             </ng-template>
@@ -69,7 +69,7 @@
         <div class="col-md-9">
           <kendo-dropdownlist class="form-group" #room [data]="filteredData?.rooms" [filterable]="true" textField="name" valueField="id"
             (filterChange)="handleFilterByDataSet(rooms,$event,'rooms')" [formControlName]="'room'"
-            [defaultItem]="defaultItem('Room')" [readonly]="mode === LogMode.LOCKED"
+            [defaultItem]="defaultItem('Room')" [readonly]="mode === LogMode.LOCKED || mode === LogMode.EDIT"
             (selectionChange)="selectLocationChange()">
             <ng-template kendoDropDownListItemTemplate let-dataItem>
               <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
@@ -176,7 +176,7 @@
             <div class="col-md-6">
               <app-text-field [formControlName]="'mobile'" [formGroup]="reportedbyForm" [fieldName]="'mobile'"
                 [label]="'Mobile'" [showLabel]="false" ngDefaultControl
-                [value]="selectedResource?.mobileNo??selectedResource?.mobile" [isReadonly]="mode === LogMode.LOCKED || currentLog?.isAutoIssued || isLoggedByCustomer"
+                [value]="selectedResource?.mobileNo??selectedResource?.mobile" [isReadonly]="mode === LogMode.LOCKED || currentLog?.isAutoIssued || isLoggedByCustomer || mode === LogMode.EDIT"
                 (keypress)="validateNumericInput($event,6,15)">
               </app-text-field>
             </div>

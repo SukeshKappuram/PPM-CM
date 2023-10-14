@@ -274,7 +274,7 @@ export class AssetNewComponent extends CommonComponent {
       error: (e) => {
         this.alertService.error('Error retreving assets !!', {
           id: 'alert-asset'
-        });
+        }, e);
         console.error(e);
       },
       complete: () => {}

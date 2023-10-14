@@ -104,7 +104,7 @@ export class CreateSchedulerComponent extends CommonComponent {
     //     },
     //     complete: () => {}
     //   });
-    
+
   }
 
   get assetsDetails() {
@@ -222,7 +222,7 @@ export class CreateSchedulerComponent extends CommonComponent {
         error: (e) => {
           this.alertService.error('Error Retrieving Scheduler !!', {
             id: 'alert-scheduler'
-          });
+          },e);
           console.error(e);
         },
         complete: () => {}
@@ -258,7 +258,7 @@ export class CreateSchedulerComponent extends CommonComponent {
         error: (e) => {
           this.alertService.error('Error Retrieving Scheduler !!', {
             id: 'alert-scheduler'
-          });
+          },e);
           console.error(e);
         },
         complete: () => {}
@@ -283,7 +283,7 @@ export class CreateSchedulerComponent extends CommonComponent {
       error: (e) => {
         this.alertService.error('Error Retrieving Asset !!', {
           id: 'alert-scheduler'
-        });
+        },e);
         console.error(e);
       },
       complete: () => {}

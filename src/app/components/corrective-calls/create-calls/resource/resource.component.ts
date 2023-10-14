@@ -250,7 +250,7 @@ export class ResourceComponent {
           error: (e) => {
             this.alertService.error('Error Deleting Resource !!', {
               id: 'alert-resource'
-            });
+            },e);
             console.error(e);
           },
           complete: () => {}
@@ -445,7 +445,7 @@ export class ResourceComponent {
         error: (e) => {
           this.alertService.error('Error Updating Resources', {
             id: 'alert-resource'
-          });
+          },e);
         },
         complete: () => {}
       });
@@ -464,7 +464,7 @@ export class ResourceComponent {
         error: (e) => {
           this.alertService.error('Error Retrieving Sub Task Data !!', {
             id: 'alert-resource'
-          });
+          },e);
           console.error(e);
         },
         complete: () => {}

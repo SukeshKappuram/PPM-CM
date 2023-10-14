@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { filter } from 'rxjs/operators';
+
 import { Alert } from '../models/classes/alert.model';
 import { AlertType } from '../models/enums/AlertType.enum';
+import { Injectable } from '@angular/core';
+import { filter } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AlertService {
@@ -19,7 +20,7 @@ export class AlertService {
     this.alert(new Alert({ ...options, type: AlertType.Success, message }));
   }
 
-  error(message: string, options?: any) {
+  error(message: string, options?: any, error?: any) {
     this.alert(new Alert({ ...options, type: AlertType.Error, message }));
   }
 

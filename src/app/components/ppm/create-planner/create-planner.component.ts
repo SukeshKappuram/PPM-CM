@@ -193,7 +193,7 @@ export class CreatePlannerComponent extends CommonComponent implements OnInit {
         error: (e) => {
           this.alertService.error('Error Retrieving Asset !!', {
             id: 'alert-planner'
-          });
+          },e);
           console.error(e);
         },
         complete: () => {}
@@ -282,7 +282,7 @@ export class CreatePlannerComponent extends CommonComponent implements OnInit {
           error: (e) => {
             this.alertService.error('Error Retrieving Asset !!', {
               id: 'alert-planner'
-            });
+            },e);
             console.error(e);
           },
           complete: () => {}

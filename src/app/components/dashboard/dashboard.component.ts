@@ -513,22 +513,22 @@ export class DashboardComponent extends CommonComponent implements OnInit {
   }
 
   dateRangeChanged(){
-    this.apiService
-      .getReportsForDashboard('DashBoard/DashBoardGraphs', {
-        startDate: this.localizedPipe.transform(
-          this.range.start,
-          'MM-dd-yyyy HH:mm:ss'
-        ),
-        endDate: this.localizedPipe.transform(this.range.end, 'MM-dd-yyyy HH:mm:ss')
-      })
-      .subscribe((result: any) => {
-        if (result) {
-          this.graphs = result;
-        }
-        // this.graphs.unshift(this.g1Data);
-        this.graphs.splice(2, 0, this.g3Data);
-        this.graphs.push(this.g7Data);
-      });
+    // this.apiService
+    //   .getReportsForDashboard('DashBoard/DashBoardGraphs', {
+    //     startDate: this.localizedPipe.transform(
+    //       this.range.start,
+    //       'MM-dd-yyyy HH:mm:ss'
+    //     ),
+    //     endDate: this.localizedPipe.transform(this.range.end, 'MM-dd-yyyy HH:mm:ss')
+    //   })
+    //   .subscribe((result: any) => {
+    //     if (result) {
+    //       this.graphs = result;
+    //     }
+    //     // this.graphs.unshift(this.g1Data);
+    //     this.graphs.splice(2, 0, this.g3Data);
+    //     this.graphs.push(this.g7Data);
+    //   });
   }
 
   protected override buttonClicked(buttonType: any): void {

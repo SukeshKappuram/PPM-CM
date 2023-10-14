@@ -300,7 +300,7 @@ export class CreateMrComponent extends CommonComponent {
             error: (e) => {
               this.alertService.error('Error Adding MR !!', {
                 id: 'alert-mr'
-              });
+              },e);
               console.error(e);
             },
             complete: () => {}

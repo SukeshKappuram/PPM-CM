@@ -12,36 +12,36 @@ const routes: Routes = [
     path: 'create',
     component: CreateCallsComponent,
     data: {
-      pageLinks: ['Corrective W/O'],
-      serviceType: ServiceType.CORRECTIVE,
+      pageLinks: ['Feedback'],
+      serviceType: ServiceType.FEEDBACK,
       statusId: ServiceStatus.OPEN,
-      pageTitle: 'Create New Corrective W/O'
+      pageTitle: 'Create New Feedback'
     }
   },
   {
     path: 'create/:status',
     component: CreateCallsComponent,
     data: {
-      pageLinks: ['Corrective W/O'],
-      serviceType: ServiceType.CORRECTIVE,
-      pageTitle: 'Create New Corrective W/O'
+      pageLinks: ['Feedback'],
+      serviceType: ServiceType.FEEDBACK,
+      pageTitle: 'Create New Feedback'
     }
   },
   {
     path: 'edit/:statusId',
     component: CreateCallsComponent,
     data: {
-      pageLinks: ['Corrective W/O'],
-      serviceType: ServiceType.CORRECTIVE,
-      pageTitle: 'Edit Corrective W/O'
+      pageLinks: ['Feedback'],
+      serviceType: ServiceType.FEEDBACK,
+      pageTitle: 'Edit Feedback'
     }
   },
   {
     path: 'open',
     component: LogsComponent,
     data: {
-      serviceType: ServiceType.CORRECTIVE,
-      pageLinks: ['Corrective W/O'],
+      serviceType: ServiceType.FEEDBACK,
+      pageLinks: ['Feedback'],
       pageTitle: 'Open W/O'
     }
   },
@@ -49,9 +49,9 @@ const routes: Routes = [
     path: 'closed',
     component: LogsComponent,
     data: {
-      serviceType: ServiceType.CORRECTIVE,
+      serviceType: ServiceType.FEEDBACK,
       statusId: ServiceStatus.CLOSED,
-      pageLinks: ['Corrective W/O'],
+      pageLinks: ['Feedback'],
       pageTitle: 'Completed W/O'
     }
   },
@@ -59,9 +59,9 @@ const routes: Routes = [
     path: 'archived',
     component: LogsComponent,
     data: {
-      serviceType: ServiceType.CORRECTIVE,
+      serviceType: ServiceType.FEEDBACK,
       statusId: ServiceStatus.ARCHIVED,
-      pageLinks: ['Corrective W/O'],
+      pageLinks: ['Feedback'],
       pageTitle: 'Archived W/O'
     }
   },
@@ -69,12 +69,12 @@ const routes: Routes = [
     path: 'transfer',
     component: LogsComponent,
     data: {
-      serviceType: ServiceType.CORRECTIVE,
+      serviceType: ServiceType.FEEDBACK,
       filterType: FilterType.Transfer,
       url: 'TaskLog/GetTaskLogTransferGridData',
       isProjectMandatory: true,
       isTransferable: true,
-      pageLinks: ['Corrective W/O'],
+      pageLinks: ['Feedback'],
       pageTitle: 'Transfer W/O'
     }
   },
@@ -82,12 +82,12 @@ const routes: Routes = [
     path: 'bulkclose',
     component: LogsComponent,
     data: {
-      serviceType: ServiceType.CORRECTIVE,
+      serviceType: ServiceType.FEEDBACK,
       filterType: FilterType.BlukClose,
       url: 'TaskLog/GetTaskLogBulkCloseGridData',
       isProjectMandatory: true,
       isCloseable: true,
-      pageLinks: ['Corrective W/O'],
+      pageLinks: ['Feedback'],
       pageTitle: 'Bulk Close W/O'
     }
   }

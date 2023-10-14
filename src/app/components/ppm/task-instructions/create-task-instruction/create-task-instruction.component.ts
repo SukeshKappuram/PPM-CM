@@ -114,7 +114,7 @@ export class CreateTaskInstructionComponent
       error: (e) => {
         this.alertService.error('Error retreving instructions !!', {
           id: 'alert-taskInstructions'
-        });
+        },e);
         console.error(e);
       },
       complete: () => {}
@@ -206,7 +206,7 @@ export class CreateTaskInstructionComponent
         error: (e) => {
           this.alertService.error('Error retreving instructions !!', {
             id: 'alert-taskInstructions'
-          });
+          },e);
           console.error(e);
           this.isEditable = true;
         },
@@ -264,7 +264,7 @@ export class CreateTaskInstructionComponent
           error: (e) => {
             this.alertService.error('Error retreving instructions !!', {
               id: 'alert-taskInstructions'
-            });
+            },e);
             console.error(e);
           },
           complete: () => {}
@@ -291,7 +291,7 @@ export class CreateTaskInstructionComponent
           error: (e) => {
             this.alertService.error('Error retreving instructions !!', {
               id: 'alert-taskInstructions'
-            });
+            },e);
             console.error(e);
           },
           complete: () => {}

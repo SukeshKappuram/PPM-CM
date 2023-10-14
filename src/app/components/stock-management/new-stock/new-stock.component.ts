@@ -310,7 +310,7 @@ export class NewStockComponent extends CommonComponent implements OnDestroy {
         error: (e) => {
           this.alertService.error('Error Retrieving Issuer !!', {
             id: 'alert-issuer'
-          });
+          },e);
           console.error(e);
         },
         complete: () => { }
@@ -328,7 +328,7 @@ export class NewStockComponent extends CommonComponent implements OnDestroy {
         error: (e) => {
           this.alertService.error('Error Retrieving Issuer !!', {
             id: 'alert-issuer'
-          });
+          },e);
           console.error(e);
         },
         complete: () => { }

@@ -90,7 +90,7 @@ export class AddTaskComponent extends CommonPopupComponent {
           error: (e) => {
             this.alertService.error('Error Updating ' + this.data?.type, {
               id: 'subTask-added'
-            });
+            },e);
           },
           complete: () => {}
         });

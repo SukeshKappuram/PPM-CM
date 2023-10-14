@@ -335,7 +335,7 @@ export class GeneralComponent
         error: (e) => {
           this.alertService.error('Error updating asset details!!', {
             id: 'alert-asset'
-          });
+          },e);
           console.error(e);
         },
         complete: () => {
@@ -401,7 +401,7 @@ export class GeneralComponent
           error: (e) => {
             this.alertService.error('Error retreving assets !!', {
               id: 'alert-asset'
-            });
+            },e);
             console.error(e);
           },
           complete: () => {}

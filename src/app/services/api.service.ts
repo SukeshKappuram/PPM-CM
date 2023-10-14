@@ -1,12 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { ApiEndpoints } from './../models/enums/api-endpoints.enum';
-import { IAssetData } from '../models/interfaces/IAssetData';
-import { IGridData } from './../models/interfaces/IGridData';
 import { Injectable } from '@angular/core';
-import { MasterComponentTypes } from '../models/enums/MasterComponentTypes.enum';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { MasterComponentTypes } from '../models/enums/MasterComponentTypes.enum';
+import { IAssetData } from '../models/interfaces/IAssetData';
+import { ApiEndpoints } from './../models/enums/api-endpoints.enum';
+import { IGridData } from './../models/interfaces/IGridData';
 
 @Injectable({
   providedIn: 'root'
@@ -1322,7 +1322,7 @@ export class ApiService {
       httpOptions
     );
   }
-  
+
   getAssetDataById(
     path: string,
     assetId: any,

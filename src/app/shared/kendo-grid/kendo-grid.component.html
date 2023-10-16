@@ -86,6 +86,9 @@
             <kendo-grid-date-filter-menu [column]="column" [filter]="filter" [filterService]="filterService">
             </kendo-grid-date-filter-menu>
           </ng-template>
+          <ng-template kendoGridCellTemplate let-dataItem>
+            {{ dataItem[column.field] | localizedDate: 'dd-MMM-yyyy HH:mm'}}
+          </ng-template>
         </kendo-grid-column>
         <kendo-grid-column [field]="column.field" [title]="column.title" [format]="column.format"
           [headerStyle]="{ 'background-color': '#049aad', 'color': 'white' }" [filter]="column.type"

@@ -35,7 +35,7 @@
               {{selectedAccount?.shortName}}
             </span>
           </a>
-          <div [ngClass]="showAccounts ? 'show': 'collapse'" id="collapseExample" *ngIf="accounts.length > 1">
+          <div [ngClass]="showAccounts ? 'show': 'collapse'" id="collapseExample" *ngIf="accounts && accounts.length > 1">
             <a *ngFor="let account of accounts" (click)="switchAccount(account.id); showAccounts = false" class="dropdown-item">{{account.shortName}}</a>
           </div>
         </div>

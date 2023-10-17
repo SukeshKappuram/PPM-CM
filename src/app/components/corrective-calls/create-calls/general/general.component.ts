@@ -241,10 +241,9 @@ export class GeneralComponent extends CommonComponent {
       (t: any) => t.id === parseInt(instructionId)
     );
     let tasklog = this.taskLogInfo;
-    tasklog['title'] = this.taskLogInfo?.title ?? taskInstruction?.name;
+    tasklog['title'] = taskInstruction?.name ?? this.taskLogInfo?.title;
     tasklog['taskInstructionId'] = instructionId;
-    tasklog['categoryId'] =
-      this.taskLogInfo?.categoryId ?? taskInstruction?.categoryId;
+    tasklog['categoryId'] = taskInstruction?.categoryId ?? this.taskLogInfo?.categoryId;
     tasklog['estimatedLabourCost'] = taskInstruction?.estimatedLabourCost;
     tasklog['estimatedStockCost'] = taskInstruction?.estimatedStockCost;
     tasklog['estimatedTime'] = taskInstruction?.estimatedTimeInMins;

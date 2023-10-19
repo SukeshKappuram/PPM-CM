@@ -236,7 +236,7 @@ export class LogsComponent extends CommonComponent {
       case 2:
         navigateTo = Navigate.REACTIVE_LOG;
         break;
-      case 3:
+      case 5:
         navigateTo = Navigate.CORRECTIVE_LOG;
         break;
       case 4:

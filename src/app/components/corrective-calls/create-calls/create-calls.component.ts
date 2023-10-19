@@ -134,8 +134,8 @@ export class CreateCallsComponent extends CommonComponent implements OnInit {
       case 2:
         serviceTitle = 'Reactive W/O';
         break;
-      case 3:
-        serviceTitle = 'Corrective W/O';
+      case 5:
+        serviceTitle = 'Feedback W/O';
         break;
     }
     return serviceTitle;
@@ -315,7 +315,7 @@ export class CreateCallsComponent extends CommonComponent implements OnInit {
         case 2:
           navigateTo = Navigate.REACTIVE_LOG_CREATE;
           break;
-        case 3:
+        case 5:
           navigateTo = Navigate.CORRECTIVE_LOG_CREATE;
           break;
       }
@@ -328,7 +328,7 @@ export class CreateCallsComponent extends CommonComponent implements OnInit {
         case 2:
           navigateTo = Navigate.REACTIVE_LOG_COPY;
           break;
-        case 3:
+        case 5:
           navigateTo = Navigate.CORRECTIVE_LOG_COPY;
           break;
       }
@@ -342,7 +342,7 @@ export class CreateCallsComponent extends CommonComponent implements OnInit {
           navigateTo =
             Navigate.REACTIVE_LOG + (this.statusId ?? ServiceStatus.OPEN);
           break;
-        case 3:
+        case 5:
           navigateTo =
             Navigate.CORRECTIVE_LOG + (this.statusId ?? ServiceStatus.OPEN);
           break;
@@ -361,7 +361,7 @@ export class CreateCallsComponent extends CommonComponent implements OnInit {
         case 2:
           navigateTo = Navigate.REACTIVE_CALLS + type;
           break;
-        case 3:
+        case 5:
           navigateTo = Navigate.CORRECTIVE_CALLS + type;
           break;
       }
@@ -609,7 +609,7 @@ export class CreateCallsComponent extends CommonComponent implements OnInit {
       btns = btns.filter(
         (button) => button.id !== 'Save' && button.id !== 'Cancel'
       );
-    } 
+    }
     else if (
       this.taskLogData?.statusId === ServiceStatus.ARCHIVED ||
       this.statusId === ServiceStatus.ARCHIVED
@@ -619,7 +619,7 @@ export class CreateCallsComponent extends CommonComponent implements OnInit {
       btns = btns.filter(
         (button) => button.id !== 'Actions' && button.id !== 'New w/o'
       );
-    } else if(this.navState.currentLogId !== 0 && this.serviceTypeId === 2){
+    } else if(this.navState.currentLogId !== 0 && (this.serviceTypeId === 2 || this.serviceTypeId === 5)){
       this.isEditable = this.userAccess?.canAdd ?? false;
       btns = btns.filter(
         (button) =>

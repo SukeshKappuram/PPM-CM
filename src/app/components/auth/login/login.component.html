@@ -9,8 +9,8 @@
           <div class="col-md-4 no-gutters bg-white" style="height: 100vh;">
             <div class="text-center mt-3 mb-1">
               <a class="d-inline-block" [ngClass]="!isDemoVersion?'mt-5':'mt-2'">
-                <img [src]="loginImg" class="login-logo" [ngClass]="!isDemoVersion?'img-fluid':'img-fluid50'"
-                  width="300" height="300" alt="" loading="lazy" *ngIf="loginImg">
+                <img [src]="loginImg" [ngClass]="{'img-fluid login-logo': !isDemoVersion,'img-fluid50 login-logo-demo': isDemoVersion}"
+                  [width]="!isDemoVersion?'300':'400'" height="300" alt="" loading="lazy" *ngIf="loginImg">
               </a>
             </div>
 

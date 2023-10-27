@@ -1,0 +1,17 @@
+<kendo-chart>
+  <kendo-chart-title [text]="data.title"></kendo-chart-title>
+  <kendo-chart-category-axis>
+      <kendo-chart-category-axis-item [categories]="data.categories">
+      </kendo-chart-category-axis-item>
+  </kendo-chart-category-axis>
+  <kendo-chart-series>
+    <kendo-chart-series-item type="column" [gap]="2" [spacing]=".25" *ngFor="let item of data.series" [data]="item.data">
+    </kendo-chart-series-item>
+    <!-- <kendo-chart-series-item [data]="[120, 67, 231, 196]">
+    </kendo-chart-series-item>
+    <kendo-chart-series-item [data]="[45, 124, 189, 143]">
+    </kendo-chart-series-item>
+    <kendo-chart-series-item [data]="[87, 154, 210, 215]">
+    </kendo-chart-series-item> -->
+  </kendo-chart-series>
+</kendo-chart>

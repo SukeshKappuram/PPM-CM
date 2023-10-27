@@ -16,7 +16,7 @@ export class DashboardComponent extends CommonComponent implements OnInit {
   public range = { start: new Date(2023, 8, 4), end: new Date(2023, 8, 10) };
 
   g1Data = {
-    title: 'Projects Vs Months',
+    title: 'Projects',
     displayType: 9,
     legends: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
     series: [
@@ -25,39 +25,27 @@ export class DashboardComponent extends CommonComponent implements OnInit {
         data: [
           {
             name: ' Fire Curtain',
-            value: 10
+            value: 70
           },
           {
             name: '2 Tier Db Rack',
-            value: 50
+            value: 63
           },
           {
             name: '2 Tier Db Rack Small',
-            value: 40
+            value: 52
           },
           {
             name: ' Fire Curtain',
-            value: 76
+            value: 46
           },
           {
             name: '2 Tier Db Rack',
-            value: 90
+            value: 38
           },
           {
             name: '2 Tier Db Rack Small',
-            value: 140
-          },
-          {
-            name: ' Fire Curtain',
-            value: 170
-          },
-          {
-            name: '2 Tier Db Rack',
-            value: 150
-          },
-          {
-            name: '2 Tier Db Rack Small',
-            value: 190
+            value: 25
           }
         ]
       },
@@ -66,121 +54,27 @@ export class DashboardComponent extends CommonComponent implements OnInit {
         data: [
           {
             name: '1Watt LED Recess Mounted Exit Light-6No',
-            value: 130
+            value: 65
           },
           {
             name: '1Watt LED S.Mounted Exit Light-42No',
-            value: 58
+            value: 52
           },
           {
             name: ' Fire Curtain',
-            value: 96
+            value: 44
           },
           {
             name: '2 Tier Db Rack',
-            value: 190
+            value: 30
           },
           {
             name: '2 Tier Db Rack Small',
-            value: 140
+            value: 25
           },
           {
             name: ' Fire Curtain',
-            value: 190
-          },
-          {
-            name: '2 Tier Db Rack',
-            value: 240
-          },
-          {
-            name: '2 Tier Db Rack Small',
-            value: 300
-          },
-          {
-            name: '2 Tier Db Rack Small',
-            value: 350
-          }
-        ]
-      },
-      {
-        name: 'Project 3',
-        data: [
-          {
-            name: '22V M V Switchgear',
-            value: 150
-          },
-          {
-            name: ' Fire Curtain',
-            value: 36
-          },
-          {
-            name: '2 Tier Db Rack',
-            value: 60
-          },
-          {
-            name: '2 Tier Db Rack Small',
-            value: 120
-          },
-          {
-            name: ' Fire Curtain',
-            value: 150
-          },
-          {
-            name: '2 Tier Db Rack',
-            value: 170
-          },
-          {
-            name: '2 Tier Db Rack Small',
-            value: 210
-          },
-          {
-            name: '2 Tier Db Rack Small',
-            value: 280
-          },
-          {
-            name: '2 Tier Db Rack Small',
-            value: 200
-          }
-        ]
-      },
-      {
-        name: 'Project 4',
-        data: [
-          {
-            name: '2M H.265 NW Box Camera',
-            value: 80
-          },
-          {
-            name: '2M H.265 NW IR Bullet Camera',
-            value: 55
-          },
-          {
-            name: '2M H.265 NW IR Dome Camera',
-            value: 130
-          },
-          {
-            name: '2MP Full HD IR Dome',
-            value: 160
-          },
-          {
-            name: '2M H.265 NW Box Camera',
-            value: 134
-          },
-          {
-            name: '2M H.265 NW IR Bullet Camera',
-            value: 167
-          },
-          {
-            name: '2M H.265 NW IR Dome Camera',
-            value: 220
-          },
-          {
-            name: '2MP Full HD IR Dome',
-            value: 140
-          },
-          {
-            name: '2 Tier Db Rack Small',
-            value: 270
+            value: 10
           }
         ]
       }
@@ -283,10 +177,23 @@ export class DashboardComponent extends CommonComponent implements OnInit {
     ]
   };
   g3Data = {
-    title: 'Assets System by Project',
+    title: 'Stock Consumed',
     displayType: 5,
-    categories: ['Planned', 'Issued', 'WP', 'Completed'],
-    series: [1, 2, 3, 5]
+    categories: [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ],
+    series: [0, 200, 400, 600, 800, 1000]
   };
   g4Data = {
     title: 'Reactive W/O by Status',
@@ -379,64 +286,6 @@ export class DashboardComponent extends CommonComponent implements OnInit {
             value: 2
           }
         ]
-      },
-      {
-        name: 'Assigned',
-        data: [
-          {
-            name: 'Assigned',
-            value: 1
-          },
-          {
-            name: 'Assigned',
-            value: 3
-          },
-          {
-            name: 'Assigned',
-            value: 4
-          },
-          {
-            name: 'Assigned',
-            value: 5
-          },
-          {
-            name: 'Assigned',
-            value: 7
-          },
-          {
-            name: 'Assigned',
-            value: 2
-          }
-        ]
-      },
-      {
-        name: 'Completed',
-        data: [
-          {
-            name: 'Completed',
-            value: 3
-          },
-          {
-            name: 'Completed',
-            value: 6
-          },
-          {
-            name: 'Completed',
-            value: 2
-          },
-          {
-            name: 'Completed',
-            value: 7
-          },
-          {
-            name: 'Completed',
-            value: 2
-          },
-          {
-            name: 'Completed',
-            value: 1
-          }
-        ]
       }
     ]
   };
@@ -491,7 +340,99 @@ export class DashboardComponent extends CommonComponent implements OnInit {
       }
     ]
   };
+  g8Data = {
+    title : 'Workorder by Status',
+    displayType: 8,
+    categories: [],
+    series: [
+      {
+        data:[100, 123, 234, 343]
+      },
+      {
+        data : [120, 67, 231, 196]
+      },
+      {
+        data : [45, 124, 189, 143]
+      },
+      {
+        data : [87, 154, 210, 215]
+      }
+    ]
+  }
   graphs: any[] = [];
+  
+  // @ViewChild('mapContainer', { static: false })
+  // gmap!: ElementRef;
+  // map!: google.maps.Map;
+  // lat = 40.73061;
+  // lng = -73.935242;
+
+  // coordinates = new google.maps.LatLng(this.lat, this.lng);
+
+  // mapOptions: google.maps.MapOptions = {
+  //   center: this.coordinates,
+  //   zoom: 8
+  // };
+
+  // marker = new google.maps.Marker({
+  //   position: this.coordinates,
+  //   map: this.map,
+  // });
+
+  // ngAfterViewInit() {
+    // this.mapInitializer();
+  // }
+
+  // lat = 22.4064172;
+
+  // long = 69.0750171;
+
+  // zoom=7;
+
+  // google maps zoom level
+  zoom: number = 8;
+ 
+  // initial center position for the map
+  lat: number = 51.673858;
+  lng: number = 7.815982;
+ 
+  clickedMarker(label: string, index: number) {
+    console.log(`clicked the marker: ${label || index}`)
+  }
+ 
+  markers = [
+      {
+          lat: 51.673858,
+          lng: 7.815982,
+          label: "A",
+          draggable: true
+      },
+      {
+          lat: 51.373858,
+          lng: 7.215982,
+          label: "B",
+          draggable: false
+      },
+      {
+          lat: 51.723858,
+          lng: 7.895982,
+          label: "C",
+          draggable: true
+      }
+  ]
+
+  // markers = [
+  //   {
+  //     position: new google.maps.LatLng(40.73061, 73.935242),
+  //     map: this.map,
+  //     title: "Marker 1"
+  //   },
+  //   {
+  //     position: new google.maps.LatLng(32.06485, 34.763226),
+  //     map: this.map,
+  //     title: "Marker 2"
+  //   }
+  // ];
   constructor(
     private themeService: ThemeService,
     private apiService: ApiService,
@@ -505,7 +446,23 @@ export class DashboardComponent extends CommonComponent implements OnInit {
     startDate.setMonth(startDate.getMonth() - 1);
     this.range = { start: startDate, end: endDate };
   }
+  mapInitializer() {
+    // this.map = new google.maps.Map(this.gmap.nativeElement, this.mapOptions);
 
+    //Adding Click event to default marker
+    // this.marker.addListener("click", () => {
+    //   const infoWindow = new google.maps.InfoWindow({
+    //     content: this.marker.getTitle()!
+    //   });
+    //   infoWindow.open(this.marker.getMap()!, this.marker);
+    // });
+
+    // //Adding default marker to map
+    // this.marker.setMap(this.map);
+
+    //Adding other markers
+    this.loadAllMarkers();
+  }
   ngOnInit(): void {
     this.dataService.currentAccount.subscribe(data => {
       this.dateRangeChanged();
@@ -533,5 +490,27 @@ export class DashboardComponent extends CommonComponent implements OnInit {
 
   protected override buttonClicked(buttonType: any): void {
     throw new Error('Method not implemented.');
+  }
+
+  loadAllMarkers (): void {
+    this.markers.forEach(markerInfo => {
+      //Creating a new marker object
+      // const marker = new google.maps.Marker({
+      //   ...markerInfo
+      // });
+
+      //creating a new info window with markers info
+      // const infoWindow = new google.maps.InfoWindow({
+      //   content: marker.getTitle()!
+      // });
+
+      //Add click event to open info window on marker
+      // marker.addListener("click", () => {
+      //   infoWindow.open(marker.getMap()!, marker);
+      // });
+
+      //Adding marker to google map
+      // marker.setMap(this.map);
+    });
   }
 }

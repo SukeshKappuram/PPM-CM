@@ -15,9 +15,21 @@
     <!-- Main charts -->
     <div class="card-group-control card-group-control-right">
       <div class="card mb-3">
+        <!-- <div #mapContainer id="map"></div> -->
+        <!-- <agm-map [latitude]='lat' [longitude]='long' [zoom]='zoom'>
+          <agm-marker *ngFor="let marker of markers" [latitude]="marker.lat" [longitude]="marker.lng">
+            <agm-info-window #infoWindow>
+              {{ marker.label }}
+            </agm-info-window>
+          </agm-marker>
+        </agm-map> -->
+        <!-- <agm-map [latitude]="lat" [longitude]="lng">
+          <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+        </agm-map> -->
         <div class="card-header">
           <h6 class="card-title">
-            <a class="text-body cursor-pointer" [ngClass]="isCollapsed?'collapsed':''" data-toggle="collapse" (click)="isCollapsed = !isCollapsed">
+            <a class="text-body cursor-pointer" [ngClass]="isCollapsed?'collapsed':''" data-toggle="collapse"
+              (click)="isCollapsed = !isCollapsed">
               Select Date Range
             </a>
           </h6>
@@ -50,6 +62,542 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-lg-4 col-xl-3">
+        <div class="card card-body">
+          <div class="media flex-column flex-sm-row">
+            <div class="mr-sm-3  mb-sm-0">
+              <div class="card-img-actions">
+                <a href="#">
+                  <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMZqpe5-DZWj5ZSqwBnIsiupNlYgPL9PhXmQ&usqp=CAU"
+                    class="img-fluid   rounded" width="48px" alt="">
+                  <span class="card-img-actions-overlay card-img"><i class="icon-play3"></i></span>
+                </a>
+              </div>
+            </div>
+            <div class="media-body">
+              <h6 class="media-title font-weight-semibold"><a href="#">Company / Tenant Name</a></h6>
+              <ul class="list-inline list-inline-dotted text-muted mb-1">
+                <li class="list-inline-item"> ID : #235642</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8 col-xl-9">
+        <div class="row">
+          <div class="col-md-12 col-xl-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="row text-center">
+                  <div class="col-sm-4 border-right dashed">
+                    <div class="d-flex align-items-center justify-content-center mb-2 text-indigo">
+                      <i class="bi bi-file-earmark-text mr-2 fa-4x" aria-hidden="true"></i>
+                      <div>
+                        <div class="fw-semibold">Total w/o</div>
+                        <span class="text-dark font-weight-bold font-size-lg">40</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4  border-right dashed">
+                    <div class="d-flex align-items-center justify-content-center mb-2 text-warning">
+                      <i class="bi bi-clipboard-data mr-3 fa-4x"></i>
+                      <div>
+                        <div class="fw-semibold">Open w/o</div>
+                        <span class="text-dark font-weight-bold font-size-lg">25</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="d-flex align-items-center justify-content-center mb-2 text-success">
+                      <i class="bi bi-file-earmark-ruled mr-3 fa-4x"></i>
+                      <div>
+                        <div class="fw-semibold">Closed w/o</div>
+                        <span class="text-dark font-weight-bold font-size-lg">15</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header header-elements-sm-inline bg-transparent">
+
+            <h6 class="card-title font-weight-bold font-size-sm text-indigo font-weight-semibold">Top 5 Workorders</h6>
+          </div>
+
+
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table text-nowrap">
+                <thead>
+                  <tr>
+                    <th style="width: 50px">Status</th>
+                    <th style="width: 300px;">Technician</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="text-center">
+                      <i class="icon-checkmark3 text-success"></i>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="mr-3">
+                          <a href="#">
+                            <img src="global_assets/images/placeholders/placeholder.jpg" class="rounded-circle"
+                              width="32" height="32" alt="">
+                          </a>
+                        </div>
+                        <div>
+                          <a href="#" class="text-body font-weight-semibold">Mitchell Sitkin</a>
+
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <a href="#" class="text-body">
+                        <div>[#1040] Account for static form controls in form group</div>
+
+                      </a>
+                    </td>
+
+                    <td>
+                      <a href="#"> <i class="fa fa-eye" aria-hidden="true"></i></a>
+                    </td>
+
+                  </tr>
+
+                  <tr>
+                    <td class="text-center">
+                      <i class="icon-cross2 text-danger"></i>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="mr-3">
+                          <a href="#" class="btn btn-indigo rounded-pill btn-icon btn-sm">
+                            <span class="letter-icon"></span>
+                          </a>
+                        </div>
+                        <div>
+                          <a href="#" class="text-body font-weight-semibold letter-icon-title">Katleen Jensen</a>
+
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <a href="#" class="text-body">
+                        <div>[#1038] Proper sizing of form control feedback</div>
+
+                      </a>
+                    </td>
+
+                    <td>
+                      <a href="#"> <i class="fa fa-eye" aria-hidden="true"></i></a>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="text-center">
+                      <i class="icon-checkmark3 text-success"></i>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="mr-3">
+                          <a href="#">
+                            <img src="../../../../global_assets/images/placeholders/placeholder.jpg"
+                              class="rounded-circle" width="32" height="32" alt="">
+                          </a>
+                        </div>
+                        <div>
+                          <a href="#" class="text-body font-weight-semibold">Mitchell Sitkin</a>
+
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <a href="#" class="text-body">
+                        <div>[#1040] Account for static form controls in form group</div>
+
+                      </a>
+                    </td>
+
+                    <td>
+                      <a href="#"> <i class="fa fa-eye" aria-hidden="true"></i></a>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="text-center">
+                      <i class="icon-cross2 text-danger"></i>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="mr-3">
+                          <a href="#">
+                            <img src="../../../../global_assets/images/placeholders/placeholder.jpg"
+                              class="rounded-circle" width="32" height="32" alt="">
+                          </a>
+                        </div>
+                        <div>
+                          <a href="#" class="text-body font-weight-semibold">Mitchell Sitkin</a>
+
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <a href="#" class="text-body">
+                        <div>[#1040] Account for static form controls in form group</div>
+
+                      </a>
+                    </td>
+
+                    <td>
+                      <a href="#"> <i class="fa fa-eye" aria-hidden="true"></i></a>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="text-center">
+                      <i class="icon-cross2 text-danger"></i>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="mr-3">
+                          <a href="#">
+                            <img src="../../../../global_assets/images/placeholders/placeholder.jpg"
+                              class="rounded-circle" width="32" height="32" alt="">
+                          </a>
+                        </div>
+                        <div>
+                          <a href="#" class="text-body font-weight-semibold">Mitchell Sitkin</a>
+
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <a href="#" class="text-body">
+                        <div>[#1040] Account for static form controls in form group</div>
+
+                      </a>
+                    </td>
+
+                    <td>
+                      <a href="#"> <i class="fa fa-eye" aria-hidden="true"></i></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+
+
+        <!-- Basic donut -->
+        <div class="card">
+          <div class="card-header header-elements-sm-inline bg-transparent">
+
+            <h6 class="card-title font-weight-bold font-size-sm text-indigo font-weight-semibold"> Evaluation</h6>
+
+            <div class="header-elements font-weight-bold text-indigo">
+              Total Responses : 0
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="row text-center">
+              <div class="col-sm-4 border-right dashed">
+                <div class="d-flex align-items-center justify-content-center mb-2 text-success">
+
+                  <i class="bi bi-emoji-smile mr-3 fa-2x " aria-hidden="true"></i>
+
+                  <div>
+                    <div class="fw-semibold">Happy</div>
+                    <span class="text-dark font-weight-bold font-size-lg">0</span>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-sm-4  border-right dashed">
+                <div class="d-flex align-items-center justify-content-center mb-2 text-warning">
+                  <i class="bi bi-emoji-neutral mr-3 fa-2x"></i>
+                  <div>
+                    <div class="fw-semibold">Neutral</div>
+                    <span class="text-dark font-weight-bold font-size-lg">0</span>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-sm-4">
+                <div class="d-flex align-items-center justify-content-center mb-2 text-danger">
+                  <i class="bi bi-emoji-frown mr-3 fa-2x"></i>
+                  <div>
+                    <div class="fw-semibold">Unhappy</div>
+                    <span class="text-dark font-weight-bold font-size-lg">0</span>
+                  </div>
+                </div>
+
+              </div>
+
+
+
+
+            </div>
+          </div>
+        </div>
+        <!-- /basic donut -->
+
+        <!-- Basic donut -->
+        <div class="card">
+          <div class="card-header header-elements-sm-inline bg-transparent">
+
+            <h6 class="card-title font-weight-bold font-size-sm text-indigo font-weight-semibold"> SLA Target met and
+              violated over time</h6>
+          </div>
+
+          <div class="card-body">
+            <div class="chart-container">
+              <!-- <div class="chart " id="columns_stacked" style="height: 165px;"></div> -->
+              <app-line-graph [data]="g1Data"></app-line-graph>
+            </div>
+          </div>
+        </div>
+        <!-- /basic donut -->
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+
+        <!-- Show values -->
+        <div class="card">
+          <div class="card-header header-elements-sm-inline bg-transparent">
+
+            <h6 class="card-title font-weight-bold font-size-sm text-indigo font-weight-semibold">w/O by week </h6>
+          </div>
+
+          <div class="card-body">
+            <div class="chart-container">
+              <!-- <div class="chart " style="height: 200px;" id="area_values"></div> -->
+              <app-area-graph [data]="g5Data"></app-area-graph>
+            </div>
+          </div>
+        </div>
+        <!-- /show values -->
+      </div>
+
+
+
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header header-elements-sm-inline bg-transparent">
+
+            <h6 class="card-title font-weight-bold font-size-sm text-indigo font-weight-semibold">Quotes</h6>
+          </div>
+
+          <div class="card-body py-1" style="height: 240px; overflow-y: scroll;">
+            <ul class="media-list ">
+              <li class="media">
+                <div class="mr-3 position-relative">
+                  <img src="../../../../global_assets/images/placeholders/placeholder.jpg" class="rounded-circle"
+                    width="36" jeight="36" alt="">
+
+                </div>
+
+                <div class="media-body">
+                  <div class="d-flex justify-content-between">
+                    <div class="media-title"><a href="#">Title here - Q.no:0026548</a></div>
+                    <span class="badge badge-indigo ml-auto">Issued</span>
+                  </div>
+
+                  Backyard lights not working
+                </div>
+              </li>
+
+              <li class="media">
+                <div class="mr-3 position-relative">
+                  <img src="../../../../global_assets/images/placeholders/placeholder.jpg" class="rounded-circle"
+                    width="36" jeight="36" alt="">
+
+                </div>
+
+                <div class="media-body">
+                  <div class="d-flex justify-content-between">
+                    <div class="media-title"><a href="#">Title here - Q.no:0026548</a></div>
+                    <span class="badge badge-indigo ml-auto">Issued</span>
+                  </div>
+
+                  Backyard lights not working
+                </div>
+              </li>
+
+              <li class="media">
+                <div class="mr-3 position-relative">
+                  <img src="../../../../global_assets/images/placeholders/placeholder.jpg" class="rounded-circle"
+                    width="36" jeight="36" alt="">
+
+                </div>
+
+                <div class="media-body">
+                  <div class="d-flex justify-content-between">
+                    <div class="media-title"><a href="#">Title here - Q.no:0026548</a></div>
+                    <span class="badge badge-indigo ml-auto">Issued</span>
+                  </div>
+
+                  Backyard lights not working
+                </div>
+              </li>
+
+              <li class="media">
+                <div class="mr-3 position-relative">
+                  <img src="../../../../global_assets/images/placeholders/placeholder.jpg" class="rounded-circle"
+                    width="36" jeight="36" alt="">
+
+                </div>
+
+                <div class="media-body">
+                  <div class="d-flex justify-content-between">
+                    <div class="media-title"><a href="#">Title here - Q.no:0026548</a></div>
+                    <span class="badge badge-indigo ml-auto">Issued</span>
+                  </div>
+
+                  Backyard lights not working
+                </div>
+              </li>
+
+              <li class="media">
+                <div class="mr-3 position-relative">
+                  <img src="../../../../global_assets/images/placeholders/placeholder.jpg" class="rounded-circle"
+                    width="36" jeight="36" alt="">
+
+                </div>
+
+                <div class="media-body">
+                  <div class="d-flex justify-content-between">
+                    <div class="media-title"><a href="#">Title here - Q.no:0026548</a></div>
+                    <span class="badge badge-indigo ml-auto">Issued</span>
+                  </div>
+
+                  Backyard lights not working
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="col-md-12">
+
+        <div class="card">
+
+
+          <div class="card-body pb-0">
+            <div class="row">
+              <div class="col-sm-2">
+                <div class="d-flex align-items-center justify-content-center mb-2 text-indigo">
+
+                  <i class="far fa-file-alt mr-2 fa-2x" aria-hidden="true"></i>
+
+
+                  <div>
+                    <div class="fw-semibold">Total PPM</div>
+                    <span class="text-dark font-weight-bold font-size-lg">55</span>
+                  </div>
+                </div>
+                <div class="w-75 mx-auto mb-3" id="new-sessions"></div>
+              </div>
+
+              <div class="col-sm-2">
+                <div class="d-flex align-items-center justify-content-center mb-2 text-info">
+                  <i class="fas fa-clipboard-list mr-3 fa-2x"></i>
+                  <div>
+                    <div class="fw-semibold">Active PPM</div>
+                    <span class="text-dark font-weight-bold font-size-lg">25</span>
+                  </div>
+                </div>
+                <div class="w-75 mx-auto mb-3" id="new-sessions"></div>
+              </div>
+              <div class="col-sm-2">
+                <div class="d-flex align-items-center justify-content-center mb-2 text-primary">
+                  <i class="fas fa-file-contract mr-3 fa-2x"></i>
+                  <div>
+                    <div class="fw-semibold">Assigned PPM</div>
+                    <span class="text-dark font-weight-bold font-size-lg">15</span>
+                  </div>
+                </div>
+                <div class="w-75 mx-auto mb-3" id="new-sessions"></div>
+              </div>
+
+              <div class="col-sm-2">
+                <div class="d-flex align-items-center justify-content-center mb-2 text-warning">
+                  <i class="fas fa-file-invoice mr-3 fa-2x"></i>
+                  <div>
+                    <div class="fw-semibold">Canceled PPM</div>
+                    <span class="text-dark font-weight-bold font-size-lg">05</span>
+                  </div>
+                </div>
+                <div class="w-75 mx-auto mb-3" id="new-sessions"></div>
+              </div>
+
+              <div class="col-sm-2">
+                <div class="d-flex align-items-center justify-content-center mb-2 text-danger">
+                  <i class="fas fa-user-times mr-3 fa-2x"></i>
+                  <div>
+                    <div class="fw-semibold">Rejected PPM</div>
+                    <span class="text-dark font-weight-bold font-size-lg">05</span>
+                  </div>
+                </div>
+                <div class="w-75 mx-auto mb-3" id="new-sessions"></div>
+              </div>
+
+              <div class="col-sm-2">
+                <div class="d-flex align-items-center justify-content-center mb-2 text-success">
+                  <i class="far fa-check-circle mr-3 fa-2x"></i>
+                  <div>
+                    <div class="fw-semibold">Completed PPM</div>
+                    <span class="text-dark font-weight-bold font-size-lg">05</span>
+                  </div>
+                </div>
+                <div class="w-75 mx-auto mb-3" id="new-sessions"></div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h6 class="card-title font-weight-bold font-size-sm text-indigo text-dark font-weight-semibold">PPM by
+              Status </h6>
+          </div>
+          <div class="card-body">
+            <!-- <div class="chart has-fixed-height" id="columns_basic"></div> -->
+            <app-bar-graph [data]="g8Data"></app-bar-graph>
+          </div>
+        </div>
+
+
+      </div>
+
+
+    </div>
+    <!-- /content area -->
+    <div class="row">
       <div *ngFor="let graph of graphs" [ngClass]="graph.isFullView? 'col-md-12':'col-md-6'">
         <div class="card">
           <div class="card-body" [ngClass]="graph.displayType === ReportType.Card?'text-center p-5':''">
@@ -63,7 +611,7 @@
                 *ngSwitchCase="ReportType.UnStackedColumnChart"></app-stacked-graph>
               <app-stacked-graph [data]="graph" [isStack]="false" *ngSwitchCase="ReportType.BarChart">
               </app-stacked-graph>
-              <app-area-graph [data]="graph" *ngSwitchCase="ReportType.AreaChart"></app-area-graph>
+              <app-area-graph [data]="graph"></app-area-graph>
               <ng-container *ngSwitchCase="ReportType.Card">
                 <div class="row" *ngIf="graph.series">
                   <div class="my-5 py-5" *ngIf="graph.series[0]">

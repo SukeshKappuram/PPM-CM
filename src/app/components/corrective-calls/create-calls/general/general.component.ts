@@ -108,7 +108,6 @@ export class GeneralComponent extends CommonComponent {
                 });
               }
               this.updateAsset(false);
-              this.setLoc(this.taskLogInfo?.locDate);
             }
             this.ds.updateReportedDate(this.taskLogInfo?.loggedByDate);
           } else {
@@ -262,15 +261,6 @@ export class GeneralComponent extends CommonComponent {
     // generalForm.estTime =
     //   taskInstruction?.estimatedTimeInMins ?? generalForm.estTime;
     this.generalForm.patchValue(generalForm);
-  }
-
-  setLoc(locDate?: any) {
-    this.taskLogInfo['locDate'] = this.datePipe.transform(
-      locDate ? locDate : new Date(),
-      'dd-MMM-yyyy HH:mm',
-      locDate === undefined
-    );
-    this.generalForm.controls['locDate'].setValue(this.taskLogInfo['locDate']);
   }
 
   openPopup(type: number) {

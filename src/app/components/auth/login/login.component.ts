@@ -81,7 +81,7 @@ export class LoginComponent extends CommonComponent implements OnInit {
 
     this.isDemoVersion = this.ts.isDemoVersion();
     if (this.isDemoVersion) {
-      this.loginImg = 'assets/images/CustomerLogo.jpeg';
+      this.loginImg = 'assets/images/CustomerLogoWhite.jpeg';
       this.welcomString = '';
     }
   }

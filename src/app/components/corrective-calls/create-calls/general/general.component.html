@@ -55,8 +55,7 @@
             <div class="col-lg-9">
               <kendo-dropdownlist class="form-group" [data]="filteredData?.locs" ngDefaultControl [filterable]="true"
                 textField="name" valueField="id" [formControlName]="'loc'" [defaultItem]="defaultItem('LOC')"
-                (filterChange)="handleFilter($event, 'locs')" [readonly]="true"
-                (selectionChange)="setLoc()">
+                (filterChange)="handleFilter($event, 'locs')" [readonly]="true">
                 <ng-template kendoDropDownListItemTemplate let-dataItem>
                   <span *ngIf="dataItem.name">{{ dataItem.code }} - {{ dataItem.name }}</span>
                 </ng-template>

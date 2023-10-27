@@ -58,16 +58,6 @@ export class AuthComponent implements OnInit, OnDestroy {
     });
   }
 
-  @HostListener('window:beforeunload', ['$event'])
-  beforeunloadHandler(event: any) {
-    // event.preventDefault();
-    // event.returnValue = 'Your data will be lost!';
-    this.authService.logout();
-    sessionStorage.setItem('isLogggedOut', 'true');
-    this.router.navigate([Navigate.LOGIN]);
-    return true;
-  }
-
   ngOnInit(): void {
     this.subscription = this.data.currentState.subscribe(
       (displayType: any) => (this.displayType = displayType)

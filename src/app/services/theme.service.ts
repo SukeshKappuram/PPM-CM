@@ -54,7 +54,7 @@ export class ThemeService {
 
   setPageTitle() {
     if (this.getVersion() == '2') {
-      this.titleService.setTitle('RYNA | FM Pro');
+      this.titleService.setTitle('RYNA');
       this.favIcon ? this.favIcon.href = 'assets/images/ryna-favlogo-white.ico' : null;
       return;
     }

@@ -90,7 +90,7 @@ export class SidebarComponent {
         } else {
           this.selectedAccount = this.navState.currentAccount;
         }
-        if (this.isDemoVersion) {
+        if (this.isDemoVersion && this.selectedAccount) {
           this.selectedAccount.imageUrl = 'assets/images/muheel-Long.jpg';
           this.selectedAccount.shortImageUrl = 'assets/images/muheel-icon.jpg';
         }

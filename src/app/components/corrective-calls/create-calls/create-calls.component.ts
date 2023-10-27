@@ -94,6 +94,7 @@ export class CreateCallsComponent extends CommonComponent implements OnInit {
       this.mode = LogMode.LOCKED;
     } else {
       this.mode = LogMode.EDIT;
+      this.navService.setNavigationState(this.navState);
     }
   }
 

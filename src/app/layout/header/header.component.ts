@@ -47,7 +47,7 @@ export class HeaderComponent implements OnInit {
       )
     };
     if (this.isDemoVersion) {
-      this.logo = 'assets/images/HeaderLogo.jpeg';
+      this.logo = 'assets/images/logo-white.png';
     }
     if (this.navService.getNavigationState().accounts) {
       this.accounts = this.navService.getNavigationState().accounts;

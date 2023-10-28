@@ -92,7 +92,7 @@
                 <div class="row text-center">
                   <div class="col-sm-4 border-right dashed">
                     <div class="d-flex align-items-center justify-content-center mb-2 text-indigo">
-                      <i class="bi bi-file-earmark-text mr-2 fa-4x" aria-hidden="true"></i>
+                      <i class="bi bi-file-earmark-text mr-2 fa-2x" aria-hidden="true"></i>
                       <div>
                         <div class="fw-semibold">Total w/o</div>
                         <span class="text-dark font-weight-bold font-size-lg">40</span>
@@ -101,7 +101,7 @@
                   </div>
                   <div class="col-sm-4  border-right dashed">
                     <div class="d-flex align-items-center justify-content-center mb-2 text-warning">
-                      <i class="bi bi-clipboard-data mr-3 fa-4x"></i>
+                      <i class="bi bi-clipboard-data mr-3 fa-2x"></i>
                       <div>
                         <div class="fw-semibold">Open w/o</div>
                         <span class="text-dark font-weight-bold font-size-lg">25</span>
@@ -110,7 +110,7 @@
                   </div>
                   <div class="col-sm-4">
                     <div class="d-flex align-items-center justify-content-center mb-2 text-success">
-                      <i class="bi bi-file-earmark-ruled mr-3 fa-4x"></i>
+                      <i class="bi bi-file-earmark-ruled mr-3 fa-2x"></i>
                       <div>
                         <div class="fw-semibold">Closed w/o</div>
                         <span class="text-dark font-weight-bold font-size-lg">15</span>
@@ -363,47 +363,6 @@
         <div class="card">
           <div class="card-header header-elements-sm-inline bg-transparent">
 
-            <h6 class="card-title font-weight-bold font-size-sm text-indigo font-weight-semibold"> SLA Target met and
-              violated over time</h6>
-          </div>
-
-          <div class="card-body">
-            <div class="chart-container">
-              <!-- <div class="chart " id="columns_stacked" style="height: 165px;"></div> -->
-              <app-line-graph [data]="g1Data"></app-line-graph>
-            </div>
-          </div>
-        </div>
-        <!-- /basic donut -->
-
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-6">
-
-        <!-- Show values -->
-        <div class="card">
-          <div class="card-header header-elements-sm-inline bg-transparent">
-
-            <h6 class="card-title font-weight-bold font-size-sm text-indigo font-weight-semibold">w/O by week </h6>
-          </div>
-
-          <div class="card-body">
-            <div class="chart-container">
-              <!-- <div class="chart " style="height: 200px;" id="area_values"></div> -->
-              <app-area-graph [data]="g5Data"></app-area-graph>
-            </div>
-          </div>
-        </div>
-        <!-- /show values -->
-      </div>
-
-
-
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header header-elements-sm-inline bg-transparent">
-
             <h6 class="card-title font-weight-bold font-size-sm text-indigo font-weight-semibold">Quotes</h6>
           </div>
 
@@ -496,7 +455,48 @@
             </ul>
           </div>
         </div>
+        <!-- /basic donut -->
 
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+
+        <!-- Show values -->
+        <div class="card">
+          <div class="card-header header-elements-sm-inline bg-transparent">
+
+            <h6 class="card-title font-weight-bold font-size-sm text-indigo font-weight-semibold">w/O by week </h6>
+          </div>
+
+          <div class="card-body">
+            <div class="chart-container">
+              <!-- <div class="chart " style="height: 200px;" id="area_values"></div> -->
+              <app-area-graph [data]="g5Data"></app-area-graph>
+            </div>
+          </div>
+        </div>
+        <!-- /show values -->
+      </div>
+
+
+
+      <div class="col-md-6">
+        
+        <div class="card">
+          <div class="card-header header-elements-sm-inline bg-transparent">
+
+            <h6 class="card-title font-weight-bold font-size-sm text-indigo font-weight-semibold"> SLA Target met and
+              violated over time</h6>
+          </div>
+
+          <div class="card-body">
+            <div class="chart-container">
+              <!-- <div class="chart " id="columns_stacked" style="height: 165px;"></div> -->
+              <app-line-graph [data]="g1Data"></app-line-graph>
+            </div>
+          </div>
+        </div>
       </div>
 
 
@@ -510,7 +510,7 @@
               <div class="col-sm-2">
                 <div class="d-flex align-items-center justify-content-center mb-2 text-indigo">
 
-                  <i class="far fa-file-alt mr-2 fa-2x" aria-hidden="true"></i>
+                  <i class="bi bi-file-earmark-text mr-2 fa-2x" aria-hidden="true"></i>
 
 
                   <div>
@@ -523,7 +523,7 @@
 
               <div class="col-sm-2">
                 <div class="d-flex align-items-center justify-content-center mb-2 text-info">
-                  <i class="fas fa-clipboard-list mr-3 fa-2x"></i>
+                  <i class="bi bi-clipboard-data r-3 fa-2x"></i>
                   <div>
                     <div class="fw-semibold">Active PPM</div>
                     <span class="text-dark font-weight-bold font-size-lg">25</span>
@@ -533,7 +533,7 @@
               </div>
               <div class="col-sm-2">
                 <div class="d-flex align-items-center justify-content-center mb-2 text-primary">
-                  <i class="fas fa-file-contract mr-3 fa-2x"></i>
+                  <i class="bi-file-earmark-ruled mr-3 fa-2x"></i>
                   <div>
                     <div class="fw-semibold">Assigned PPM</div>
                     <span class="text-dark font-weight-bold font-size-lg">15</span>
@@ -544,7 +544,7 @@
 
               <div class="col-sm-2">
                 <div class="d-flex align-items-center justify-content-center mb-2 text-warning">
-                  <i class="fas fa-file-invoice mr-3 fa-2x"></i>
+                  <i class="bi bi-file-earmark-richtext mr-3 fa-2x"></i>
                   <div>
                     <div class="fw-semibold">Canceled PPM</div>
                     <span class="text-dark font-weight-bold font-size-lg">05</span>
@@ -555,7 +555,7 @@
 
               <div class="col-sm-2">
                 <div class="d-flex align-items-center justify-content-center mb-2 text-danger">
-                  <i class="fas fa-user-times mr-3 fa-2x"></i>
+                  <i class="bi bi-person-fill-x mr-3 fa-2x"></i>
                   <div>
                     <div class="fw-semibold">Rejected PPM</div>
                     <span class="text-dark font-weight-bold font-size-lg">05</span>
@@ -566,7 +566,7 @@
 
               <div class="col-sm-2">
                 <div class="d-flex align-items-center justify-content-center mb-2 text-success">
-                  <i class="far fa-check-circle mr-3 fa-2x"></i>
+                  <i class="bi bi-check-circle mr-3 fa-2x"></i>
                   <div>
                     <div class="fw-semibold">Completed PPM</div>
                     <span class="text-dark font-weight-bold font-size-lg">05</span>

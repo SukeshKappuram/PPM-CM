@@ -16,7 +16,7 @@ export class DashboardComponent extends CommonComponent implements OnInit {
   public range = { start: new Date(2023, 8, 4), end: new Date(2023, 8, 10) };
 
   g1Data = {
-    title: 'Projects',
+    title: '',
     displayType: 9,
     legends: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
     series: [
@@ -254,7 +254,7 @@ export class DashboardComponent extends CommonComponent implements OnInit {
     ]
   };
   g5Data = {
-    title: 'Corrective W/O by Status',
+    title: '',
     displayType: 3,
     categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
     series: [
@@ -341,7 +341,7 @@ export class DashboardComponent extends CommonComponent implements OnInit {
     ]
   };
   g8Data = {
-    title : 'Workorder by Status',
+    title : '',
     displayType: 8,
     categories: [],
     series: [

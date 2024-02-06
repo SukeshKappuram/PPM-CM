@@ -17,6 +17,8 @@ import { NavigationService } from 'src/app/services/navigation.service';
 import { SweetAlertService } from 'src/app/services/sweet-alert.service';
 import { DropdownComponent } from 'src/app/shared/dropdown/dropdown.component';
 import { LogMode } from './../../../../models/enums/LogMode.enum';
+import { MatDialog } from '@angular/material/dialog';
+import { PopupComponent } from '../popup/popup.component';
 
 @Component({
   selector: 'app-left-layout',
@@ -60,7 +62,8 @@ export class LeftLayoutComponent extends CommonComponent {
     private ds: DataService,
     private authService: AuthService,
     public localDatePipe: LocalizedDatePipe,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialog: MatDialog
   ) {
     super();
     this.navState = navService.getNavigationState();
@@ -337,6 +340,25 @@ export class LeftLayoutComponent extends CommonComponent {
       this.locationChanged.emit(this.locationForm.value);
     }, 1000);
   }
+
+  openPopup() {
+    const dialogRef = this.dialog
+        .open(PopupComponent, {
+          data: {
+            title: 'Select Location',
+            contentId: this.Popups.SearchContent
+          },
+          autoFocus: true,
+          maxHeight: '90vh',
+          width: '80vw',
+          disableClose: false
+        })
+        .afterClosed()
+        .subscribe((result) => {
+          
+        })
+  }
+
   protected override buttonClicked(buttonType: any): void {
     throw new Error('Method not implemented.');
   }

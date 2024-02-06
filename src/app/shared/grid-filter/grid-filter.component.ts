@@ -115,7 +115,8 @@ export class GridFilterComponent implements OnInit {
     let date = new Date();
     let startDate = new Date(date.getFullYear(), date.getMonth(), 1);
     let endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    startDate.setMonth(startDate.getMonth() - (this.setBackFrequency ?? 3));
+    let m = this.serviceTypeId === 0 ? 0 : (startDate.getMonth() - (this.setBackFrequency ?? 3));
+    startDate.setMonth(m);
     this.startDate = this.datepipe.transform(startDate, 'yyyy-MM-dd');
     this.endDate = this.datepipe.transform(endDate, 'yyyy-MM-dd');
     this.filterForm = this.fb.group({

@@ -9,39 +9,34 @@ export class EncryptionService {
   constructor() {}
 
   // Declare this key and iv values in declaration
-  private key = CryptoJS.enc.Utf8.parse('4512631236589784');
-  private iv = CryptoJS.enc.Utf8.parse('4512631236589784');
+  private key = CryptoJS.enc.Utf8.parse('6F1330FCF715439C987163C978B48231');
+  private iv = CryptoJS.enc.Utf8.parse('3836204847484948');
 
   encryptSecretKey = 'mySecretKeyHere';
 
   // Methods for the encrypt and decrypt Using AES
-  encryptUsingAES256() {
-    var encrypted = CryptoJS.AES.encrypt(
-      CryptoJS.enc.Utf8.parse(JSON.stringify({ password: 'Mypassword@123' })),
+  encrypt(data: string) {
+    const encrypted = CryptoJS.AES.encrypt(data,
       this.key,
       {
-        keySize: 128 / 8,
         iv: this.iv,
         mode: CryptoJS.mode.CBC,
         padding: CryptoJS.pad.Pkcs7
       }
     );
-    console.log('Encrypted :' + encrypted);
-    this.decryptUsingAES256(encrypted);
-    return encrypted;
+    return encrypted.toString();
   }
 
-  decryptUsingAES256(decString: any) {
-    var decrypted = CryptoJS.AES.decrypt(decString, this.key, {
-      keySize: 128 / 8,
+  decrypt(encryptedData: any) {
+    const decrypted = CryptoJS.AES.decrypt(encryptedData, this.key, {
       iv: this.iv,
       mode: CryptoJS.mode.CBC,
       padding: CryptoJS.pad.Pkcs7
     });
-    console.log('Decrypted : ' + decrypted);
-    console.log('utf8 = ' + decrypted.toString(CryptoJS.enc.Utf8));
+    return decrypted.toString(CryptoJS.enc.Utf8);
   }
 
+  //Data Encryption Function
   encryptData(msg: any) {
     var keySize = 256;
     var salt = CryptoJS.lib.WordArray.random(16);

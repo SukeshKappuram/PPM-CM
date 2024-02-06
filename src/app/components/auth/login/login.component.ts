@@ -14,6 +14,7 @@ import { SweetAlertService } from 'src/app/services/sweet-alert.service';
 import { ThemeService } from '../../../services/theme.service';
 import { ValidationService } from '../../../services/validation.service';
 import { AuthService } from './../../../services/auth.service';
+import { EncryptionService } from 'src/app/services/encryption.service';
 
 @Component({
   selector: 'app-login',
@@ -48,7 +49,8 @@ export class LoginComponent extends CommonComponent implements OnInit {
     private alertService: SweetAlertService,
     private ss: SharedService,
     private apiService: ApiService,
-    private navService: NavigationService
+    private navService: NavigationService,
+    private es: EncryptionService
   ) {
     super();
     this.authService.updateAuth(false);
@@ -91,6 +93,7 @@ export class LoginComponent extends CommonComponent implements OnInit {
     if (this.userForm.valid) {
       this.userObject = this.userForm.value;
       this.userObject.isMobile = false;
+      this.userObject.password = this.es.encrypt(this.userObject.password);
       this.authService.authenticate(this.userObject).subscribe({
         next: (result: any) => {
           if (result) {

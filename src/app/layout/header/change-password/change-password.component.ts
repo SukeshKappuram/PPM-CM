@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonPopupComponent } from 'src/app/components/common/common-popup/common-popup.component';
 import { AuthService } from 'src/app/services/auth.service';
+import { EncryptionService } from 'src/app/services/encryption.service';
 import { SweetAlertService } from 'src/app/services/sweet-alert.service';
 
 @Component({
@@ -22,7 +23,8 @@ export class ChangePasswordComponent
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     private authService: AuthService,
-    private alertService: SweetAlertService
+    private alertService: SweetAlertService,
+    private es: EncryptionService
   ) {
     super(dialogRef);
     this.formData = data;
@@ -40,9 +42,9 @@ export class ChangePasswordComponent
     if (this.changePasswordForm.valid) {
       let passwordInfo = this.changePasswordForm.value;
       let updatePassword = {
-        oldPassword: passwordInfo?.oldPassword,
-        newPassword: passwordInfo?.newPassword,
-        confirmPassword: passwordInfo?.confirmPassword
+        oldPassword: this.es.encrypt(passwordInfo?.oldPassword),
+        newPassword: this.es.encrypt(passwordInfo?.newPassword),
+        confirmPassword: this.es.encrypt(passwordInfo?.confirmPassword)
       };
       this.authService
         .accountChangePassword('Account/ChangePassword', updatePassword)

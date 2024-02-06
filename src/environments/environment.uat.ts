@@ -4,7 +4,7 @@ export const environment = {
   envName: 'uat',
   coreApiUrl: 'http://uatcustomer.rynasolutions.com/CustomerApi/api',
   amApiUrl: 'http://uatcustomer.rynasolutions.com/AssetMgmtApi/api',
-  ppmApiUrl: 'http://uatcustomer.rynasolutions.com/PMApi/api',
+  ppmApiUrl: 'http://uatcustomer.rynasolutions.com/CustomerApi/api',
   stockApiUrl: 'http://uatcustomer.rynasolutions.com/StockApi/api',
   scheduledTaskApiUrl: 'http://uatcustomer.rynasolutions.com/SchduledApi/api',
   reportApiUrl: 'http://uatcustomer.rynasolutions.com/ReportApi/api',

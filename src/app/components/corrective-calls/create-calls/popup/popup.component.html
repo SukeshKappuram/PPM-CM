@@ -119,5 +119,69 @@
           (click)="AssignResource()">Assign</button>
       </div>
     </div>
+    <div class="modal-body" *ngSwitchCase="Popups.SearchContent">
+      <div class="row">
+        <div class="col-md-12">
+          <form>
+            <div class="d-sm-flex mt-2">
+              <div class="mr-sm-3">
+                <select class="form-control form-control-sm wmin-sm-200 mb-3 mb-sm-0">
+                  <option value="1">Select Building</option>
+                </select>
+              </div>
+
+              <div class="form-group-feedback form-group-feedback-left flex-grow-1 mb-3 mb-sm-0">
+                <input type="text" class="form-control form-control-sm" value="Enter details" placeholder="Search">
+                <div class="form-control-feedback form-control-feedback-sm">
+                  <i class="icon-search4 text-muted"></i>
+                </div>
+              </div>
+
+              <div class="ml-sm-3">
+                <button type="submit" class="btn btn-secondary btn-sm w-100 w-sm-auto" (click)="searchLocation()"> <i
+                    class="icon-search4"></i></button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="col-md-12 mt-4">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Action</th>
+                <th>Project</th>
+                <th>Building</th>
+                <th>Unit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="custom-control custom-checkbox mb-2">
+                    <input type="checkbox" class="custom-control-input" id="cc_ls_c" checked>
+                    <label class="custom-control-label" for="cc_ls_c"> </label>
+                  </div>
+                </td>
+                <td>PR1</td>
+                <td>Build 1</td>
+                <td>Unit 1</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="custom-control custom-checkbox mb-2">
+                    <input type="checkbox" class="custom-control-input" id="cc_ls_d">
+                    <label class="custom-control-label" for="cc_ls_d"> </label>
+                  </div>
+                </td>
+                <td>PR2</td>
+                <td>Build 2</td>
+                <td>Unit 2</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </ng-container>
 </div>

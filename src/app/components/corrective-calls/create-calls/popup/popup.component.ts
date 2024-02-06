@@ -432,5 +432,25 @@ export class PopupComponent extends CommonPopupComponent {
     }
   }
 
+  searchLocation(): void{
+    let  searchType = '';
+    let searchText = '';
+    this.apiService
+        .getProjects(
+          `Common/GetLocationDetailsBySearchText/${searchType}/${searchText}`
+        )
+        .subscribe({
+          next: (result) => {
+
+          },
+          error: (e) => {
+            this.alertService.error('Error Retreving Locations', {
+              id: 'subTask-added'
+            },e);
+          },
+          complete: () => {}
+        });
+  }
+
   // Instruction End
 }

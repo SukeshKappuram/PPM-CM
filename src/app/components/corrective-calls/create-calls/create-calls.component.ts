@@ -497,7 +497,7 @@ export class CreateCallsComponent extends CommonComponent implements OnInit {
     this.statuses = event;
     let actionBtn = this.buttons.find((b: any) => b.id === 'Actions');
     if (actionBtn) {
-      actionBtn.dropdownList = event.map((e: any) => e.name.toString());
+      actionBtn.dropdownList = event ? event.map((e: any) => e.name?.toString()) : [];
     }
     this.generalForm?.generalForm?.valueChanges.subscribe(() => {
       this.updateButtons();
@@ -523,9 +523,8 @@ export class CreateCallsComponent extends CommonComponent implements OnInit {
       this.pageDescription =
         'Due Date : ' +
         this.localDatePipe.transform(event.dueDate, 'dd-MMM-yyyy HH:mm', false);
-      this.badgeTitle = this.statuses.find(
-        (s: any) => s.id === event.statusId
-      )?.name;
+      this.badgeTitle = event.statusName;
+      this.statusBadge = event.colorCode + ' badge-pill';
       this.taskLogData['feedback'] = {
         feedbackComments: event.feedbackComments,
         feedbackDate: event.feedbackDate,
@@ -540,52 +539,7 @@ export class CreateCallsComponent extends CommonComponent implements OnInit {
       };
       this.taskLogData['statusId'] = this.generalForm.taskLogInfo?.statusId;
       this.statusId = event.statusId;
-      if (this.taskLogData?.statusId === ServiceStatus.ARCHIVED) {
-        this.buttons = buttons.correctiveCalls.create.filter(
-          (b) => b.id !== 'Actions'
-        );
-      }
       this.activateButtons();
-      this.updateActionButton(event);
-    }
-  }
-
-  updateActionButton(tLog: any) {
-    let actionBtn = this.buttons.find((b: any) => b.id === 'Actions');
-    if (actionBtn) {
-      if (
-        tLog?.statusId === ServiceStatus.OPEN ||
-        tLog?.statusId === ServiceStatus.ASSIGNED
-      ) {
-        this.statusBadge =
-          tLog?.statusId === ServiceStatus.OPEN
-            ? 'badge-danger badge-pill'
-            : 'badge-pink badge-pill';
-        actionBtn.dropdownList = this.statuses
-          .filter(
-            (e: any) =>
-              e.id !== tLog?.statusId &&
-              (e.id === ServiceStatus.CLOSED || e.id === ServiceStatus.ONHOLD)
-          )
-          .map((e: any) => e.name.toString());
-      } else if (tLog?.statusId === ServiceStatus.ONHOLD) {
-        this.statusBadge = 'badge-dark badge-pill';
-        actionBtn.dropdownList = this.statuses
-          .filter(
-            (e: any) =>
-              e.id !== tLog?.statusId && e.id === ServiceStatus.REMOVE_ONHOLD
-          )
-          .map((e: any) => e.name.toString());
-        actionBtn.dropdownList.push('Add On-Hold');
-      } else if (tLog?.statusId === ServiceStatus.CLOSED) {
-        this.statusBadge = 'badge-success badge-pill';
-        actionBtn.dropdownList = this.statuses
-          .filter(
-            (e: any) =>
-              e.id !== tLog?.statusId && e.id === ServiceStatus.ARCHIVED
-          )
-          .map((e: any) => e.name.toString());
-      }
     }
   }
 
@@ -597,37 +551,37 @@ export class CreateCallsComponent extends CommonComponent implements OnInit {
     if (!this.userAccess?.canAdd) {
       btns = btns.filter((button) => button.id !== 'Save');
     }
-    if (this.navState.currentLogId === 0) {
-      this.isEditable = this.userAccess?.canAdd ?? false;
-      btns = btns.filter(
-        (button) =>
-          button.id !== 'Actions' &&
-          button.id !== 'New w/o' &&
-          button.id !== 'Export'
-      );
-    }
-    if (this.statusId === ServiceStatus.CLOSED) {
-      btns = btns.filter(
-        (button) => button.id !== 'Save' && button.id !== 'Cancel'
-      );
-    }
-    else if (
-      this.taskLogData?.statusId === ServiceStatus.ARCHIVED ||
-      this.statusId === ServiceStatus.ARCHIVED
-    ) {
-      btns = [];
-    } else if (this.mode === LogMode.LOCKED) {
-      btns = btns.filter(
-        (button) => button.id !== 'Actions' && button.id !== 'New w/o'
-      );
-    } else if(this.navState.currentLogId !== 0 && (this.serviceTypeId === 2 || this.serviceTypeId === 5)){
-      this.isEditable = this.userAccess?.canAdd ?? false;
-      btns = btns.filter(
-        (button) =>
-          button.id !== 'Actions' &&
-          button.id !== 'Save'
-      );
-    }
+    // if (this.navState.currentLogId === 0) {
+    //   this.isEditable = this.userAccess?.canAdd ?? false;
+    //   btns = btns.filter(
+    //     (button) =>
+    //       button.id !== 'Actions' &&
+    //       button.id !== 'New w/o' &&
+    //       button.id !== 'Export'
+    //   );
+    // }
+    // if (this.statusId === ServiceStatus.CLOSED) {
+    //   btns = btns.filter(
+    //     (button) => button.id !== 'Save' && button.id !== 'Cancel'
+    //   );
+    // }
+    // else if (
+    //   this.taskLogData?.statusId === ServiceStatus.ARCHIVED ||
+    //   this.statusId === ServiceStatus.ARCHIVED
+    // ) {
+    //   btns = [];
+    // } else if (this.mode === LogMode.LOCKED) {
+    //   btns = btns.filter(
+    //     (button) => button.id !== 'Actions' && button.id !== 'New w/o'
+    //   );
+    // } else if(this.navState.currentLogId !== 0 && (this.serviceTypeId === 2 || this.serviceTypeId === 5)){
+    //   this.isEditable = this.userAccess?.canAdd ?? false;
+    //   btns = btns.filter(
+    //     (button) =>
+    //       button.id !== 'Actions' &&
+    //       button.id !== 'Save'
+    //   );
+    // }
     this.buttons = btns;
     this.updateButtons();
   }

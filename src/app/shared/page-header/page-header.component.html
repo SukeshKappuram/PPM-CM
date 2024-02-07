@@ -20,7 +20,7 @@
 
     <div class="header-elements">
       <ng-container *ngFor="let button of buttons">
-        <div class="dropdown" *ngIf="button.isDropdown; else btn">
+        <div class="dropdown" *ngIf="button.isDropdown && button.dropdownList?.length; else btn">
           <a class="btn dropdown-toggle" [ngClass]="button.fill?'btn-secondary':'btn-outline-secondary'"
             data-bs-toggle="dropdown">
             <i class="mr-2" [ngClass]="button.icon" [hidden]="button.icon === ''"></i>
@@ -34,7 +34,7 @@
         <ng-template #btn>
           <button class="btn btn-sm mr-1" [ngClass]="button.fill?'btn-secondary':'btn-outline-secondary'"
             (click)="modified.emit(button.id)" style="text-transform: capitalize;min-width: 100px;"
-            [disabled]="button.isDisabled">
+            [disabled]="button.isDisabled" *ngIf="!button.isDropdown">
             <i class="mr-2" [ngClass]="button.icon" [hidden]="button.icon === ''"></i>
             {{button.label}}
           </button>

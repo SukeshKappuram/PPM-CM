@@ -356,26 +356,12 @@
         "fill": true
       },
       {
-        "id": "New w/o",
-        "name": "New w/o",
-        "label": "New w/o",
-        "icon": "",
-        "isDropdown": false,
-        "isDisabled": true,
-        "dropdownList": [],
-        "fill": true
-      },
-      {
         "id": "Actions",
         "name": "Actions",
         "label": "Actions",
         "icon": "",
         "isDropdown": true,
-        "dropdownList": [
-          "Close",
-          "Card",
-          "Audit"
-        ],
+        "dropdownList": [],
         "fill": false
       }
     ],

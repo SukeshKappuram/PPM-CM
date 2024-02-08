@@ -1,15 +1,15 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 
-import { ApiService } from '../../services/api.service';
-import { IMenuGroup } from './../../models/interfaces/IMenuGroup';
-import { IMenuItem } from '../../models/interfaces/IMenuItem';
-import { INavaigationState } from './../../models/interfaces/INavaigationState';
-import { ISideMenu } from '../../models/interfaces/ISideMenu';
-import { Navigate } from 'src/app/models/enums/Navigate.enum';
-import { NavigationService } from './../../services/navigation.service';
 import { Router } from '@angular/router';
+import { Navigate } from 'src/app/models/enums/Navigate.enum';
 import { SweetAlertService } from 'src/app/services/sweet-alert.service';
+import { IMenuItem } from '../../models/interfaces/IMenuItem';
+import { ISideMenu } from '../../models/interfaces/ISideMenu';
+import { ApiService } from '../../services/api.service';
 import { ThemeService } from '../../services/theme.service';
+import { IMenuGroup } from './../../models/interfaces/IMenuGroup';
+import { INavaigationState } from './../../models/interfaces/INavaigationState';
+import { NavigationService } from './../../services/navigation.service';
 
 declare const $: any;
 
@@ -91,8 +91,8 @@ export class SidebarComponent {
           this.selectedAccount = this.navState.currentAccount;
         }
         if (this.isDemoVersion && this.selectedAccount) {
-          this.selectedAccount.imageUrl = 'assets/images/muheel-Long.jpg';
-          this.selectedAccount.shortImageUrl = 'assets/images/muheel-icon.jpg';
+          this.selectedAccount.imageUrl = this.selectedAccount?.imageUrl;
+          this.selectedAccount.shortImageUrl = this.selectedAccount?.shortImageUrl;
         }
         this.selectedGroup = this.navState.selectedGroup;
         this.selectedMenu = this.navState.selectedMenu;
@@ -308,8 +308,8 @@ export class SidebarComponent {
       setTimeout(() => {
         this.selectedAccount = this.accounts?.find((a) => a.id === id);
         if (this.isDemoVersion) {
-          this.selectedAccount.imageUrl = 'assets/images/muheel-Long.jpg';
-          this.selectedAccount.shortImageUrl = 'assets/images/muheel-icon.jpg';
+          this.selectedAccount.imageUrl = this.selectedAccount?.imageUrl;
+          this.selectedAccount.shortImageUrl = this.selectedAccount?.shortImageUrl;
         }
         this.imageUrl = this.selectedAccount?.imageUrl;
         this.selectedGroup = this.menuGroups[0].groupName;

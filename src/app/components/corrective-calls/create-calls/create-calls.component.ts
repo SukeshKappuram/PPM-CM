@@ -254,17 +254,12 @@ export class CreateCallsComponent extends CommonComponent implements OnInit {
   }
 
   buttonClicked(buttonType: any): void {
+    let actionBtn = this.buttons.find((b: any) => b.id === 'Actions');
     if (buttonType == 'Save') {
       this.saveOrEdit();
     } else if (buttonType == 'Cancel') {
       this.navigateLog(LogMode.GRID);
-    } else if (
-      buttonType === 'Assigned' ||
-      buttonType === 'Active' ||
-      buttonType === 'Complete' ||
-      buttonType === 'Remove On-Hold' ||
-      buttonType === 'Archive'
-    ) {
+    } else if (actionBtn?.dropdownList?.includes(buttonType)) {
       let statusId = this.statuses.find((s: any) => s.name === buttonType).id;
       if (buttonType === 'Complete') {
         if (
@@ -590,7 +585,7 @@ export class CreateCallsComponent extends CommonComponent implements OnInit {
     let navState = this.navService.getNavigationState();
     this.apiService
       .AddOrUpdateTaskLog(
-        `TaskLogOperations/UpdateTaskLogStatus?taskLogId=${navState.currentLogId}&statusId=${statusId}&serviceTypeId=` +
+        `TaskLogOperations/UpdateTaskLogStatus?taskLogId=${navState.currentLogId}&currentStatusId=${this.generalForm?.taskLogInfo?.statusId}&nextStatusId=${statusId}&serviceTypeId=` +
           this.serviceTypeId,
         null
       )

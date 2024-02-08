@@ -87,11 +87,11 @@ export class GeneralComponent extends CommonComponent {
           let tLog = result.taskLogInfo;
           this.typesId = result.configuration?.types[0]?.id ?? null;
           this.subTypesId = result.configuration?.subTypes[0]?.id ?? null;
+          this.actionsUpdated.emit(result.configuration?.taskStatuses);
           this.masterData = result.configuration;
           if (updateForm) {
             this.masterData = result.configuration;
             this.filteredData = { ...this.masterData };
-            this.actionsUpdated.emit(this.masterData?.taskStatuses);
             this.ds.updateLoggedByUser({
               email: tLog?.loggedByEmail,
               designation: tLog?.loggedByDesignation
